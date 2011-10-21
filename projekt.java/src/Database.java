@@ -1,7 +1,7 @@
 
 public class Database {
-	
-	public Database(){
-	System.out.println("Database");	
+	public static void main(String[] args){
+		System.out.println("Testar main");
 	}
+
 }
