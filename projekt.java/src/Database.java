@@ -13,4 +13,7 @@ public class Database {
 	public static void igen2(){
 		System.out.println("Ändring från två pers samtidigt.");
 	}
+	public static void igen3(){
+		System.out.println("Testar för tredje gången..");
+	}
 }
