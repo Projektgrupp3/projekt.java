@@ -14,6 +14,6 @@ public class Database {
 		System.exit(0);
 		}
 	public static void igen2(){
-		System.out.println("Šndring från två pers samtidigt.");
+		System.out.println("Ändring från två pers samtidigt.");
 	}
 }
