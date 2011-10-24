@@ -10,9 +10,6 @@ public class Database {
 	public static void igen(){
 		System.out.println("bajs på snoppen.");
 	}
-	public static void dinMammaLuktarIlla(){
-		System.exit(0);
-		}
 	public static void igen2(){
 		System.out.println("Ändring från två pers samtidigt.");
 	}
