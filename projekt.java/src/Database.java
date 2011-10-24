@@ -4,4 +4,7 @@ public class Database {
 		System.out.println("Hej David");
 		System.out.println("En ändring till.");
 	}
+	public static void hejhopp(){
+		System.out.println("test");
+	}
 }
