@@ -9,6 +9,8 @@ public class MultiServerThread extends Thread {
 	public MultiServerThread(Socket socket) {
 		super("MultiServerThread");
 		this.socket = socket;
+		MultiServer.increaseCount();
+		System.out.println("Client #"+MultiServer.getCount()+" connected");
 		System.out.println("MultiServerThread created");
 	}
 
