@@ -7,4 +7,7 @@ public class Database {
 	public static void hejhopp(){
 		System.out.println("test");
 	}
+	public static void igen(){
+		System.out.println("bajs på snoppen.");
+	}
 }
