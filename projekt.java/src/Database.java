@@ -4,6 +4,9 @@ public class Database {
 		System.out.println("Hej David");
 		System.out.println("En ändring till.");
 	}
+	public static void carroPratarTelefon(int nummer){
+		System.out.println("BBLABLABALBA");
+	}
 	public static void hejhopp(){
 		System.out.println("test");
 	}
