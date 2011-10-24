@@ -21,6 +21,7 @@ public class MultiServerThread extends Thread {
 
 			msc = new MultiServerController(in);
 			msv = new MultiServerView(out);
+			msc.setView(msv);
 			
 			msc.listen();
 			

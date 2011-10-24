@@ -8,5 +8,10 @@ public class MultiServerController extends AbstractServerController {
 		// TODO Auto-generated constructor stub
 	}
 
+	public MultiServerController(BufferedReader in, MultiServerView msv) {
+		super(in, msv);
+		// TODO Auto-generated constructor stub
+	}
+
 
 }
