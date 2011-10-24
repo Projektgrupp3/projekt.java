@@ -9,6 +9,7 @@ public class MultiServerThread extends Thread {
 	public MultiServerThread(Socket socket) {
 		super("MultiServerThread");
 		this.socket = socket;
+		System.out.println("MultiServerThread created");
 	}
 
 	public void run() {

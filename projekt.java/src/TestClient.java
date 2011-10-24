@@ -4,32 +4,60 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Scanner;
 
 
 public class TestClient {
-	
+
 	private static Socket client;
 	private static InputStreamReader in;
 	private static PrintWriter out;
 	private static BufferedReader reader;
-	
+
 	/**
 	 * @param args
 	 * @throws IOException 
 	 */
-	
+
 	public TestClient() throws IOException{
-		this.in = new InputStreamReader(client.getInputStream());
-		this.out = new PrintWriter(client.getOutputStream(),true);
-		this.reader = new BufferedReader(in);
 	}
-	
+
 	public static void createServerConnection() throws UnknownHostException, IOException{
-		client = new Socket("130.236.227.23",4444);
+		String ip = "130.236.227.23";
+		int port = 4444;
+		client = new Socket(ip,port);
+
+		in = new InputStreamReader(client.getInputStream());
+		out = new PrintWriter(client.getOutputStream(),true);
+		reader = new BufferedReader(in);
+
+		System.out.println("Connected to Server @ "+ip+":"+port);
 	}
-	
+
+	public static void waitForInput() throws IOException{
+
+		while(true){
+
+			System.out.println("Input:");
+			Scanner in = new Scanner(System.in);
+			String input = in.nextLine();
+			send(input);
+			
+			String serverInput;	
+			if((serverInput = reader.readLine()) != ""){
+				System.out.println("From server: "+serverInput);
+			}
+		}
+	}
+
+	public static void send(String output){
+		System.out.println(output);
+		out.println(output);
+	}
+
 	public static void main(String[] args) throws UnknownHostException, IOException {
 		createServerConnection();
+		waitForInput();
 	}
 
 }
