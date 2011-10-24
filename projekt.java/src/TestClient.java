@@ -47,6 +47,7 @@ public class TestClient {
 			String serverInput;	
 			if((serverInput = reader.readLine()) != ""){
 				System.out.println("From server: "+serverInput);
+				System.out.println("Här har Emil (Empa) ändrat!");
 			}
 		}
 	}
