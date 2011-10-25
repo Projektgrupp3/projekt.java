@@ -13,7 +13,7 @@ public class TestClient {
 	private static InputStreamReader in;
 	private static PrintWriter out;
 	private static BufferedReader reader;
-	private static String username="user_", password="pass_";
+	private static String username="user_", password="pass_", serverInput;
 	private static final String COM_IP = "130.236.226.59";
 	private static final int COM_PORT = 4444;
 
@@ -22,10 +22,7 @@ public class TestClient {
 	 * @throws IOException 
 	 */
 
-	public TestClient() throws IOException{
-	}
-
-	public static void createServerConnection() throws UnknownHostException, IOException{
+	public TestClient() throws UnknownHostException, IOException{
 		client = new Socket(COM_IP,COM_PORT);
 
 		in = new InputStreamReader(client.getInputStream());
@@ -34,31 +31,37 @@ public class TestClient {
 
 		System.out.println("Connected to Server @ "+COM_IP+":"+COM_PORT);
 	}
-
-	public static void waitForInput() throws IOException{
-		while(true){
-			System.out.println("Input your username:");
-			Scanner in = new Scanner(System.in);
-			username +=in.nextLine();
-			send(username);
-			System.out.println("Input your password:");
-			password += in.nextLine();
-			send(password);		
-			System.out.println("Sending user authentication..");
-			String serverInput;	
-			if((serverInput = reader.readLine()) != ""){
-				System.out.println("Server: "+serverInput);
-			}
+	
+	public void authenticateUser() throws IOException{
+		System.out.println("Input your username:");
+		Scanner in = new Scanner(System.in);
+		username +=in.nextLine();
+		send(username);
+		System.out.println("Input your password:");
+		password += in.nextLine();
+		send(password);		
+		System.out.println("Sending user authentication..");
+		if((serverInput = reader.readLine()) != ""){
+			System.out.println("Server: "+serverInput);
+			if(!serverInput.equals("authenticated")) System.exit(0);
 		}
 	}
+
+//	public void waitForInput() throws IOException{
+//		while(true){
+//			
+//			String serverInput;	
+//			
+//		}
+//	}
 
 	public static void send(String output){
 		out.println(output);
 	}
 
 	public static void main(String[] args) throws UnknownHostException, IOException {
-		createServerConnection();
-		waitForInput();
+		TestClient client = new TestClient();
+		client.authenticateUser();
 	}
 
 }
