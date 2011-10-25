@@ -13,6 +13,7 @@ public class TestClient {
 	private static InputStreamReader in;
 	private static PrintWriter out;
 	private static BufferedReader reader;
+	private static String username="user_", password="pass_";
 
 	/**
 	 * @param args
@@ -35,17 +36,18 @@ public class TestClient {
 	}
 
 	public static void waitForInput() throws IOException{
-
 		while(true){
-
-			System.out.println("Input:");
+			System.out.println("Input your username:");
 			Scanner in = new Scanner(System.in);
-			String input = in.nextLine();
-			send(input);
-			
+			username.concat(in.nextLine());
+			send(username);
+			System.out.println("Input your password:");
+			password.concat(in.nextLine());
+			send(password);		
+			System.out.println("Sending user authentication..");
 			String serverInput;	
 			if((serverInput = reader.readLine()) != ""){
-				System.out.println("From server: "+serverInput);
+				System.out.println("Server: "+serverInput);
 			}
 		}
 	}
