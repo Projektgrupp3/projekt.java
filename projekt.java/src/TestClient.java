@@ -19,7 +19,7 @@ public class TestClient {
 
 	/**
 	 * @param args
-	 * @throws IOException 
+	 * @throws IOException, UnknownHostException
 	 */
 
 	public TestClient() throws UnknownHostException, IOException{
