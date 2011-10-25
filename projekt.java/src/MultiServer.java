@@ -6,20 +6,20 @@ import javax.net.ssl.SSLServerSocketFactory;
 import javax.net.ssl.SSLSocket;
 
 public class MultiServer {
-	public static final int LISTEN_PORT = 8080;
+	public static final int LISTEN_PORT = 4444;
 	private static int threadCount = 0;
+	private static boolean listening = true;
 	ServerSocket serverSocket = null;
-	private static Socket socket;
+	private Socket socket;
 	
 	public MultiServer() throws Exception{
 		serverSocket =  new ServerSocket(LISTEN_PORT);
-		System.err.println("Could not listen to port: "+LISTEN_PORT);
+		System.out.println("Server created.");
 	}
 
 	public void runServer() throws IOException{
-		while (true) {
+		while (listening) {
 			try {				
-				System.err.println("Waiting for client..");
 				socket =  serverSocket.accept();
 				new MultiServerThread((socket)).start();
 				
@@ -27,8 +27,8 @@ public class MultiServer {
 				ioException.printStackTrace();
 				System.exit(-1);
 			} 
-			socket.close();
 		}
+		serverSocket.close();
 	}
 
 	public static void main(String[] args) throws Exception {

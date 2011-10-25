@@ -23,8 +23,7 @@ public class TestClient {
 	}
 
 	public static void createServerConnection() throws UnknownHostException, IOException{
-		String ip = "130.236.227.23";
-		ip = "192.168.1.3";
+		String ip = "130.236.226.59";
 		int port = 4444;
 		client = new Socket(ip,port);
 
@@ -39,7 +38,7 @@ public class TestClient {
 
 		while(true){
 
-			System.out.println("Input?");
+			System.out.println("Input:");
 			Scanner in = new Scanner(System.in);
 			String input = in.nextLine();
 			send(input);
@@ -47,7 +46,6 @@ public class TestClient {
 			String serverInput;	
 			if((serverInput = reader.readLine()) != ""){
 				System.out.println("From server: "+serverInput);
-				System.out.println("Här har Emil (Empa) ändrat!");
 			}
 		}
 	}
