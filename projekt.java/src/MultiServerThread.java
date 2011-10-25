@@ -7,7 +7,7 @@ public class MultiServerThread extends Thread {
 	private Socket socket = null;
 	private MultiServerController msc;
 	private MultiServerView msv;
-	private boolean authenticated = false;
+	private static boolean authenticated = false;
 
 	public MultiServerThread(Socket socket) {
 		super("MultiServerThread");
@@ -29,7 +29,7 @@ public class MultiServerThread extends Thread {
 			msv = new MultiServerView(out);
 			msc.setView(msv);
 			authenticated = msc.authenticate();
-		
+			System.out.println(authenticated);
 			while(authenticated){
 				msc.listen();
 			}

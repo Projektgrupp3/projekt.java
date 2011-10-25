@@ -25,6 +25,7 @@ public class TestClient {
 
 	public static void createServerConnection() throws UnknownHostException, IOException{
 		String ip = "130.236.226.59";
+		ip = "130.236.227.111";
 		int port = 4444;
 		client = new Socket(ip,port);
 
