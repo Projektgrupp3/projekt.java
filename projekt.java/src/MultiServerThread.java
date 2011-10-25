@@ -1,6 +1,8 @@
 import java.net.*;
 import java.io.*;
 
+import javax.net.ssl.SSLSocket;
+
 public class MultiServerThread extends Thread {
 	private Socket socket = null;
 	private MultiServerController msc;
