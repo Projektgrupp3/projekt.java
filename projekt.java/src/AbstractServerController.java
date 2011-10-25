@@ -1,5 +1,6 @@
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.HashMap;
 
 
 public abstract class AbstractServerController {
@@ -7,19 +8,26 @@ public abstract class AbstractServerController {
 	private boolean listen = true;
 	private MultiServerView view;
 	private MultiServerThread mst;
-	String[] userPass= { "test","hej"};
+	private String username;
+	HashMap<String, String> userID = new HashMap<String, String>();
 
 	public AbstractServerController(BufferedReader in){
 		this.in = in;
+		userID.put("David", "semst");
+		userID.put("Emil", "best");
 	}
 
 	public AbstractServerController(BufferedReader in, MultiServerView msv){
 		this.in = in;
 		this.view = msv;
+		userID.put("David", "semst");
+		userID.put("Emil", "best");
 	}
 	public AbstractServerController(BufferedReader in, MultiServerThread mst){
 		this.in = in;
 		this.mst = mst;
+		userID.put("David", "semst");
+		userID.put("Emil", "best");
 	}
 
 	public void listen() throws IOException {
@@ -41,28 +49,25 @@ public abstract class AbstractServerController {
 	}
 
 	public boolean authenticate() throws IOException{
+		
+		
 		String user;
 		String pass;		
 		user = in.readLine();
-		System.out.println(user);
-		pass = in.readLine();	
-		System.out.println(pass);
-		String userSplit[] = user.split("_", 2);
-		String passSplit[] = pass.split("_", 2);
-		
-		if((userSplit[1].equalsIgnoreCase(userPass[0])) && passSplit[1].equalsIgnoreCase(userPass[1])){
-			view.send("authenticated");
+		pass = in.readLine();		
+		if(userID.containsKey(user) && userID.get(user).equals(pass)){
+			username = user;
+			view.send("Authenticated");
 			return true;
 		}
 		else{
-			view.send("authentication failed");
+			view.send("Authentication failed");
 			return false;	
 		}
 	}
 
 	public void evaluate(String input){
-		//view.send(inputSplit[0]+" "+inputSplit[1]);
-		view.send(input);
+		view.send(username+": "+input);
 	}
 
 	public boolean isListen() {
