@@ -48,19 +48,19 @@ public abstract class AbstractServerController {
 		pass = in.readLine();	
 		System.out.println(pass);
 		String userSplit[] = user.split("_", 2);
-		String passSplit[] = user.split("_", 2);
+		String passSplit[] = pass.split("_", 2);
 		
 		if((userSplit[1].equalsIgnoreCase(userPass[0])) && passSplit[1].equalsIgnoreCase(userPass[1])){
 			view.send("authenticated");
 			return true;
 		}
-		else
-			return false;
+		else{
+			view.send("authentication failed");
+			return false;	
+		}
 	}
 
 	public void evaluate(String input){
-
-
 		//view.send(inputSplit[0]+" "+inputSplit[1]);
 		view.send(input);
 	}
