@@ -14,7 +14,7 @@ public class TestClient {
 	private static PrintWriter out;
 	private static BufferedReader reader;
 	private static String username="user_", password="pass_";
-	private static final String COM_IP = "130.236.226.59";
+	private static final String COM_IP = "130.236.227.111";
 	private static final int COM_PORT = 4444;
 
 	/**
