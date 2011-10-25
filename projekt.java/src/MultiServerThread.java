@@ -30,10 +30,11 @@ public class MultiServerThread extends Thread {
 			msv = new MultiServerView(out);
 			msc.setView(msv);
 			authenticated = msc.authenticate();
-		
+			
 			while(authenticated){
 				msc.listen();
 			}
+			
 			out.close();
 			in.close();
 			socket.close();
