@@ -7,7 +7,7 @@ public class User {
 	private String userName;
 	private String password;
 	private int unitID;
-	
+
 	public User (){
 	}
 
@@ -33,11 +33,8 @@ public class User {
 			System.out.println("Please enter a password");
 		}
 		while(!evaluatePassword(tempPass = in.nextLine()));	
-		
-		password = tempPass;
-		System.out.println(userName);
-		System.out.println(password);
 
+		this.password = tempPass;
 	}
 	public boolean evaluatePassword(String password){
 		// 8 tecken, minst en stor, minst en liten, minst ett specialtecken, minst en siffra
@@ -79,7 +76,7 @@ public class User {
 		this.unitID = unitID;
 	}
 	public static void main(String[] args){
-//		User u = new User();
-//		u.createUser();
+		//		User u = new User();
+		//		u.createUser();
 	}
 }

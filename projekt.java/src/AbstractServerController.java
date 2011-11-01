@@ -48,14 +48,13 @@ public abstract class AbstractServerController {
 		}
 	}
 
-	public boolean authenticate() throws IOException{
-		
+	public boolean authenticate() throws IOException{	
 		
 		String user;
 		String pass;		
 		user = in.readLine();
-		pass = in.readLine();		
-		if(userID.containsKey(user) && userID.get(user).equals(pass)){
+		pass = in.readLine();
+		if(Database.checkUser(user) && Database.getUserPass(user).equals(pass)){
 			username = user;
 			view.send("Authenticated");
 			return true;
@@ -64,6 +63,15 @@ public abstract class AbstractServerController {
 			view.send("Authentication failed");
 			return false;	
 		}
+//		if(userID.containsKey(user) && userID.get(user).equals(pass)){
+//			username = user;
+//			view.send("Authenticated");
+//			return true;
+//		}
+//		else{
+//			view.send("Authentication failed");
+//			return false;	
+//		}
 	}
 
 	public void evaluate(String input){

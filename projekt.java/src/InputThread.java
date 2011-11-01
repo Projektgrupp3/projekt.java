@@ -24,6 +24,7 @@ public class InputThread extends Thread {
 		if(input.equals("/createuser")){
 			User u = new User();
 			u.createUser();
+			Database.addUser(u);
 		}
 	}
 }

@@ -15,9 +15,11 @@ public class MultiServer {
 	}
 
 	public void runServer() throws IOException{
+		Database d = new Database();
 		InputThread it = new InputThread();
 		it.start();
-		
+
+
 		while (listening) {
 			try {				
 				socket =  serverSocket.accept();
