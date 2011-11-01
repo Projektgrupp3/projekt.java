@@ -79,7 +79,7 @@ public class User {
 		this.unitID = unitID;
 	}
 	public static void main(String[] args){
-		User u = new User();
-		u.createUser();
+//		User u = new User();
+//		u.createUser();
 	}
 }

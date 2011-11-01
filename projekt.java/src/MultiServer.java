@@ -8,18 +8,21 @@ public class MultiServer {
 	private static boolean listening = true;
 	ServerSocket serverSocket = null;
 	private Socket socket;
-	
+
 	public MultiServer() throws Exception{
 		serverSocket =  new ServerSocket(LISTEN_PORT);
 		System.out.println("Server created.");
 	}
 
 	public void runServer() throws IOException{
+		InputThread it = new InputThread();
+		it.start();
+		
 		while (listening) {
 			try {				
 				socket =  serverSocket.accept();
 				new MultiServerThread((socket)).start();
-				
+
 			} catch (IOException ioException) {
 				ioException.printStackTrace();
 				System.exit(-1);
