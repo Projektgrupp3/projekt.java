@@ -1,22 +1,36 @@
+import java.util.Scanner;
+
 
 public class Unit {
-	
-	private int id;
+
+	private int unitId;
 	private String regnr;
 	private Status state;
-	
+	public Unit(){
+		createUnit();
+	}
 	public Unit(int id, String regnr){
-		this.id = id;
+		this.unitId = id;
 		this.regnr = regnr;
 		state = Status.OFFLINE;
 	}
 
+	public void createUnit(){
+		Scanner in = new Scanner(System.in);
+		System.out.println("Please enter a unitId");
+		this.unitId= in.nextInt();
+
+		System.out.println("Please enter a registration number");
+		in.nextLine();
+		this.regnr = in.nextLine();
+	}
+
 	public int getId() {
-		return id;
+		return unitId;
 	}
 
 	public void setId(int id) {
-		this.id = id;
+		this.unitId = id;
 	}
 
 	public String getRegnr() {

@@ -18,13 +18,13 @@ public abstract class AbstractServerController {
 	}
 
 	public AbstractServerController(BufferedReader in, MultiServerView msv){
-		this.in = in;
+		this(in);
 		this.view = msv;
 		userID.put("David", "semst");
 		userID.put("Emil", "best");
 	}
 	public AbstractServerController(BufferedReader in, MultiServerThread mst){
-		this.in = in;
+		this(in);
 		this.mst = mst;
 		userID.put("David", "semst");
 		userID.put("Emil", "best");
