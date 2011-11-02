@@ -3,7 +3,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class MultiServer {
-	public static final int LISTEN_PORT = 4444;
+	public static final int LISTEN_PORT = 1234;
 	private static int threadCount = 0;
 	private static boolean listening = true;
 	ServerSocket serverSocket = null;
@@ -18,7 +18,6 @@ public class MultiServer {
 		Database d = new Database();
 		InputThread it = new InputThread();
 		it.start();
-
 
 		while (listening) {
 			try {				
