@@ -9,11 +9,13 @@ public class MultiServerThread extends Thread {
 	private MultiServerController msc;
 	private MultiServerView msv;
 	private boolean authenticated = false;
+	private User connectedUser;
 
 	public MultiServerThread(Socket socket) {
 		super("MultiServerThread");
 		this.socket = socket;
 		MultiServer.increaseCount();
+		System.out.println("---------------------");
 		System.out.println("Client #"+MultiServer.getCount()+" connected");
 		System.out.println("New thread created");
 	}
@@ -26,15 +28,16 @@ public class MultiServerThread extends Thread {
 					new InputStreamReader(
 							socket.getInputStream()));
 
-			msc = new MultiServerController(in);
+			msc = new MultiServerController(in, this);
 			msv = new MultiServerView(out);
 			msc.setView(msv);
+
 			authenticated = msc.authenticate();
-			
+
 			while(authenticated){
 				msc.listen();
 			}
-			
+
 			out.close();
 			in.close();
 			socket.close();
@@ -42,5 +45,11 @@ public class MultiServerThread extends Thread {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	public void setUser(User u){
+		this.connectedUser = u;
+	}
+	public User getUser(){
+		return connectedUser;
 	}
 }

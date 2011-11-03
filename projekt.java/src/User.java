@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 
 public class User {
@@ -36,7 +37,7 @@ public class User {
 
 		this.password = tempPass;
 	}
-	public boolean evaluatePassword(String password){
+	public boolean evaluatePassword(String pathString){
 		// 8 tecken, minst en stor, minst en liten, minst ett specialtecken, minst en siffra
 		char[] temp = password.toCharArray();
 		if(temp.length > 7) {
@@ -44,6 +45,7 @@ public class User {
 		}
 		else
 			return false;
+
 	}
 	public String getFirstName() {
 		return firstName;
