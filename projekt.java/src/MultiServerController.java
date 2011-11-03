@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.IOException;
 
 
 public class MultiServerController extends AbstractServerController {
@@ -12,6 +13,24 @@ public class MultiServerController extends AbstractServerController {
 		super(in, msv);
 		// TODO Auto-generated constructor stub
 	}
-
-
+	public MultiServerController(BufferedReader in, MultiServerThread mst){
+		super(in, mst);
+	}
+	public boolean authenticate() throws IOException{	
+		String user;
+		String pass;		
+		user = getIn().readLine();
+		pass = getIn().readLine();
+		if(Database.checkUser(user) && Database.getUserPass(user).equals(pass)){
+			setUsername(user);
+			getMst().setUser(Database.getUser(user));
+			System.out.println("User connected: "+user);
+			getView().send("Authenticated");
+			return true;
+		}
+		else{
+			getView().send("Authentication failed");
+			return false;	
+		}
+	}
 }
