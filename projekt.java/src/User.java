@@ -21,7 +21,7 @@ public class User {
 		this.userName = userName;
 		this.password = password;
 		this.unitID = unitID;
-	}
+	} 
 
 	public void createUser(){
 		Scanner in = new Scanner(System.in);

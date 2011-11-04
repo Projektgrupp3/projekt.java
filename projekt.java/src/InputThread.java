@@ -38,9 +38,15 @@ public class InputThread extends Thread {
 			Unit u = new Unit();
 			Database.addUnit(u);
 		}
+		if(input.equals("/createalarm")){		//Skapa nytt larm
+			Alarm a = new Alarm();
+			a.createAlarm();
+			Database.addAlarm(a);		//Lägg in alarm i Database
+		}
 		if(input.equals("/print")){
 			Database.printAllUsers();
 			Database.printAllUnits();
+			Database.printAllAlarms();
 		}
 		if(input.equals("/mapuserunit")){
 			Scanner in = new Scanner(System.in);
