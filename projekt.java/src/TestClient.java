@@ -6,9 +6,6 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
 
-import javax.sound.midi.SysexMessage;
-
-
 public class TestClient {
 
 	private static Socket client;
@@ -16,7 +13,7 @@ public class TestClient {
 	private static PrintWriter pw;
 	private static BufferedReader br;
 	private static String username, password, serverOutput, clientInput;
-	private static final String COM_IP = "130.236.226.59";
+	private static final String COM_IP = "130.236.70.178";
 	private static final int COM_PORT = 4444;
 	Scanner in = new Scanner(System.in);
 

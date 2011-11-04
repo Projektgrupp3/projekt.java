@@ -9,6 +9,7 @@ public abstract class AbstractServerController {
 	private MultiServerView view;
 	private MultiServerThread mst;
 	private String username;
+	
 	HashMap<String, String> userID = new HashMap<String, String>();
 
 	public AbstractServerController(BufferedReader in){
@@ -70,7 +71,7 @@ public abstract class AbstractServerController {
 		view.send(username+": "+input);
 	}
 
-	public boolean isListen() {
+	public boolean isListening() {
 		return listen;
 	}
 
