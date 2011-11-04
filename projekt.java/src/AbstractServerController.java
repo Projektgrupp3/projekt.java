@@ -9,26 +9,19 @@ public abstract class AbstractServerController {
 	private MultiServerView view;
 	private MultiServerThread mst;
 	private String username;
-	
 	HashMap<String, String> userID = new HashMap<String, String>();
 
 	public AbstractServerController(BufferedReader in){
 		this.in = in;
-		userID.put("David", "semst");
-		userID.put("Emil", "best");
 	}
 
 	public AbstractServerController(BufferedReader in, MultiServerView msv){
-		this.in = in;
+		this(in);
 		this.view = msv;
-		userID.put("David", "semst");
-		userID.put("Emil", "best");
 	}
 	public AbstractServerController(BufferedReader in, MultiServerThread mst){
-		this.in = in;
+		this(in);
 		this.mst = mst;
-		userID.put("David", "semst");
-		userID.put("Emil", "best");
 	}
 
 	public void listen() throws IOException {
@@ -46,24 +39,6 @@ public abstract class AbstractServerController {
 			}
 		} catch(NullPointerException e){
 			listen = false;
-		}
-	}
-
-	public boolean authenticate() throws IOException{
-		
-		
-		String user;
-		String pass;		
-		user = in.readLine();
-		pass = in.readLine();		
-		if(userID.containsKey(user) && userID.get(user).equals(pass)){
-			username = user;
-			view.send("Authenticated");
-			return true;
-		}
-		else{
-			view.send("Authentication failed");
-			return false;	
 		}
 	}
 
@@ -85,6 +60,30 @@ public abstract class AbstractServerController {
 
 	public void setView(MultiServerView view) {
 		this.view = view;
+	}
+
+	public MultiServerThread getMst() {
+		return mst;
+	}
+
+	public void setMst(MultiServerThread mst) {
+		this.mst = mst;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public BufferedReader getIn() {
+		return in;
+	}
+
+	public void setIn(BufferedReader in) {
+		this.in = in;
 	}
 
 }

@@ -11,5 +11,6 @@ public abstract class AbstractServerView {
 	public void send(String output){
 		out.println(output);
 		System.out.println("Sending to Client: "+output);
+		System.out.println("---------------------");
 	}
 }
