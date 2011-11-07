@@ -30,7 +30,7 @@ public class Database {
 	
 	public static Alarm getAlarm(int al) {
 		for (Alarm a : alarm){
-			if(a.getAlarmId().equals(al)){
+			if(a.getAlarmId() == al){
 				return a;
 			}
 	}
@@ -78,6 +78,8 @@ public class Database {
 			System.out.println("-------------");
 			System.out.println("Alarm created: " + a.getTime());
 			System.out.println("Alarm id: " + a.getAlarmId());
+			if(a.getUnitID() != 0)
+				System.out.println("UnitID: "+a.getUnitID());
 			System.out.println("Priority: " + a.getPriority());
 			System.out.println("Accident Adress: " + a.getAccidentAdress());
 			System.out.println("Coordinates: (X,Y): " + a.getCoordinateX() + "," + a.getCoordinateY());

@@ -11,9 +11,10 @@ public class Alarm {
 	private Time time;
 	public String tid;
 	Prio priority; 
-	private String adress = "Hejhej";
+	private String adress;
 	private String typeOfInjury;
 	private String accidentAdress;
+	private int unitID;
 
 	public Alarm(){
 	}
@@ -24,7 +25,7 @@ public class Alarm {
 
 	public Alarm(String AccidentType, String CoordinateX, 
 			String CoordinateY, Prio Priority, int NumberOfInjured, Time Time, 
-			String Adress, String TypeOfInjury, String AccidentAdress, int AlarmId){
+			String Adress, String TypeOfInjury, String AccidentAdress, int AlarmId, int UnitID){
 
 		this.numberOfInjured = NumberOfInjured;
 		this.accidentType = AccidentType;
@@ -36,6 +37,8 @@ public class Alarm {
 		this.typeOfInjury = TypeOfInjury;
 		this.accidentAdress = AccidentAdress;
 		this.alarmId = AlarmId;
+		this.unitID = UnitID;
+		
 	}
 
 	public void createAlarm(){
@@ -191,6 +194,14 @@ public class Alarm {
 		this.alarmId = alarmId;
 	}
 	
+	public int getUnitID() {
+		return unitID;
+	}
+
+	public void setUnitID(int unitID) {
+		this.unitID = unitID;
+	}
+
 	public static void main(String[] args){
 		//		User u = new User();
 		//		u.createUser();

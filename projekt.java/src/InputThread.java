@@ -79,7 +79,7 @@ public class InputThread extends Thread {
 			while(!(Database.checkAlarm(alarmId)) && !(Database.checkUnit(unitId)));
 			
 			Alarm alarm = Database.getAlarm(alarmId);
-			alarm.setUnitId(unitId);
+			alarm.setUnitID(unitId);
 			System.out.println("map completed");
 		}
 	}
