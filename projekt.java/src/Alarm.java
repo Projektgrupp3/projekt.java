@@ -178,11 +178,6 @@ public class Alarm {
 		this.accidentAdress = accidentAdress;
 	}
 
-	public static void main(String[] args){
-		//		User u = new User();
-		//		u.createUser();
-	}
-
 	public String getAccidentAdress() {
 		// TODO Auto-generated method stub
 		return accidentAdress;
@@ -194,6 +189,11 @@ public class Alarm {
 
 	public void setAlarmId(int alarmId) {
 		this.alarmId = alarmId;
+	}
+	
+	public static void main(String[] args){
+		//		User u = new User();
+		//		u.createUser();
 	}
 	
 }

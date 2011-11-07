@@ -65,6 +65,24 @@ public class InputThread extends Thread {
 			user.setUnitID(unitId);
 			System.out.println("map completed");
 		}
+		if(input.equals("/mapalarmunit")){
+			Scanner in = new Scanner(System.in);
+			int alarmId;
+			int unitId;
+			
+			do{
+				System.out.println("alarmId to map");
+				alarmId = in.nextInt();
+				System.out.println("unitId to map");
+				unitId = in.nextInt();
+			}
+			while(!(Database.checkAlarm(alarmId)) && !(Database.checkUnit(unitId)));
+			
+			Alarm alarm = Database.getAlarm(alarmId);
+			alarm.setUnitId(unitId);
+			System.out.println("map completed");
+		}
 	}
 
 }
+

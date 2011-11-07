@@ -28,6 +28,16 @@ public class Database {
 		return null;
 	}
 	
+	public static Alarm getAlarm(int al) {
+		for (Alarm a : alarm){
+			if(a.getAlarmId().equals(al)){
+				return a;
+			}
+	}
+		return null;
+	}
+	
+
 	public static boolean checkUser(String name){
 		for(User u : users){
 			if(u.getUserName().equals(name)){
@@ -45,6 +55,15 @@ public class Database {
 		}
 		return false;
 	}
+	public static boolean checkAlarm(int j){
+		for(Alarm a : alarm){
+			if(a.getAlarmId() == j){
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public static String getUserPass(String name){
 		for(User u : users){
 			if(u.getUserName().equals(name)){
