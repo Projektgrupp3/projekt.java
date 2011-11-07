@@ -58,6 +58,7 @@ public class Database {
 		for(Alarm a : alarm){
 			System.out.println("-------------");
 			System.out.println("Alarm created: " + a.getTime());
+			System.out.println("Alarm id: " + a.getAlarmId());
 			System.out.println("Priority: " + a.getPriority());
 			System.out.println("Accident Adress: " + a.getAccidentAdress());
 			System.out.println("Coordinates: (X,Y): " + a.getCoordinateX() + "," + a.getCoordinateY());

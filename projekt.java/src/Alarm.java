@@ -3,6 +3,7 @@ import java.util.regex.Pattern;
 
 
 public class Alarm {
+	private int alarmId;
 	private String accidentType;
 	private String coordinateX;
 	private String coordinateY;
@@ -23,7 +24,7 @@ public class Alarm {
 
 	public Alarm(String AccidentType, String CoordinateX, 
 			String CoordinateY, Prio Priority, int NumberOfInjured, Time Time, 
-			String Adress, String TypeOfInjury, String AccidentAdress){
+			String Adress, String TypeOfInjury, String AccidentAdress, int AlarmId){
 
 		this.numberOfInjured = NumberOfInjured;
 		this.accidentType = AccidentType;
@@ -34,6 +35,7 @@ public class Alarm {
 		this.adress = Adress;
 		this.typeOfInjury = TypeOfInjury;
 		this.accidentAdress = AccidentAdress;
+		this.alarmId = AlarmId;
 	}
 
 	public void createAlarm(){
@@ -43,6 +45,9 @@ public class Alarm {
 		System.out.println("Alarm crated: " + tid);
 
 		Scanner in = new Scanner(System.in);
+		
+		System.out.println("Enter alarm id: ");
+		this.alarmId = in.nextInt();
 
 		System.out.println("Please enter prio 1-3: ");
 		switch(in.nextInt()){
@@ -182,4 +187,13 @@ public class Alarm {
 		// TODO Auto-generated method stub
 		return accidentAdress;
 	}
+
+	public int getAlarmId() {
+		return alarmId;
+	}
+
+	public void setAlarmId(int alarmId) {
+		this.alarmId = alarmId;
+	}
+	
 }

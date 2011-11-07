@@ -38,10 +38,10 @@ public class InputThread extends Thread {
 			Unit u = new Unit();
 			Database.addUnit(u);
 		}
-		if(input.equals("/createalarm")){		//Skapa nytt larm
+		if(input.equals("/createalarm")){
 			Alarm a = new Alarm();
 			a.createAlarm();
-			Database.addAlarm(a);		//Lägg in alarm i Database
+			Database.addAlarm(a);
 		}
 		if(input.equals("/print")){
 			Database.printAllUsers();
