@@ -28,6 +28,16 @@ public class Database {
 		return null;
 	}
 	
+	public static Alarm getAlarm(int al) {
+		for (Alarm a : alarm){
+			if(a.getAlarmId() == al){
+				return a;
+			}
+	}
+		return null;
+	}
+	
+
 	public static boolean checkUser(String name){
 		for(User u : users){
 			if(u.getUserName().equals(name)){
@@ -45,6 +55,15 @@ public class Database {
 		}
 		return false;
 	}
+	public static boolean checkAlarm(int j){
+		for(Alarm a : alarm){
+			if(a.getAlarmId() == j){
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public static String getUserPass(String name){
 		for(User u : users){
 			if(u.getUserName().equals(name)){
@@ -58,6 +77,9 @@ public class Database {
 		for(Alarm a : alarm){
 			System.out.println("-------------");
 			System.out.println("Alarm created: " + a.getTime());
+			System.out.println("Alarm id: " + a.getAlarmId());
+			if(a.getUnitID() != 0)
+				System.out.println("UnitID: "+a.getUnitID());
 			System.out.println("Priority: " + a.getPriority());
 			System.out.println("Accident Adress: " + a.getAccidentAdress());
 			System.out.println("Coordinates: (X,Y): " + a.getCoordinateX() + "," + a.getCoordinateY());

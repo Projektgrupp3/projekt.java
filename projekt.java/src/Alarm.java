@@ -7,6 +7,7 @@ import org.json.JSONObject;
 
 public class Alarm {
 	JSONObject json = new JSONObject();
+	private int alarmId;
 	private String accidentType;
 	private String coordinateX;
 	private String coordinateY;
@@ -14,8 +15,11 @@ public class Alarm {
 	private Time time;
 	public String tid;
 	Prio priority; 
+
+	private String adress;
 	private String typeOfInjury;
 	private String accidentAdress;
+	private int unitID;
 
 	public Alarm() throws JSONException{
 		createAlarm();
@@ -27,7 +31,8 @@ public class Alarm {
 
 	public Alarm(String AccidentType, String CoordinateX, 
 			String CoordinateY, Prio Priority, int NumberOfInjured, Time Time, 
-			String TypeOfInjury, String AccidentAdress){
+			String TypeOfInjury, String AccidentAdress, int AlarmId, int UnitID){
+
 
 		this.numberOfInjured = NumberOfInjured;
 		this.accidentType = AccidentType;
@@ -37,6 +42,9 @@ public class Alarm {
 		this.priority = Priority;
 		this.typeOfInjury = TypeOfInjury;
 		this.accidentAdress = AccidentAdress;
+		this.alarmId = AlarmId;
+		this.unitID = UnitID;
+		
 	}
 
 	public void createAlarm() throws JSONException{
@@ -47,6 +55,9 @@ public class Alarm {
 		System.out.println("Alarm crated: " + tid);
 
 		Scanner in = new Scanner(System.in);
+		
+		System.out.println("Enter alarm id: ");
+		this.alarmId = in.nextInt();
 
 		System.out.println("Please enter prio 1-3: ");
 		switch(in.nextInt()){
@@ -186,13 +197,30 @@ public class Alarm {
 		this.accidentAdress=accidentAdress;
 	}
 
-	public static void main(String[] args){
-		//		User u = new User();
-		//		u.createUser();
-	}
-
 	public String getAccidentAdress() {
 		// TODO Auto-generated method stub
 		return accidentAdress;
 	}
+
+	public int getAlarmId() {
+		return alarmId;
+	}
+
+	public void setAlarmId(int alarmId) {
+		this.alarmId = alarmId;
+	}
+	
+	public int getUnitID() {
+		return unitID;
+	}
+
+	public void setUnitID(int unitID) {
+		this.unitID = unitID;
+	}
+
+	public static void main(String[] args){
+		//		User u = new User();
+		//		u.createUser();
+	}
+	
 }
