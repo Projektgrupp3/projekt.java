@@ -1,8 +1,12 @@
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 
 public class Alarm {
+	JSONObject json = new JSONObject();
 	private String accidentType;
 	private String coordinateX;
 	private String coordinateY;
@@ -10,11 +14,11 @@ public class Alarm {
 	private Time time;
 	public String tid;
 	Prio priority; 
-	private String adress = "Hejhej";
 	private String typeOfInjury;
 	private String accidentAdress;
 
-	public Alarm(){
+	public Alarm() throws JSONException{
+		createAlarm();
 	}
 
 	public Alarm(Prio Prio){
@@ -23,7 +27,7 @@ public class Alarm {
 
 	public Alarm(String AccidentType, String CoordinateX, 
 			String CoordinateY, Prio Priority, int NumberOfInjured, Time Time, 
-			String Adress, String TypeOfInjury, String AccidentAdress){
+			String TypeOfInjury, String AccidentAdress){
 
 		this.numberOfInjured = NumberOfInjured;
 		this.accidentType = AccidentType;
@@ -31,13 +35,13 @@ public class Alarm {
 		this.coordinateY = CoordinateY;
 		this.time = Time;
 		this.priority = Priority;
-		this.adress = Adress;
 		this.typeOfInjury = TypeOfInjury;
 		this.accidentAdress = AccidentAdress;
 	}
 
-	public void createAlarm(){
+	public void createAlarm() throws JSONException{
 		String tempCoord;
+
 		Time t = new Time();
 		tid = t.getTime();
 		System.out.println("Alarm crated: " + tid);
@@ -58,46 +62,57 @@ public class Alarm {
 			break;
 		}
 		in.nextLine();
-		
+
 		System.out.println("Please enter an adress: ");
-		this.accidentAdress = in.nextLine();
-		
+		//this.accidentAdress = in.nextLine();
+		String adress= in.nextLine();
+		json.put("adress",adress);
+		setAccidentAdress(adress);
+
 		do{
 			System.out.println("Enter X-coordinates: ");
 		}
 		while(!CheckCoordinateX(tempCoord = in.nextLine()));{
-			this.coordinateX = tempCoord;
+			json.put("tempCoordX",tempCoord);
+			setCoordinateX(tempCoord);
 		}
+		
 		do{
 			System.out.println("Enter Y-coordinates: ");
 		}
 		while(!CheckCoordinateY(tempCoord = in.nextLine()));{
-			this.coordinateY = tempCoord;
+			json.put("tempCoordY",tempCoord );
+			setCoordinateY(tempCoord);
 		}
+		
 		System.out.println("Please enter type of accident: ");
-		this.accidentType = in.nextLine();	
+		String accidentType = in.nextLine();
+		json.put("accidentType", accidentType);	
+		setAccidentType(accidentType);
 
 		System.out.println("Please enter number of injured: ");
-		this.numberOfInjured = in.nextInt();
+		int number = in.nextInt();
+		json.put("numberOfInjured", number);
+		setNumberOfInjured(number);
+
 		in.nextLine();
 
 		System.out.println("Type of injury/injuries: ");
-		this.typeOfInjury = in.nextLine();
-
+		String typeOfInjury = in.nextLine();
+		json.put("typeOfInjury", typeOfInjury);
+		setTypeOfInjury(typeOfInjury);
 	}
 
 	public boolean CheckCoordinateX(String tempStringX){
 
 		if(Pattern.matches("[0-9]{8}", tempStringX)) {
 			return true;
-
 		}
 		else
 			System.out.println("false");
 		return false;
 	}
 	public boolean CheckCoordinateY(String tempStringY){
-
 		if(Pattern.matches("[0-9]{8}", tempStringY)) {
 			return true;
 		}
@@ -109,32 +124,39 @@ public class Alarm {
 	public int getNumberOfInjured() {
 		return numberOfInjured;
 	}
-	public void setNumberOfInjured(int numberOfInjured) {
-		this.numberOfInjured = numberOfInjured;
+	public void setNumberOfInjured(int numberOfInjured) throws JSONException {
+		json.put("numberOfInjured",numberOfInjured);
+		numberOfInjured=json.getInt("numberOfInjured");
+		this.numberOfInjured= numberOfInjured;
 	}
 
 	public String getAccidentType() {
 		return accidentType;
 	}
-	public void setAccidentType(String accidentType){
-		this.accidentType = accidentType;
-
+	public void setAccidentType(String accidentType)throws JSONException {
+		json.put("accidentType",accidentType);
+		accidentType=json.getString("accidentType");
+		this.accidentType= accidentType;
 	}
 
 	public String getCoordinateX() {
 		return coordinateX;
 	}
 
-	public void setCoordinateX(String coordinateX) {
-		this.coordinateX = coordinateX;
+	public void setCoordinateX(String coordinateX) throws JSONException {
+		json.put("coordinateX",coordinateX);
+		coordinateX=json.getString("coordinateX");
+		this.coordinateX= coordinateX;
 	}
 
 	public String getCoordinateY() {
 		return coordinateY;
 	}
 
-	public void setCoordinateY(String coordinateY) {
-		this.coordinateY = coordinateY;
+	public void setCoordinateY(String coordinateY) throws JSONException {
+		json.put("coordinateY",coordinateY);	
+		coordinateY=json.getString("coordinateY");
+		this.coordinateY= coordinateY;
 	}
 
 	public String getTime() {
@@ -150,27 +172,18 @@ public class Alarm {
 		this.priority = priority;
 	}
 
-	public String getAdress() {
-		return adress;
-	}
-
-	public void setAdress(String adress) {
-		System.out.println("set adress");
-		this.adress = adress;
-	}
-
 	public String getTypeOfInjury() {
 		return typeOfInjury;
 	}
 
-	public void setTypeOfInjury(String typeOfInjury) {
-		this.typeOfInjury = typeOfInjury;
+	public void setTypeOfInjury(String typeOfInjury) throws JSONException {
+		json.put("typeOfInjury", typeOfInjury);
+		this.typeOfInjury= typeOfInjury;
 	}
 
-
-
-	public void setAccidentAdress(String accidentAdress) {
-		this.accidentAdress = accidentAdress;
+	public void setAccidentAdress(String accidentAdress) throws JSONException {
+		json.put("accidentAdress", accidentAdress);
+		this.accidentAdress=accidentAdress;
 	}
 
 	public static void main(String[] args){

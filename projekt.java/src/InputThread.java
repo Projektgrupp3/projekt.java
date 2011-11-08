@@ -1,5 +1,7 @@
 import java.util.Scanner;
 
+import org.json.JSONException;
+
 /**
  * Tråd som lyssnar på input från serverns console
  *./createuser skapar en ny användare
@@ -22,13 +24,18 @@ public class InputThread extends Thread {
 		do{
 			System.out.println("Enter command");
 			cmd = in.nextLine();
-			evalutate(cmd);
+			try {
+				evalutate(cmd);
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		while(true);
 
 
 	}
-	public void evalutate(String input){
+	public void evalutate(String input) throws JSONException{
 		if(input.equals("/createuser")){
 			User u = new User();
 			u.createUser();
@@ -40,7 +47,6 @@ public class InputThread extends Thread {
 		}
 		if(input.equals("/createalarm")){		//Skapa nytt larm
 			Alarm a = new Alarm();
-			a.createAlarm();
 			Database.addAlarm(a);		//L‰gg in alarm i Database
 		}
 		if(input.equals("/print")){
