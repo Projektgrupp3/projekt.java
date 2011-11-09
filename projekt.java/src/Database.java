@@ -3,7 +3,7 @@ import java.util.Vector;
 
 public class Database {
 
-	public static Vector<Alarm> alarm = new Vector<Alarm>();
+	public static ArrayList<Alarm> alarm = new ArrayList<Alarm>();
 	public static ArrayList<User> users = new ArrayList<User>();
 	public static Vector<Unit> unit = new Vector<Unit>();
 
