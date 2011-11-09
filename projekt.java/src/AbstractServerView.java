@@ -12,4 +12,5 @@ public abstract class AbstractServerView {
 		out.println(output);
 		System.out.println("Sending to Client: "+output);
 	}
+
 }

@@ -16,6 +16,7 @@ public class TestClient {
 	private static PrintWriter pw;
 	private static BufferedReader br;
 	private static String username, password, serverOutput, clientInput;
+	private static String alarmid;
 	private static final String COM_IP = "130.236.227.45";
 	private static final int COM_PORT = 4545;
 	Scanner in = new Scanner(System.in);
@@ -48,6 +49,17 @@ public class TestClient {
 			if(!serverOutput.equals("Authenticated")) System.exit(0);
 		}
 	}
+	public void authenticatealarm() throws IOException{
+		System.out.println("skriv in AlarmID:");
+		alarmid =in.nextLine();
+		send(alarmid);	
+		System.out.println("Sending user authentication..");
+		if((serverOutput = br.readLine()) != ""){
+			System.out.println("Server: "+serverOutput);
+			if(!serverOutput.equals("Authenticated")) System.exit(0);
+		}
+	}
+
 
 	public void upholdConnection() throws IOException{
 		while(true){
