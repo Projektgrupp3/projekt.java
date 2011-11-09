@@ -3,243 +3,292 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class MySQLDatabase {
-
+	/* Använd denna istället för 
+	 * Database i MultiServer.
+	 */
 
 	public static Connection con = null;
 	public static ResultSet rs = null;
 	public static Statement st = null;
 
 	public static void addUser(User u){
-		//String firstName = u.getFirstName();
-		//String lastName = u.getLastName();
-		String userName = u.getUserName();
-		String password = u.getPassword();
-		//int UnitID =13;
-		
-		if(checkUser(userName)){
-			System.out.println(userName+" finns redan i databasen");
-			
+		if(checkUser(u.getUserName())){
+			System.out.println(u.getUserName()+" already exists in the database");
 		}
+
 		else{
+			String firstName = u.getFirstName();
+			String lastName = u.getLastName();
+			String userName = u.getUserName();
+			String password = u.getPassword();
+			int UnitID =13;		
+			//TODO: Fix getUnitID(); dirr.
 			connect();
 			st=null;
 			try {
 				st=con.createStatement();
 				String query = "INSERT INTO user(firstName,lastName,userName,Password,UnitID) " +
-						"VALUES('N/A','N/A','"+userName+"','"+password+"','0')";
-				//String query = "INSERT INTO user(firstName,lastName,userName,Password,UnitID) VALUES('"+
-				//		firstName+"','"+lastName+"','"+userName+"','"+password+"','"+UnitID+"')";
+						"VALUES('"+firstName+"','"+lastName+"','"+userName+"','"+password+"','"+
+						UnitID+"')";
 				st.executeUpdate(query);		
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 			disconnect();
 		}
-	}	
+	}
 
 	public static void addUnit(Unit u){
-		int unitID = u.getId();
-		String regNr = u.getRegnr();
-		Status status = u.getState();
-		
-		if(checkUnit(unitID)){
-			System.out.println(unitID+" finns redan i databasen");
+		if(checkUnit(u.getId())){
+			System.out.println(u.getId()+" alreade exists in the database");
 		}
 		else{
+			int unitID = u.getId();
+			String regNr = u.getRegnr();
+			Status status = u.getState();
+
+			if(checkUnit(unitID)){
+				System.out.println(unitID+" finns redan i databasen");
+			}
+			else{
+				connect();
+				try {
+					st=con.createStatement();
+					String query = "INSERT INTO units(unitID,regNr,state) VALUES('"+
+							unitID+"','"+regNr+"','"+status+"')";
+					st.executeUpdate(query);		
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				disconnect();
+			}
+		}
+	}
+	
+	public static User getUser(String userName){
+		if(checkUser(userName)){
 			connect();
-			try {
+			try{
 				st=con.createStatement();
-				String query = "INSERT INTO units(unitID,regNr,state) VALUES('"+
-						unitID+"','"+regNr+"','"+status+"')";
-				st.executeUpdate(query);		
-			} catch (SQLException e) {
+				String query = "SELECT * from user WHERE userName='"+userName+"'";
+				rs = st.executeQuery(query);
+
+				while(rs.next()){
+					if(rs.getString(3).equals(userName)){
+						String firstName = rs.getString(1);
+						String lastName = rs.getString(2);
+						String user = rs.getString(3);
+						String password = rs.getString(4);
+						int unitID = rs.getInt(5);
+						User u = new User(firstName, lastName, user,password, unitID);
+						disconnect();
+						return u;
+					}
+				}
+			}catch(SQLException e){
+				e.printStackTrace();}
+			disconnect();
+		}
+		else
+			return null;
+		return null;
+	}
+
+	public static Unit getUnit(int unitID){
+		if(checkUnit(unitID)){
+			connect();
+			try{
+				st=con.createStatement();
+				String query = "SELECT * from units WHERE unitID='"+unitID+"'";
+				rs = st.executeQuery(query);
+
+				while(rs.next()){
+					if(rs.getString(1).equals(unitID)){
+						int ID = rs.getInt(1);
+						String regNr = rs.getString(2);
+						//Status status = rs.getString(3);
+						Unit u = new Unit(ID, regNr);
+						disconnect();
+						return u;
+					}
+				}
+			}catch(SQLException e){
+				e.printStackTrace();}
+			disconnect();
+		}
+		else
+			return null;
+		return null;
+	}
+	
+	public static void deleteUser(String userName){
+		System.out.println("Kör: deleteUser");
+		if(checkUser(userName)){
+			System.out.println("Klarar if");
+			connect();
+			String query = "DELETE FROM user WHERE userName ='"+userName+"'";
+			try{
+				st = con.createStatement();
+				st.executeUpdate(query);
+			}catch(SQLException e){
 				e.printStackTrace();
 			}
 			disconnect();
 		}
 	}
 	
-	public static User getUser(String name){
-		connect();
-		try{
-			st=con.createStatement();
-			String query = "SELECT * from user WHERE userName='"+name+"'";
-			rs = st.executeQuery(query);
-
-			while(rs.next()){
-				if(rs.getString(3).equals(name)){
-					String firstName = rs.getString(1);
-					String lastName = rs.getString(2);
-					String userName = rs.getString(3);
-					String password = rs.getString(4);
-					int unitID = rs.getInt(5);
-					User u = new User(firstName, lastName, userName,password, unitID);
-					disconnect();
-					return u;
-				}
+	public static void deleteUnit(int unitID){
+		if(checkUnit(unitID)){
+			connect();
+			String query = "DELETE FROM unit WHERE UnitID ="+unitID;
+			try{
+				st = con.createStatement();
+				st.executeUpdate(query);
+			}catch(SQLException e){
+				e.printStackTrace();
 			}
-		}catch(SQLException e){
-			e.printStackTrace();}
-		disconnect();
-		return null;
-	}
-
-	public static void deleteUser(User u){
-		connect();
-		String userName = u.getUserName();
-		String query = "DELETE FROM user WHERE Username ="+userName;
-		try{
-			st = con.createStatement();
-			st.executeUpdate(query);
-		}catch(SQLException e){
-			e.printStackTrace();
+			disconnect();
 		}
-		disconnect();
-	}
-	
-	public static void deleteUnit(Unit u){
-		connect();
-		int UnitID= u.getId();
-		String query = "DELETE FROM unit WHERE UnitID ="+UnitID;
-		try{
-			st = con.createStatement();
-			st.executeUpdate(query);
-		}catch(SQLException e){
-			e.printStackTrace();
-		}
-		disconnect();
 	}
 
-	public static boolean checkUser(String name){
+	public static String printAllUsers(){
 		connect();
-		st=null;
-		try{
-			st=con.createStatement();
-			String query = "SELECT * from user WHERE userName='"+name+"'";
-			rs = st.executeQuery(query);
-			while(rs.next()){
-				if(rs.getString(3).equals(name)){
-					disconnect();
-					return true;
-				}
-			}
-		}catch(SQLException e){
-			e.printStackTrace();
-		}
-
-		disconnect();
-		return false;
-	}
-
-	public static boolean checkUnit(int i){
-		connect();
-		st=null;
-		try{
-			st=con.createStatement();
-			String query = "SELECT * from units WHERE unitID="+i;
-			rs = st.executeQuery(query);
-			while(rs.next()){
-				if(rs.getInt(1)==i){
-					disconnect();
-					return true;
-				}
-			}
-		}catch(SQLException e){
-			e.printStackTrace();
-		}
-
-		disconnect();
-		return false;
-	}
-	
-	public static String getUserPass(String name){
-		connect();
-		st=null;
-		try{
-			st=con.createStatement();
-			String query = "SELECT * from user WHERE userName='"+name+"'";
-			rs = st.executeQuery(query);
-			
-			while(rs.next()){
-				if(rs.getString(3).equals(name)){
-					String pass = rs.getString(4);
-					disconnect();
-					return pass;
-				}
-			}
-		}catch(SQLException e){
-			e.printStackTrace();}
-				
-		/*for(User u : users){
-			if(u.getUserName().equals(name)){
-				return u.getPassword();
-			}*/
-		disconnect();
-		return null;
-	}
-	
-	public static void printAllUsers(){
-		connect();
-    	rs=null;
-    	Statement stmt = null;
+		rs=null;
+		Statement stmt = null;
 		String query ="SELECT * FROM user";
 		try {
 			stmt = con.createStatement();
 			rs = stmt.executeQuery(query);
+			StringBuffer sb = new StringBuffer();
 			while (rs.next()) {
-				System.out.println("--------------");
-				System.out.println("Username: "+rs.getString(3));
-				System.out.println("Password: "+rs.getString(4));
-				System.out.println("UnitID: "+rs.getInt(5));
-	    	 
-  	      }
-			
+				sb.append("--------------\nUsername: "+rs.getString(3)+
+						"\nPassword: "+rs.getString(4)+"\nUnitID: "+rs.getInt(5)+"\n");
+			}
+			disconnect();
+			return sb.toString();
+
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		/*for(User u : users){
-			System.out.println("--------------");
-			System.out.println("username: "+u.getUserName());
-			System.out.println("password: "+u.getPassword());
-			if(u.getUnitID() != 0)
-				System.out.println("unitID: "+u.getUnitID());
-			System.out.println("--------------");
-		}*/
 		disconnect();
+		return "Database does not contain any user entries";
 	}
 	
-	public static void printAllUnits(){
+	public static String  printAllUnits(){
 		connect();
-    	rs=null;
-    	Statement stmt = null;
+		rs=null;
+		Statement stmt = null;
 		String query ="SELECT * FROM units";
 		try {
 			stmt = con.createStatement();
 			rs = stmt.executeQuery(query);
+			StringBuffer sb = new StringBuffer();
 			while (rs.next()) {
-				System.out.println("--------------");
-				System.out.println("unitID: "+rs.getString(1));
-				System.out.println("regnr: "+rs.getString(2));
-				System.out.println("--------------");
-  	      }
-			
+				sb.append("--------------\nunitID: "+rs.getString(1)+
+						"\nregnr: "+rs.getString(2)+"\n");
+			}
+			disconnect();
+			return sb.toString();
+
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		/*for(Unit u : unit){
-			System.out.println("--------------");
-			System.out.println("unitId: "+u.getId());
-			System.out.println("regnr: "+u.getRegnr());
-			System.out.println("--------------");
-		}*/
 		disconnect();
+		return "Database does not contain any unit entries";
+	}
+
+	public static ArrayList<String> getAllUnits(){
+		connect();
+		rs=null;
+		Statement stmt = null;
+		String query ="SELECT * FROM units";
+		ArrayList<String> nameIds = new ArrayList<String>();
+		
+		try {
+			stmt = con.createStatement();
+			rs = stmt.executeQuery(query);
+			while (rs.next()) {
+				nameIds.add(rs.getString(4));
+			}
+			disconnect();
+			return nameIds;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		disconnect();
+		return null;
+	}
+	
+	public static boolean checkUser(String userName){
+		connect();
+		st=null;
+		try{
+			st=con.createStatement();
+			String query = "SELECT * from user WHERE userName='"+userName+"'";
+			rs = st.executeQuery(query);
+			while(rs.next()){
+				if(rs.getString(3).equals(userName)){
+					disconnect();
+					return true;
+				}
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+
+		disconnect();
+		return false;
+	}
+
+	public static boolean checkUnit(int unitID){
+		connect();
+		st=null;
+		try{
+			st=con.createStatement();
+			String query = "SELECT * from units WHERE unitID="+unitID;
+			rs = st.executeQuery(query);
+			while(rs.next()){
+				if(rs.getInt(1)==unitID){
+					disconnect();
+					return true;
+				}
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+
+		disconnect();
+		return false;
+	}
+	
+	public static String getUserPass(String userName){
+		if(!checkUser(userName)){
+			connect();
+			st=null;
+			try{
+				st=con.createStatement();
+				String query = "SELECT * from user WHERE userName='"+userName+"'";
+				rs = st.executeQuery(query);
+
+				while(rs.next()){
+					if(rs.getString(3).equals(userName)){
+						String pass = rs.getString(4);
+						disconnect();
+						return pass;
+					}
+				}
+			}catch(SQLException e){
+				e.printStackTrace();}
+
+			disconnect();
+		}
+		return null;
 	}
 	
 	public static void connect(){
@@ -249,7 +298,6 @@ public class MySQLDatabase {
 
 		try {
 			con = DriverManager.getConnection(url,user,password);
-			System.out.println("Connected to MySQL DB.");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -266,18 +314,13 @@ public class MySQLDatabase {
 			if (con != null) {
 				con.close();
 			}
-			System.out.println("Disconnected from MySQL DB.");
 		} catch (SQLException ex) {
 			Logger lgr = Logger.getLogger(Database.class.getName());
 			lgr.log(Level.WARNING, ex.getMessage(), ex);
 		}
 	}
 	
-	public static void main(String[] args){	
-
-		
-		
-
+	public static void main(String[] args){
 	}
 
 }
