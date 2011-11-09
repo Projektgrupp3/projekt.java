@@ -6,6 +6,7 @@ public class Unit {
 	private int unitId;
 	private String regnr;
 	private Status state;
+	private String name;
 	public Unit(){
 		createUnit();
 	}
@@ -13,6 +14,7 @@ public class Unit {
 		this.unitId = id;
 		this.regnr = regnr;
 		state = Status.OFFLINE;
+		this.name = "Ambulans "+id;
 	}
 
 	public void createUnit(){
