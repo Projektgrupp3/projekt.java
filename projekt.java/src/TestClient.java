@@ -6,8 +6,6 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
 
-import javax.sound.midi.SysexMessage;
-
 
 public class TestClient {
 
@@ -80,6 +78,7 @@ public class TestClient {
 	public static void main(String[] args) throws UnknownHostException, IOException {
 		TestClient client = new TestClient();
 		client.authenticateUser();
+		client.authenticatealarm();
 		client.upholdConnection();
 	}
 

@@ -48,7 +48,6 @@ public class Alarm {
 
 	public void createAlarm() throws JSONException{
 		String tempCoord;
-
 		Time t = new Time();
 		tid = t.getTime();
 		System.out.println("Alarm crated: " + tid);
