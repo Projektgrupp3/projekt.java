@@ -70,7 +70,7 @@ public class MySQLDatabase {
 			}
 		}
 	}
-	
+
 	public static User getUser(String userName){
 		if(checkUser(userName)){
 			connect();
@@ -126,7 +126,7 @@ public class MySQLDatabase {
 			return null;
 		return null;
 	}
-	
+
 	public static void deleteUser(String userName){
 		System.out.println("Kör: deleteUser");
 		if(checkUser(userName)){
@@ -142,7 +142,7 @@ public class MySQLDatabase {
 			disconnect();
 		}
 	}
-	
+
 	public static void deleteUnit(int unitID){
 		if(checkUnit(unitID)){
 			connect();
@@ -179,7 +179,7 @@ public class MySQLDatabase {
 		disconnect();
 		return "Database does not contain any user entries";
 	}
-	
+
 	public static String  printAllUnits(){
 		connect();
 		rs=null;
@@ -209,7 +209,7 @@ public class MySQLDatabase {
 		Statement stmt = null;
 		String query ="SELECT * FROM units";
 		ArrayList<String> nameIds = new ArrayList<String>();
-		
+
 		try {
 			stmt = con.createStatement();
 			rs = stmt.executeQuery(query);
@@ -225,7 +225,7 @@ public class MySQLDatabase {
 		disconnect();
 		return null;
 	}
-	
+
 	public static boolean checkUser(String userName){
 		connect();
 		st=null;
@@ -267,7 +267,7 @@ public class MySQLDatabase {
 		disconnect();
 		return false;
 	}
-	
+
 	public static String getUserPass(String userName){
 		if(!checkUser(userName)){
 			connect();
@@ -291,7 +291,7 @@ public class MySQLDatabase {
 		}
 		return null;
 	}
-	
+
 	public static void setUnitToUser(String userName, int UnitID){
 		if(checkUser(userName)){
 			connect();
@@ -299,14 +299,14 @@ public class MySQLDatabase {
 			try{
 				st=con.createStatement();
 				st.executeUpdate("UPDATE user SET assignedUnits = '"+Integer.toString(UnitID)+"' "
-	                    + "WHERE userName = '"+userName+"'");
+						+ "WHERE userName = '"+userName+"'");
 				disconnect();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
 	}
-	
+
 	public static String getAssignedUnits(String userName) {
 		if(checkUser(userName)){
 			connect();
@@ -330,7 +330,7 @@ public class MySQLDatabase {
 		}
 		return "";
 	}
-	
+
 	public static String getUserAssignedToUnit(int UnitID){
 		if(checkUnit(UnitID)){
 			connect();
@@ -356,9 +356,9 @@ public class MySQLDatabase {
 	}
 
 	public static void setUserAssignedToUnit(String userName, int UnitID){
-		
+
 	}
-	
+
 	public static void connect(){
 		String url = "jdbc:mysql://localhost:3306/entityList";
 		String user = "server";
@@ -370,7 +370,7 @@ public class MySQLDatabase {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static void disconnect(){
 		try {
 			if (rs != null) {
@@ -387,7 +387,7 @@ public class MySQLDatabase {
 			lgr.log(Level.WARNING, ex.getMessage(), ex);
 		}
 	}
-	
+
 	public static void main(String[] args){
 	}
 
