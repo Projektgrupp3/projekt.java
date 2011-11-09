@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 public class MySQLDatabase {
 	/* Använd denna istället för 
 	 * Database i MultiServer.
+	 * TODO: Fixa så att ändringar ändras på båda tables.
 	 */
 
 	public static Connection con = null;
@@ -289,6 +290,73 @@ public class MySQLDatabase {
 			disconnect();
 		}
 		return null;
+	}
+	
+	public static void setUnitToUser(String userName, int UnitID){
+		if(checkUser(userName)){
+			connect();
+			st=null;
+			try{
+				st=con.createStatement();
+				st.executeUpdate("UPDATE user SET assignedUnits = '"+Integer.toString(UnitID)+"' "
+	                    + "WHERE userName = '"+userName+"'");
+				disconnect();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public static String getAssignedUnits(String userName) {
+		if(checkUser(userName)){
+			connect();
+			st=null;
+			try{
+				st=con.createStatement();
+				String query = "SELECT * from user WHERE userName='"+userName+"'";
+				rs = st.executeQuery(query);
+				while(rs.next()){
+					if(rs.getString(3).equals(userName)){
+						String s = rs.getString(6);
+						disconnect();
+						return s;
+					}
+				}
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
+
+			disconnect();
+		}
+		return "";
+	}
+	
+	public static String getUserAssignedToUnit(int UnitID){
+		if(checkUnit(UnitID)){
+			connect();
+			st=null;
+			try{
+				st=con.createStatement();
+				String query = "SELECT * from units WHERE unitID='"+UnitID+"'";
+				rs = st.executeQuery(query);
+				while(rs.next()){
+					if(rs.getString(1).equals(UnitID)){
+						String s = rs.getString(5);
+						disconnect();
+						return s;
+					}
+				}
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
+
+			disconnect();
+		}
+		return "";
+	}
+
+	public static void setUserAssignedToUnit(String userName, int UnitID){
+		
 	}
 	
 	public static void connect(){
