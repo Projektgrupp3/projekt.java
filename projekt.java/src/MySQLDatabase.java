@@ -27,15 +27,15 @@ public class MySQLDatabase {
 			String lastName = u.getLastName();
 			String userName = u.getUserName();
 			String password = u.getPassword();
-			int UnitID =13;		
-			//TODO: Fix getUnitID(); dirr.
+			int UnitID = u.getUnitID();
+			String assignedUnits = "?";
 			connect();
 			st=null;
 			try {
 				st=con.createStatement();
-				String query = "INSERT INTO user(firstName,lastName,userName,Password,UnitID) " +
+				String query = "INSERT INTO user(firstName,lastName,userName,Password,UnitID,assignedUnits) " +
 						"VALUES('"+firstName+"','"+lastName+"','"+userName+"','"+password+"','"+
-						UnitID+"')";
+						UnitID+"','"+assignedUnits+"')";
 				st.executeUpdate(query);		
 			} catch (SQLException e) {
 				e.printStackTrace();
