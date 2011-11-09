@@ -15,7 +15,6 @@ public class Alarm {
 	private Time time;
 	public String tid;
 	Prio priority; 
-
 	private String adress;
 	private String typeOfInjury;
 	private String accidentAdress;
@@ -57,7 +56,12 @@ public class Alarm {
 		Scanner in = new Scanner(System.in);
 		
 		System.out.println("Enter alarm id: ");
-		this.alarmId = in.nextInt();
+		int alarmID= in.nextInt();
+		json.put("alarmID",alarmID);
+		setAlarmId(alarmID);
+		
+		//this.alarmId = in.nextInt();
+		in.nextLine();
 
 		System.out.println("Please enter prio 1-3: ");
 		switch(in.nextInt()){
@@ -206,8 +210,9 @@ public class Alarm {
 		return alarmId;
 	}
 
-	public void setAlarmId(int alarmId) {
-		this.alarmId = alarmId;
+	public void setAlarmId(int alarmId) throws JSONException {
+		json.put("alarmID", alarmId);
+		this.alarmId=alarmId;
 	}
 	
 	public int getUnitID() {
@@ -219,8 +224,15 @@ public class Alarm {
 	}
 
 	public static void main(String[] args){
-		//		User u = new User();
-		//		u.createUser();
+		
+	}
+
+	public String processInput(String s) {
+		// TODO Auto-generated method stub
+		String output;
+		output= json.toString();
+		System.out.println("alarm: ");
+		return output;
 	}
 	
 }

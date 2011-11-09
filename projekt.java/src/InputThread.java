@@ -1,3 +1,4 @@
+import java.io.PrintStream;
 import java.util.Scanner;
 
 import org.json.JSONException;
@@ -48,8 +49,6 @@ public class InputThread extends Thread {
 		if(input.equals("/createalarm")){
 			Alarm a = new Alarm();
 			Database.addAlarm(a);		//Lägg in alarm i Database
-			a.createAlarm();
-			Database.addAlarm(a);
 		}
 		if(input.equals("/print")){
 			Database.printAllUsers();
@@ -90,6 +89,20 @@ public class InputThread extends Thread {
 			alarm.setUnitID(unitId);
 			System.out.println("map completed");
 		}
+//		if(input.equals("/send")){
+//			Scanner in = new Scanner(System.in);
+//			int unitId;
+//
+//			do{
+//				System.out.println("send to unit number");
+//				unitId = in.nextInt();
+//			}
+//			while(!Database.checkUnit(unitId));
+//				
+//			Alarm alarm = Database.getAlarm(alarmId);
+//				send(alarm);
+//				
+//		} 
 	}
 
 }
