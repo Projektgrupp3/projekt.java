@@ -6,15 +6,19 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
 
+import javax.sound.midi.SysexMessage;
+
+import org.json.JSONObject;
 public class TestClient {
 
 	private static Socket client;
 	private static InputStreamReader isr;
 	private static PrintWriter pw;
 	private static BufferedReader br;
-	private static String username, password, serverOutput, clientInput;
-	private static final String COM_IP = "130.236.70.178";
-	private static final int COM_PORT = 4444;
+	private static String username, password, serverOutput, clientInput, accept;
+	private static final String COM_IP = "130.236.226.169";
+	private static final int COM_PORT = 4432;
+
 	Scanner in = new Scanner(System.in);
 
 	/**
@@ -32,13 +36,26 @@ public class TestClient {
 		System.out.println("Connected to Server @ "+COM_IP+":"+COM_PORT);
 	}
 
-	public void authenticateUser() throws IOException{
+	/*public void authenticateUser() throws IOException{
 		System.out.println("Input your username:");
 		username =in.nextLine();
 		send(username);
 		System.out.println("Input your password:");
 		password = in.nextLine();
 		send(password);		
+		System.out.println("Sending user authentication..");
+		if((serverOutput = br.readLine()) != ""){
+			System.out.println("Server: "+serverOutput);
+			if(!serverOutput.equals("Authenticated")) System.exit(0);
+		}
+	}*/
+	
+	public void acceptAlarm() throws IOException{
+		//String accident; 
+		//accident = new JSONObject().put("accidentType",accidentType).toString(); 
+		System.out.println("Accept alarm (yes):");
+		accept =in.nextLine();
+		send(accept);	
 		System.out.println("Sending user authentication..");
 		if((serverOutput = br.readLine()) != ""){
 			System.out.println("Server: "+serverOutput);
@@ -64,7 +81,7 @@ public class TestClient {
 
 	public static void main(String[] args) throws UnknownHostException, IOException {
 		TestClient client = new TestClient();
-		client.authenticateUser();
+		client.acceptAlarm();
 		client.upholdConnection();
 	}
 
