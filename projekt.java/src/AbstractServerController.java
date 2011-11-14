@@ -1,5 +1,6 @@
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.HashMap;
 
 
 public abstract class AbstractServerController {
@@ -42,6 +43,10 @@ public abstract class AbstractServerController {
 	}
 
 	public void evaluate(String input){
+		if(input.equals("newuser")){
+			MySQLDatabase.addUser(new User("kungen2", "kaffeflicka"));
+		}
+		else
 		view.send(username+": "+input);
 	}
 

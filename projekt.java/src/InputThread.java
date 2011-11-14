@@ -21,7 +21,7 @@ import org.json.JSONObject;
  */
 
 public class InputThread extends Thread implements Observer {
-	private final String COM_IP = "130.236.226.10";
+	private final String COM_IP = "130.236.226.122";
 	private final int COM_PORT = 4445;
 	private InputStreamReader isr;
 	private PrintWriter pw;
@@ -57,8 +57,6 @@ public class InputThread extends Thread implements Observer {
 			}
 		}
 		while(true);
-
-
 	}
 	public void evalutate(String input) throws UnknownHostException, IOException, JSONException{
 		if(input.equals("/msg")){
@@ -74,15 +72,15 @@ public class InputThread extends Thread implements Observer {
 		if(input.equals("/createuser")){
 			User u = new User();
 			u.createUser();
-			Database.addUser(u);
+			MySQLDatabase.addUser(u);
 		}
 		if(input.equals("/createunit")){
 			Unit u = new Unit();
-			Database.addUnit(u);
+			MySQLDatabase.addUnit(u);
 		}
 		if(input.equals("/createalarm")){
 			Alarm a = new Alarm();
-			Database.addAlarm(a);	//L‰gg in alarm i Database
+			MySQLDatabase.addAlarm(a);	//L‰gg in alarm i Database
 			
 			
 			setUpConnection();
@@ -109,9 +107,9 @@ public class InputThread extends Thread implements Observer {
 			
 		}
 		if(input.equals("/print")){
-			Database.printAllUsers();
-			Database.printAllUnits();
-			Database.printAllAlarms();
+			MySQLDatabase.printAllUsers();
+			MySQLDatabase.printAllUnits();
+			MySQLDatabase.printAllAlarms();
 		}
 		if(input.equals("/mapuserunit")){
 			Scanner in = new Scanner(System.in);
@@ -124,9 +122,9 @@ public class InputThread extends Thread implements Observer {
 				System.out.println("unitId to map");
 				unitId = in.nextInt(); 
 			}
-			while(!(Database.checkUser(name)) && !(Database.checkUnit(unitId)));
+			while(!(MySQLDatabase.checkUser(name)) && !(MySQLDatabase.checkUnit(unitId)));
 
-			User user = Database.getUser(name);
+			User user = MySQLDatabase.getUser(name);
 			user.setUnitID(unitId);
 			System.out.println("map completed");
 		}
@@ -141,13 +139,101 @@ public class InputThread extends Thread implements Observer {
 				System.out.println("unitId to map");
 				unitId = in.nextInt();
 			}
-			while(!(Database.checkAlarm(alarmId)) && !(Database.checkUnit(unitId)));
+			while(!(MySQLDatabase.checkAlarm(alarmId)) && !(MySQLDatabase.checkUnit(unitId)));
 			
-			Alarm alarm = Database.getAlarm(alarmId);
+			Alarm alarm = MySQLDatabase.getAlarm(alarmId);
 			alarm.setUnitID(unitId);
 			System.out.println("map completed");
 		}
 	}
+//	public void evalutate(String input) throws UnknownHostException, IOException, JSONException{
+//		if(input.equals("/msg")){
+//			setUpConnection();
+//			Scanner in = new Scanner(System.in);
+//			System.out.println("Message?");
+//			String message;
+//			message = in.nextLine();
+//			pw.println(message);
+//			s.close();
+//		}
+//
+//		if(input.equals("/createuser")){
+//			User u = new User();
+//			u.createUser();
+//			Database.addUser(u);
+//		}
+//		if(input.equals("/createunit")){
+//			Unit u = new Unit();
+//			Database.addUnit(u);
+//		}
+//		if(input.equals("/createalarm")){
+//			Alarm a = new Alarm();
+//			Database.addAlarm(a);	//L‰gg in alarm i Database
+//			
+//			
+//			setUpConnection();
+//			
+////			System.out.println(a.json.toString());
+////			JSONObject david = new JSONObject();
+////			david.put("namn", "david");
+////			String hille = david.toString();
+////			JSONObject emil = new JSONObject(hille);
+//			
+//			pw.println(a.json.toString());
+//			s.close();
+//			
+//		}
+//		if(input.equals("/alarm")){
+//			JSONObject a = new JSONObject();
+//			a.put("adress","Rydsvägen 1337");
+//			a.put("numberOfInjured","10");
+//			a.put("alarmID","312");
+//			setUpConnection();
+//
+//			pw.println(a.toString());
+//			s.close();
+//			
+//		}
+//		if(input.equals("/print")){
+//			Database.printAllUsers();
+//			Database.printAllUnits();
+//			Database.printAllAlarms();
+//		}
+//		if(input.equals("/mapuserunit")){
+//			Scanner in = new Scanner(System.in);
+//			String name;
+//			int unitId;
+//
+//			do {
+//				System.out.println("username to map");
+//				name = in.nextLine();
+//				System.out.println("unitId to map");
+//				unitId = in.nextInt(); 
+//			}
+//			while(!(Database.checkUser(name)) && !(Database.checkUnit(unitId)));
+//
+//			User user = Database.getUser(name);
+//			user.setUnitID(unitId);
+//			System.out.println("map completed");
+//		}
+//		if(input.equals("/mapalarmunit")){
+//			Scanner in = new Scanner(System.in);
+//			int alarmId;
+//			int unitId;
+//			
+//			do{
+//				System.out.println("alarmId to map");
+//				alarmId = in.nextInt();
+//				System.out.println("unitId to map");
+//				unitId = in.nextInt();
+//			}
+//			while(!(Database.checkAlarm(alarmId)) && !(Database.checkUnit(unitId)));
+//			
+//			Alarm alarm = Database.getAlarm(alarmId);
+//			alarm.setUnitID(unitId);
+//			System.out.println("map completed");
+//		}
+//	}
 
 	@Override
 	public void update(Observable arg0, Object arg1) {

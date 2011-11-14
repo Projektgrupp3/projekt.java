@@ -37,7 +37,6 @@ public class Database {
 		return null;
 	}
 	
-
 	public static boolean checkUser(String name){
 		for(User u : users){
 			if(u.getUserName().equals(name)){

@@ -16,14 +16,16 @@ public class MultiServerController extends AbstractServerController {
 	public MultiServerController(BufferedReader in, MultiServerThread mst){
 		super(in, mst);
 	}
+	
+	//Metoden som fungerar med SQL
 	public boolean authenticate() throws IOException{	
 		String user;
 		String pass;		
 		user = getIn().readLine();
 		pass = getIn().readLine();
-		if(Database.checkUser(user) && Database.getUserPass(user).equals(pass)){
+		if(MySQLDatabase.checkUser(user) && MySQLDatabase.getUserPass(user).equals(pass)){
 			setUsername(user);
-			getMst().setUser(Database.getUser(user));
+			getMst().setUser(MySQLDatabase.getUser(user));
 			System.out.println("User connected: "+user);
 			getView().send("Authenticated");
 			return true;
@@ -33,4 +35,21 @@ public class MultiServerController extends AbstractServerController {
 			return false;	
 		}
 	}
+//	public boolean authenticate() throws IOException{	
+//		String user;
+//		String pass;		
+//		user = getIn().readLine();
+//		pass = getIn().readLine();
+//		if(Database.checkUser(user) && Database.getUserPass(user).equals(pass)){
+//			setUsername(user);
+//			getMst().setUser(Database.getUser(user));
+//			System.out.println("User connected: "+user);
+//			getView().send("Authenticated");
+//			return true;
+//		}
+//		else{
+//			getView().send("Authentication failed");
+//			return false;	
+//		}
+//	}
 }

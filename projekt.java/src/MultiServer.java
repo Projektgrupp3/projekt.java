@@ -12,12 +12,12 @@ public class MultiServer {
 	public MultiServer() throws Exception{
 		serverSocket =  new ServerSocket(LISTEN_PORT);
 		System.out.println("Server created.");
-		User test = new User("test", "password");
-		Database.addUser(test);
+		//User test = new User("test", "password");
+		//Database.addUser(test);
 	}
 
 	public void runServer() throws IOException{
-		Database d = new Database();
+		//Database d = new Database();
 		InputThread it = new InputThread();
 		it.start();
 

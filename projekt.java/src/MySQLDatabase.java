@@ -269,7 +269,7 @@ public class MySQLDatabase {
 	}
 
 	public static String getUserPass(String userName){
-		if(!checkUser(userName)){
+		if(checkUser(userName)){
 			connect();
 			st=null;
 			try{
@@ -354,13 +354,28 @@ public class MySQLDatabase {
 		}
 		return "";
 	}
+	public static Alarm getAlarm(int al) {
+		//TODO:
+		return null;
+	}
+	public static void printAllAlarms(){
+		//TODO:
+	}
+	
+	public static boolean checkAlarm(int j){
+		//TODO:
+		return false;
+	}
+	public static void addAlarm(Alarm a){
+		//TODO:
+	}
 
 	public static void setUserAssignedToUnit(String userName, int UnitID){
 
 	}
 
 	public static void connect(){
-		String url = "jdbc:mysql://localhost:3306/entityList";
+		String url = "jdbc:mysql://130.236.227.58:3306/entityList";
 		String user = "server";
 		String password = "starwars";
 
