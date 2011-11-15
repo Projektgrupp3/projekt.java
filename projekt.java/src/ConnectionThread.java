@@ -2,8 +2,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.util.Observable;
+import java.util.Observer;
 
-public class ConnectionThread implements Runnable {
+public class ConnectionThread implements Runnable, Observer {
 	
 	private Socket socket = null;
 	private User connectedUser;
@@ -34,6 +36,9 @@ public class ConnectionThread implements Runnable {
 	}
 	
 	public void evaluateMessage() throws IOException{
+		
+		LoginManager loginManager = new LoginManager(this, socket.getInetAddress().getHostAddress());
+		
 		message = in.readLine();
 		System.out.println("Message from client: "+message);
 		
@@ -49,5 +54,11 @@ public class ConnectionThread implements Runnable {
 	
 	public User getUser(){
 		return connectedUser;
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		// TODO Auto-generated method stub
+		
 	}
 }

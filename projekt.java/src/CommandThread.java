@@ -45,7 +45,6 @@ public class CommandThread implements Observer, Runnable {
 			System.out.println("Message?");
 			String message;
 			message = in.nextLine();
-
 			//SEND
 		}
 

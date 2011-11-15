@@ -81,6 +81,7 @@ public class Send {
 		s = new Socket(COM_IP, COM_PORT);
 		pw = new PrintWriter(s.getOutputStream(), true);
 	}
+	
 	public void closeConnection() throws IOException{
 		pw.close();
 		s.close();
