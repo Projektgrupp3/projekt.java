@@ -1,4 +1,4 @@
- 
+
 public class Server {
 	private static CommandThread it;
 	private static ConnectionController cc;
@@ -9,8 +9,8 @@ public class Server {
 		it = new CommandThread();
 		cc = new ConnectionController();
 		send = new Send();
-		//User test = new User("test", "password");
-		//Database.addUser(test);
+		User test = new User("test", "password");
+		Database.addUser(test);
 	}
 
 	public static void main(String[] args) throws Exception {

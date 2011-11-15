@@ -14,6 +14,7 @@ public class ConnectionController implements Runnable {
 	@Override
 	public void run() {
 		while (listening) {
+			System.out.println("Lyssnar");
 			try {				
 				socket =  serverSocket.accept();
 				new ConnectionThread((socket)).run();
@@ -29,6 +30,5 @@ public class ConnectionController implements Runnable {
 			e.printStackTrace();
 
 		}
-
 	}
 }
