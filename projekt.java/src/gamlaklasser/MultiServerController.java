@@ -1,3 +1,7 @@
+package gamlaklasser;
+import ConnectionThread;
+import MySQLDatabase;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 
@@ -13,7 +17,7 @@ public class MultiServerController extends AbstractServerController {
 		super(in, msv);
 		// TODO Auto-generated constructor stub
 	}
-	public MultiServerController(BufferedReader in, MultiServerThread mst){
+	public MultiServerController(BufferedReader in, ConnectionThread mst){
 		super(in, mst);
 	}
 	

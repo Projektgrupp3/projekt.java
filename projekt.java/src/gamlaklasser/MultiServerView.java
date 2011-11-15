@@ -1,3 +1,4 @@
+package gamlaklasser;
 import java.io.PrintWriter;
 
 

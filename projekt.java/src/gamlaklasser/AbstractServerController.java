@@ -1,3 +1,8 @@
+package gamlaklasser;
+import ConnectionThread;
+import MySQLDatabase;
+import User;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.HashMap;
@@ -8,7 +13,7 @@ public abstract class AbstractServerController {
 	private BufferedReader in;
 	private boolean listen = true;
 	private MultiServerView view;
-	private MultiServerThread mst;
+	private ConnectionThread mst;
 	private String username;
 	HashMap<String, String> userID = new HashMap<String, String>();
 
@@ -20,7 +25,7 @@ public abstract class AbstractServerController {
 		this(in);
 		this.view = msv;
 	}
-	public AbstractServerController(BufferedReader in, MultiServerThread mst){
+	public AbstractServerController(BufferedReader in, ConnectionThread mst){
 		this(in);
 		this.mst = mst;
 	}
@@ -67,11 +72,11 @@ public abstract class AbstractServerController {
 		this.view = view;
 	}
 
-	public MultiServerThread getMst() {
+	public ConnectionThread getMst() {
 		return mst;
 	}
 
-	public void setMst(MultiServerThread mst) {
+	public void setMst(ConnectionThread mst) {
 		this.mst = mst;
 	}
 
