@@ -6,8 +6,9 @@ public class Server {
 
 	public Server() throws Exception{
 		System.out.println("Server created.");
-		it = new CommandThread();
+//		it = new CommandThread();
 		cc = new ConnectionController();
+		cc.run();
 		send = new Send();
 		User test = new User("test", "password");
 		Database.addUser(test);
@@ -15,7 +16,5 @@ public class Server {
 
 	public static void main(String[] args) throws Exception {
 		Server server = new Server();
-		it.run();
-		cc.run();
 	}
 }
