@@ -1,14 +1,16 @@
 
 public class Server {
-	private static CommandThread it;
+	private static CommandThread ct;
 	private static ConnectionController cc;
 	private static Send send;
 
 	public Server() throws Exception{
 		System.out.println("Server created.");
-//		it = new CommandThread();
+		
 		cc = new ConnectionController();
 		cc.run();
+		ct = new CommandThread();
+		ct.run();
 		send = new Send();
 		User test = new User("test", "password");
 		Database.addUser(test);

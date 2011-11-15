@@ -11,10 +11,19 @@ public class ConnectionController implements Runnable {
 	ServerSocket serverSocket = null;
 	private Socket socket;
 
+	public ConnectionController(){
+		try {
+			serverSocket = new ServerSocket(LISTEN_PORT);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	@Override
 	public void run() {
+
 		while (listening) {
-			System.out.println("Lyssnar");
 			try {				
 				socket =  serverSocket.accept();
 				new ConnectionThread((socket)).run();
