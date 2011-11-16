@@ -6,17 +6,25 @@ public class Server {
 
 	public Server() throws Exception{
 		System.out.println("Server created.");
-		
+		//Association ac = new Association();
+		//Association.addAdressAssociation("130.236.226.154");
+		Database.addUser(new User("test", "password"));
+
 		cc = new ConnectionController();
-		cc.run();
+		cc.start();
 		ct = new CommandThread();
-		ct.run();
+		ct.start();
 		send = new Send();
 		User test = new User("test", "password");
 		Database.addUser(test);
 	}
 
+	public void runServer() { 
+
+	}
+
 	public static void main(String[] args) throws Exception {
 		Server server = new Server();
+		server.runServer();
 	}
 }

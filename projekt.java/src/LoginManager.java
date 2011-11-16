@@ -15,6 +15,7 @@ public class LoginManager extends Observable implements Runnable {
 
 
 	public LoginManager(ConnectionThread ct, String adress){
+		System.out.println("LoginManager created");
 		this.adress = adress;
 		addObserver(ct);
 	}
@@ -23,12 +24,10 @@ public class LoginManager extends Observable implements Runnable {
 		this.username = username;
 		this.password = password;
 
-		if(MySQLDatabase.checkUser(username) && MySQLDatabase.getUserPass(username).equals(password)){
-			setChanged();
+		if(Database.checkUser(username) && Database.getUserPass(username).equals(password)){
 			notifyAndSet(AUTH_OK);
 		}
 		else{
-			setChanged();
 			notifyAndSet(AUTH_FAILED);
 		}
 	}
@@ -42,16 +41,14 @@ public class LoginManager extends Observable implements Runnable {
 		int value = i;
 		setChanged();
 		notifyObservers(value);
-		if(i == 1){
-			done = true;
-		}
+	}
+
+	public void startManager() {
+		isAssociated();
 	}
 
 	@Override
 	public void run() {
-
-		while(!done){
-		}
-
+		isAssociated();
 	}
 }

@@ -2,13 +2,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
-
-import javax.sound.midi.SysexMessage;
-
-import org.json.JSONObject;
 public class TestClient {
 
 	private static Socket client;
@@ -16,10 +13,13 @@ public class TestClient {
 	private static PrintWriter pw;
 	private static BufferedReader br;
 	private static String username, password, serverOutput, clientInput, accept;
-	private static final String COM_IP = "130.236.226.169";
-	private static final int COM_PORT = 4432;
+	private static final String COM_IP = "130.236.226.159";
+	private static final int COM_PORT = 4444;
+	private static final int LISTEN_PORT = 4445;
+	private static ServerSocket serverSocket;
+	private static Socket socket;
 
-	Scanner in = new Scanner(System.in);
+	static Scanner in = new Scanner(System.in);
 
 	/**
 	 * @param args
@@ -27,18 +27,36 @@ public class TestClient {
 	 */
 
 	public TestClient() throws UnknownHostException, IOException{
+	}
+	public static void establishConenction() throws UnknownHostException, IOException{
 		client = new Socket(COM_IP,COM_PORT);
-
-		isr = new InputStreamReader(client.getInputStream());
 		pw = new PrintWriter(client.getOutputStream(),true);
-		br = new BufferedReader(isr);
-
-		System.out.println("Connected to Server @ "+COM_IP+":"+COM_PORT);
 	}
 
-	/*public void authenticateUser() throws IOException{
+	public static void waitForServer(){
+		boolean lyssnar = true;
+		try {
+			serverSocket = new ServerSocket(LISTEN_PORT);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		while(lyssnar){
+			try {
+				socket =  serverSocket.accept();
+				isr = new InputStreamReader(client.getInputStream());
+				br = new BufferedReader(isr);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			break;
+		}
+	}
+
+	public static void login() throws IOException{
 		System.out.println("Input your username:");
-		username =in.nextLine();
+		username = in.nextLine();
 		send(username);
 		System.out.println("Input your password:");
 		password = in.nextLine();
@@ -46,10 +64,17 @@ public class TestClient {
 		System.out.println("Sending user authentication..");
 		if((serverOutput = br.readLine()) != ""){
 			System.out.println("Server: "+serverOutput);
-			if(!serverOutput.equals("Authenticated")) System.exit(0);
+			if(!serverOutput.equals("authenticated")) 
+				System.exit(0);
+			else
+				System.out.println("auth succeded");
 		}
-	}*/
-	
+		pw.close();
+		isr.close();
+		br.close();
+		socket.close();
+	}
+
 	public void acceptAlarm() throws IOException{
 		//String accident; 
 		//accident = new JSONObject().put("accidentType",accidentType).toString(); 
@@ -81,8 +106,9 @@ public class TestClient {
 
 	public static void main(String[] args) throws UnknownHostException, IOException {
 		TestClient client = new TestClient();
-		client.acceptAlarm();
-		client.upholdConnection();
+		establishConenction();
+		waitForServer();
+		login();
 	}
 
 }

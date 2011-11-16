@@ -15,7 +15,7 @@ import org.json.JSONObject;
  *
  */
 
-public class CommandThread implements Observer, Runnable {
+public class CommandThread extends Thread implements Observer, Runnable {
 
 	public CommandThread(){
 		System.out.println("New input thread created");
@@ -45,7 +45,7 @@ public class CommandThread implements Observer, Runnable {
 			System.out.println("Message?");
 			String message;
 			message = in.nextLine();
-			//SEND
+			Send.send("snorre", "localhost");
 		}
 
 		if(input.equals("/createuser")){

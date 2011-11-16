@@ -5,13 +5,13 @@ import java.net.Socket;
 import java.util.Observable;
 import java.util.Observer;
 
-public class ConnectionThread implements Runnable, Observer {
+public class ConnectionThread extends Thread implements Runnable, Observer {
 
 	private Socket socket = null;
 	private User connectedUser;
 	private BufferedReader in;
 	private String message;
-	LoginManager loginManager;
+	private LoginManager loginManager;
 
 	public ConnectionThread(Socket socket) {
 		this.socket = socket;
@@ -45,9 +45,14 @@ public class ConnectionThread implements Runnable, Observer {
 			e.printStackTrace();
 		}
 	}
-	public void evaluateMessage() throws IOException{
+	public void evaluateMessage() {
 
-		message = in.readLine();
+		try {
+			message = in.readLine();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		System.out.println("Message from client: "+message);
 
@@ -59,7 +64,8 @@ public class ConnectionThread implements Runnable, Observer {
 	public void manageUserLogin() throws IOException{
 		String ip = socket.getInetAddress().getHostAddress();
 		loginManager = new LoginManager(this, ip);
-		loginManager.isAssociated();
+		//loginManager.startManager();
+		loginManager.run();
 	}
 
 	public void login(){
@@ -69,9 +75,13 @@ public class ConnectionThread implements Runnable, Observer {
 		try {
 			username = in.readLine();
 			password = in.readLine();
+
 			loginManager.lookup(username,password);
 		} catch (IOException e) {
 
+			e.printStackTrace();
+		}
+		catch (NullPointerException e) {
 			e.printStackTrace();
 		}
 	}
@@ -88,16 +98,20 @@ public class ConnectionThread implements Runnable, Observer {
 	public void update(Observable o, Object data) {
 		if(data instanceof Integer){
 			int i = ((Integer) data).intValue();
-
+			System.out.println(i);
 			switch(i){
 			case 0:
 				Send.send("authfailed", socket.getInetAddress().getHostAddress());
 				disconnect();
 				break;
 			case 1:
+				System.out.println(socket.getInetAddress().getHostAddress());
 				Send.send("authenticated", socket.getInetAddress().getHostAddress());
+				evaluateMessage();
+				break;
 			case 2:
 				login();
+				break;
 			}
 		}
 	}

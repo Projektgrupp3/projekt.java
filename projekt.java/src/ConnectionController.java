@@ -3,7 +3,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 
-public class ConnectionController implements Runnable {
+public class ConnectionController extends Thread implements Runnable {
 
 
 	public static final int LISTEN_PORT = 4444;
@@ -24,10 +24,10 @@ public class ConnectionController implements Runnable {
 	public void run() {
 
 		while (listening) {
+			System.out.println("lyssnar");
 			try {				
 				socket =  serverSocket.accept();
 				new ConnectionThread((socket)).run();
-
 			} catch (IOException ioException) {
 				ioException.printStackTrace();
 				System.exit(-1);
