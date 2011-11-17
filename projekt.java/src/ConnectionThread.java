@@ -1,23 +1,48 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.Observable;
 import java.util.Observer;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class ConnectionThread extends Thread implements Runnable, Observer {
 
 	private Socket socket = null;
 	private User connectedUser;
 	private BufferedReader in;
-	private String message;
 	private LoginManager loginManager;
+	private JSONObject fromClient;
+
+	private String message;
+	private String input;
+	private String user;
+	private String password;
 
 	private int state;
+
 
 	public ConnectionThread(Socket socket) {
 		this.socket = socket;
 		System.out.println("Connection Thread Created");
+	}
+
+	public void jsonManager() throws JSONException{
+		fromClient = new JSONObject(input);
+
+		if(fromClient.has("user")){
+			this.user = fromClient.getString("user");
+		}
+		if(fromClient.has("pass")){
+			this.password = fromClient.getString("pass");
+		}
+		if(fromClient.has("msg")){
+			this.message = fromClient.getString("msg");
+		}
 	}
 
 	public void run() {
@@ -27,6 +52,10 @@ public class ConnectionThread extends Thread implements Runnable, Observer {
 					new InputStreamReader(
 							socket.getInputStream()));
 
+			input = in.readLine();
+			System.out.println(input);
+			jsonManager();
+
 			manageUserLogin();
 
 			evaluateMessage();
@@ -35,36 +64,26 @@ public class ConnectionThread extends Thread implements Runnable, Observer {
 
 		} catch (IOException e) {
 			e.printStackTrace();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-
 	}
 
 	public void disconnect(){
 		try {
-
 			in.close();
 			socket.close();
-
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
+
 	public void evaluateMessage() {
 
-		try {
-			if(state == 3){
-				message = in.readLine();
-				message = in.readLine();
-			}
-
-			message = in.readLine();
-
+		if(message != null)
 			System.out.println("Message from client: "+message);
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		disconnect();
 	}
 
 	public void manageUserLogin() throws IOException{
@@ -74,17 +93,10 @@ public class ConnectionThread extends Thread implements Runnable, Observer {
 	}
 
 	public void login(){
-		String username;
-		String password;
-
+		
 		try {
-			username = in.readLine();
-			password = in.readLine();
-			loginManager.lookup(username,password);
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+			loginManager.lookup(user,password);
+		} 
 		catch (NullPointerException e) {
 			e.printStackTrace();
 		}
@@ -113,15 +125,19 @@ public class ConnectionThread extends Thread implements Runnable, Observer {
 				Association.addAdressAssociation(socket.getInetAddress().getHostAddress());
 				Send.send("authenticated", socket.getInetAddress().getHostAddress());
 				break;
-			case 2: // Ip finns inte associerad med server
-				System.out.println("login");
+			case 2:
+				System.out.println("Login krävs");
 				login();
 				break;
-			case 3: // Ip redan associerad med server
+			case 3:
 				System.out.println(socket.getInetAddress().getHostAddress()+" associerad med server");
-				Send.send("authenticated", socket.getInetAddress().getHostAddress());
+				//Send.send("authenticated", socket.getInetAddress().getHostAddress());
 				break;
 			}
+			//			AUTH_FAILED = 0;
+			//			AUTH_OK = 1;
+			//			NOT_ASSOCIATED = 2;
+			//			ASSOCIATED = 3;
 		}
 	}
 }
