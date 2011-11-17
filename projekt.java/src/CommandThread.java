@@ -45,7 +45,7 @@ public class CommandThread extends Thread implements Observer, Runnable {
 			System.out.println("Message?");
 			String message;
 			message = in.nextLine();
-			Send.send("snorre", "localhost");
+			Send.send(message, "234");
 		}
 
 		if(input.equals("/createuser")){

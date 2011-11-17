@@ -6,6 +6,7 @@ public class LoginManager extends Observable implements Runnable {
 	public final static int AUTH_FAILED = 0;
 	public final static int AUTH_OK = 1;
 	public final static int NOT_ASSOCIATED = 2;
+	public final static int ASSOCIATED = 3;
 
 	public boolean done = false;
 
@@ -33,7 +34,7 @@ public class LoginManager extends Observable implements Runnable {
 	}
 	public void isAssociated(){
 		if(Association.getAdressAssociation(adress))
-			notifyAndSet(AUTH_OK);
+			notifyAndSet(ASSOCIATED);
 		notifyAndSet(NOT_ASSOCIATED);
 	}
 

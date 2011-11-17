@@ -15,8 +15,7 @@ public class Server {
 		ct = new CommandThread();
 		ct.start();
 		send = new Send();
-		User test = new User("test", "password");
-		Database.addUser(test);
+		
 	}
 
 	public void runServer() { 

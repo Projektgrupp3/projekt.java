@@ -8,7 +8,7 @@ import org.json.JSONObject;
 
 public class Send {
 	
-	private static String COM_IP = "130.236.226.154";
+	private static String COM_IP = "130.236.227.71";
 	private static int COM_PORT = 4445;
 	private static PrintWriter pw;
 	private static Socket s;

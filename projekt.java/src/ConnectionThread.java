@@ -13,6 +13,8 @@ public class ConnectionThread extends Thread implements Runnable, Observer {
 	private String message;
 	private LoginManager loginManager;
 
+	private int state;
+
 	public ConnectionThread(Socket socket) {
 		this.socket = socket;
 		System.out.println("Connection Thread Created");
@@ -26,6 +28,8 @@ public class ConnectionThread extends Thread implements Runnable, Observer {
 							socket.getInputStream()));
 
 			manageUserLogin();
+
+			evaluateMessage();
 
 			disconnect();
 
@@ -48,23 +52,24 @@ public class ConnectionThread extends Thread implements Runnable, Observer {
 	public void evaluateMessage() {
 
 		try {
+			if(state == 3){
+				message = in.readLine();
+				message = in.readLine();
+			}
+
 			message = in.readLine();
+
+			System.out.println("Message from client: "+message);
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-
-		System.out.println("Message from client: "+message);
-
-		if(message.equals("newuser")){
-			MySQLDatabase.addUser(new User("kungen2", "kaffeflicka"));
 		}
 	}
 
 	public void manageUserLogin() throws IOException{
 		String ip = socket.getInetAddress().getHostAddress();
 		loginManager = new LoginManager(this, ip);
-		//loginManager.startManager();
 		loginManager.run();
 	}
 
@@ -75,10 +80,9 @@ public class ConnectionThread extends Thread implements Runnable, Observer {
 		try {
 			username = in.readLine();
 			password = in.readLine();
-
 			loginManager.lookup(username,password);
-		} catch (IOException e) {
 
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		catch (NullPointerException e) {
@@ -97,20 +101,25 @@ public class ConnectionThread extends Thread implements Runnable, Observer {
 	@Override
 	public void update(Observable o, Object data) {
 		if(data instanceof Integer){
-			int i = ((Integer) data).intValue();
-			System.out.println(i);
-			switch(i){
+			int state = ((Integer) data).intValue();
+			System.out.println(state);
+			switch(state){
 			case 0:
 				Send.send("authfailed", socket.getInetAddress().getHostAddress());
 				disconnect();
 				break;
 			case 1:
-				System.out.println(socket.getInetAddress().getHostAddress());
+				System.out.println(socket.getInetAddress().getHostAddress()+" angav rätt username & pass");
+				Association.addAdressAssociation(socket.getInetAddress().getHostAddress());
 				Send.send("authenticated", socket.getInetAddress().getHostAddress());
-				evaluateMessage();
 				break;
-			case 2:
+			case 2: // Ip finns inte associerad med server
+				System.out.println("login");
 				login();
+				break;
+			case 3: // Ip redan associerad med server
+				System.out.println(socket.getInetAddress().getHostAddress()+" associerad med server");
+				Send.send("authenticated", socket.getInetAddress().getHostAddress());
 				break;
 			}
 		}
