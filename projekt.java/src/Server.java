@@ -1,4 +1,10 @@
-
+/**
+ * Klass som skapar en server och lägger till en testanvändare
+ * User: test
+ * Pass: password
+ * @author Bauwie
+ *
+ */
 public class Server {
 	private static CommandThread ct;
 	private static ConnectionController cc;
@@ -6,8 +12,7 @@ public class Server {
 
 	public Server() throws Exception{
 		System.out.println("Server created.");
-		//Association ac = new Association();
-		//Association.addAdressAssociation("130.236.226.154");
+
 		Database.addUser(new User("test", "password"));
 
 		cc = new ConnectionController();
@@ -15,15 +20,9 @@ public class Server {
 		ct = new CommandThread();
 		ct.start();
 		send = new Send();
-		
-	}
-
-	public void runServer() { 
-
 	}
 
 	public static void main(String[] args) throws Exception {
 		Server server = new Server();
-		server.runServer();
 	}
 }

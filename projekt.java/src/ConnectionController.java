@@ -2,9 +2,14 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-
+/**
+ * Klass som lyssnar på LISTEN_PORT för att se om det är någon
+ * som vill ansluta. Hittar den någon som vill ansluta skapar 
+ * den en ny tråd för hantering av anslutning.
+ * @author Bauwie
+ *
+ */
 public class ConnectionController extends Thread implements Runnable {
-
 
 	public static final int LISTEN_PORT = 4444;
 	private static boolean listening = true;

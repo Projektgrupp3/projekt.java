@@ -1,14 +1,18 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.Observable;
 import java.util.Observer;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+/**
+ * Tråd som hanterar anslutningen för en klient.
+ * @author Bauwie
+ *
+ */
 
 public class ConnectionThread extends Thread implements Runnable, Observer {
 
@@ -16,15 +20,12 @@ public class ConnectionThread extends Thread implements Runnable, Observer {
 	private User connectedUser;
 	private BufferedReader in;
 	private LoginManager loginManager;
-	private JSONObject fromClient;
+	private JSONObject objectFromClient;
 
 	private String message;
 	private String input;
 	private String user;
 	private String password;
-
-	private int state;
-
 
 	public ConnectionThread(Socket socket) {
 		this.socket = socket;
@@ -32,16 +33,16 @@ public class ConnectionThread extends Thread implements Runnable, Observer {
 	}
 
 	public void jsonManager() throws JSONException{
-		fromClient = new JSONObject(input);
+		objectFromClient = new JSONObject(input);
 
-		if(fromClient.has("user")){
-			this.user = fromClient.getString("user");
+		if(objectFromClient.has("user")){
+			this.user = objectFromClient.getString("user");
 		}
-		if(fromClient.has("pass")){
-			this.password = fromClient.getString("pass");
+		if(objectFromClient.has("pass")){
+			this.password = objectFromClient.getString("pass");
 		}
-		if(fromClient.has("msg")){
-			this.message = fromClient.getString("msg");
+		if(objectFromClient.has("msg")){
+			this.message = objectFromClient.getString("msg");
 		}
 	}
 
@@ -80,7 +81,6 @@ public class ConnectionThread extends Thread implements Runnable, Observer {
 	}
 
 	public void evaluateMessage() {
-
 		if(message != null)
 			System.out.println("Message from client: "+message);
 		disconnect();
@@ -93,7 +93,6 @@ public class ConnectionThread extends Thread implements Runnable, Observer {
 	}
 
 	public void login(){
-		
 		try {
 			loginManager.lookup(user,password);
 		} 
@@ -118,7 +117,7 @@ public class ConnectionThread extends Thread implements Runnable, Observer {
 			switch(state){
 			case 0:
 				Send.send("authfailed", socket.getInetAddress().getHostAddress());
-				disconnect();
+				disconnect(); 
 				break;
 			case 1:
 				System.out.println(socket.getInetAddress().getHostAddress()+" angav rätt username & pass");
@@ -131,7 +130,6 @@ public class ConnectionThread extends Thread implements Runnable, Observer {
 				break;
 			case 3:
 				System.out.println(socket.getInetAddress().getHostAddress()+" associerad med server");
-				//Send.send("authenticated", socket.getInetAddress().getHostAddress());
 				break;
 			}
 			//			AUTH_FAILED = 0;

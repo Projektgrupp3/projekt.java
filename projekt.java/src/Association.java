@@ -1,5 +1,11 @@
 import java.util.ArrayList;
-
+/**
+ * Klass som innehŒller en arraylist som lagrar anslutna ip-adresser.
+ * €n sŒ lŠnge finns ingen metod fšr att rensa listan utan den nollstŠlls nŠr man 
+ * startar om servern.
+ * @author Bauwie
+ *
+ */
 public class Association {
 
 	private static ArrayList<String> associations = new ArrayList<String>();

@@ -3,6 +3,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 
@@ -14,15 +15,23 @@ public class Send {
 	private static Socket s;
 	
 	public static void send(String message, String ip){
-		//COM_IP = ip;
+//		COM_IP = ip;
+		
+		JSONObject jsonMessage = new JSONObject();
+		
+		
 		try {
+			jsonMessage.put("msg",message);
 			setUpConnection();
-			pw.println(message);
+			pw.println(jsonMessage.toString());
 			closeConnection();
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -31,9 +40,12 @@ public class Send {
 	public static void send(String message, String ip, int port){
 		COM_IP = ip;
 		COM_PORT = port;
+		
+		JSONObject jsonMessage = new JSONObject();
+		
 		try {
 			setUpConnection();
-			pw.println(message);
+			pw.println(jsonMessage.toString());
 			closeConnection();
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
@@ -45,7 +57,7 @@ public class Send {
 	}
 	
 	public static void send(JSONObject object, String ip){
-		COM_IP = ip;
+		//COM_IP = ip;
 		
 		try {
 			setUpConnection();
