@@ -98,7 +98,6 @@ public class Database {
 				System.out.println("unitID: "+u.getUnitID());
 			System.out.println("--------------");
 		}
-
 	}
 	
 	public static void printAllUnits(){
