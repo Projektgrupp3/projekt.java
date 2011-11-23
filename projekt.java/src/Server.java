@@ -13,7 +13,9 @@ public class Server {
 	public Server() throws Exception{
 		System.out.println("Server created.");
 
-		Database.addUser(new User("test", "password"));
+		Database.addUser(new User("enhet1", "password1"));
+		Database.addUser(new User("enhet2", "password2"));
+		Database.addUser(new User("enhet3", "password3"));
 
 		cc = new ConnectionController();
 		cc.start();
