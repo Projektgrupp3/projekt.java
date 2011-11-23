@@ -3,11 +3,11 @@ import java.util.Vector;
 
 public class Database {
 
-	public static Vector<Alarm> alarm = new Vector<Alarm>();
+	public static Vector<Event> alarm = new Vector<Event>();
 	public static ArrayList<User> users = new ArrayList<User>();
 	public static Vector<Unit> unit = new Vector<Unit>();
 
-	public static void addAlarm(Alarm a){
+	public static void addAlarm(Event a){
 		alarm.add(a);
 	}
 	
@@ -28,9 +28,9 @@ public class Database {
 		return null;
 	}
 	
-	public static Alarm getAlarm(int al) {
-		for (Alarm a : alarm){
-			if(a.getAlarmId() == al){
+	public static Event getAlarm(int al) {
+		for (Event a : alarm){
+			if(a.getID().equals(al)){
 				return a;
 			}
 	}
@@ -55,8 +55,8 @@ public class Database {
 		return false;
 	}
 	public static boolean checkAlarm(int j){
-		for(Alarm a : alarm){
-			if(a.getAlarmId() == j){
+		for(Event a : alarm){
+			if(a.getID().equals(j)){
 				return true;
 			}
 		}
@@ -73,10 +73,10 @@ public class Database {
 	}
 	
 	public static void printAllAlarms(){
-		for(Alarm a : alarm){
+		for(Event a : alarm){
 			System.out.println("-------------");
 			System.out.println("Alarm created: " + a.getTime());
-			System.out.println("Alarm id: " + a.getAlarmId());
+			System.out.println("Alarm id: " + a.getID());
 			if(a.getUnitID() != 0)
 				System.out.println("UnitID: "+a.getUnitID());
 			System.out.println("Priority: " + a.getPriority());
@@ -100,6 +100,7 @@ public class Database {
 		}
 
 	}
+	
 	public static void printAllUnits(){
 		for(Unit u : unit){
 			System.out.println("--------------");

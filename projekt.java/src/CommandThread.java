@@ -60,9 +60,10 @@ public class CommandThread extends Thread implements Observer, Runnable {
 			Unit u = new Unit();
 			MySQLDatabase.addUnit(u);
 		}
-		if(input.equals("/createalarm")){
-			Alarm a = new Alarm();
-			MySQLDatabase.addAlarm(a);	//LŠgg in alarm i Database
+		if(input.equals("/createevent")){
+			Event a = new Event();
+//			MySQLDatabase.addAlarm(a);	LŠgg in alarm i Databas
+			Send.send(a.getJSON(),"1");
 
 		}
 		if(input.equals("/skickalarm")){
@@ -109,7 +110,7 @@ public class CommandThread extends Thread implements Observer, Runnable {
 			}
 			while(!(MySQLDatabase.checkAlarm(alarmId)) && !(MySQLDatabase.checkUnit(unitId)));
 
-			Alarm alarm = MySQLDatabase.getAlarm(alarmId);
+			Event alarm = MySQLDatabase.getAlarm(alarmId);
 			alarm.setUnitID(unitId);
 			System.out.println("map completed");
 		}
