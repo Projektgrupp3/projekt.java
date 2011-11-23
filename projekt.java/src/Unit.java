@@ -7,9 +7,11 @@ public class Unit {
 	private String regnr;
 	private Status state;
 	private String name;
+	
 	public Unit(){
 		createUnit();
 	}
+	
 	public Unit(int id, String regnr){
 		this.unitId = id;
 		this.regnr = regnr;
