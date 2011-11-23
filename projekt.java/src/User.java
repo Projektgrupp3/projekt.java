@@ -1,7 +1,5 @@
 import java.util.Scanner;
 
-
-
 public class User {
 	private String firstName;
 	private String lastName;
@@ -16,6 +14,7 @@ public class User {
 		this.userName = userName;
 		this.password = password;
 	}
+	
 	public User (String firstName, String lastName, String userName, String password, int unitID){
 		this.firstName = firstName;
 		this.lastName = lastName;

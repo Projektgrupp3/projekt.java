@@ -47,8 +47,12 @@ public class CommandThread extends Thread implements Observer, Runnable {
 			System.out.println("Message?");
 			String message;
 			message = in.nextLine();
-			//Hårdkodad "ip", har inte hittat något sätt att lösa detta på.
-			Send.send(message, "234");
+
+			System.out.println("To wich ip?");
+			String ip;
+			ip = in.nextLine();
+
+			Send.send(message, ip);
 		}
 
 		if(input.equals("/createuser")){
@@ -62,8 +66,14 @@ public class CommandThread extends Thread implements Observer, Runnable {
 		}
 		if(input.equals("/createevent")){
 			Event a = new Event();
-//			MySQLDatabase.addAlarm(a);	Lägg in alarm i Databas
-			Send.send(a.getJSON(),"1");
+
+			Scanner in = new Scanner(System.in);
+			System.out.println("To wich ip?");
+			String ip;
+			ip = in.nextLine();
+
+			//			MySQLDatabase.addAlarm(a);	Lägg in alarm i Databas
+			Send.send(a.getJSON(),ip);
 
 		}
 		if(input.equals("/skickalarm")){
@@ -119,7 +129,6 @@ public class CommandThread extends Thread implements Observer, Runnable {
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		// TODO Auto-generated method stub
-
 	}
 
 }

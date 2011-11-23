@@ -54,15 +54,15 @@ public class Event {
 		System.out.println("EventID: "+eventID);
 
 		json.put("event",eventID);
-		json.put("priority","red");
-		json.put("adress","Kungsvägen 1337");
+		json.put("priority","Yellow");
+		json.put("adress","E18");
 		json.put("tempCoordX","58395730");
 		json.put("tempCoordY","15573080" );
-		json.put("accidentType", "Murder");	
-		json.put("numberOfInjured", "1");
-		json.put("typeOfInjury", "The person is dead.");
-		json.put("description", "RMR 2cool4school");
-		json.put("unitID", "1337");
+		json.put("accidentType", "Bilolycka");	
+		json.put("numberOfInjured", "3");
+		json.put("typeOfInjury", "Ryggont och öppna skärsår");
+		json.put("description", "Ihopkörning mellan två bilar på Riksväg 12");
+		json.put("unitID", "1");
 
 	}
 	public void createAlarm() throws JSONException{
