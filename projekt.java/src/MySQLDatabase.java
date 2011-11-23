@@ -354,7 +354,7 @@ public class MySQLDatabase {
 		}
 		return "";
 	}
-	public static Alarm getAlarm(int al) {
+	public static Event getAlarm(int al) {
 		//TODO:
 		return null;
 	}
@@ -366,7 +366,7 @@ public class MySQLDatabase {
 		//TODO:
 		return false;
 	}
-	public static void addAlarm(Alarm a){
+	public static void addAlarm(Event a){
 		//TODO:
 	}
 
