@@ -100,13 +100,9 @@ public class ConnectionThread extends Thread implements Runnable, Observer {
 			e.printStackTrace();
 		}
 	}
-
-	public void setUser(User u){
-		this.connectedUser = u;
-	}
-
-	public User getUser(){
-		return connectedUser;
+	
+	public String getUser(){
+		return user;
 	}
 
 	@Override
@@ -120,7 +116,7 @@ public class ConnectionThread extends Thread implements Runnable, Observer {
 				disconnect(); 
 				break;
 			case 1:
-				System.out.println(socket.getInetAddress().getHostAddress()+" angav rätt username & pass");
+				System.out.println(socket.getInetAddress().getHostAddress()+"["+getUser()+"]"+" angav rätt username & pass");
 				Association.addAdressAssociation(socket.getInetAddress().getHostAddress());
 				Send.send("authenticated", socket.getInetAddress().getHostAddress());
 				break;
@@ -129,7 +125,7 @@ public class ConnectionThread extends Thread implements Runnable, Observer {
 				login();
 				break;
 			case 3:
-				System.out.println(socket.getInetAddress().getHostAddress()+" associerad med server");
+				System.out.println(socket.getInetAddress().getHostAddress()+"["+getUser()+"]"+" associerad med server");
 				break;
 			}
 			//			AUTH_FAILED = 0;

@@ -16,7 +16,7 @@ public class Send {
 	private static Socket s;
 	
 	public static void send(String message, String ip){
-//		COM_IP = ip;
+		COM_IP = ip;
 		
 		JSONObject jsonMessage = new JSONObject();
 		
@@ -58,7 +58,7 @@ public class Send {
 	}
 	
 	public static void send(JSONObject object, String ip){
-		//COM_IP = ip;
+		COM_IP = ip;
 		
 		try {
 			setUpConnection();
