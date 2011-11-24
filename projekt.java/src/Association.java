@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 /**
  * Klass som innehåller en arraylist som lagrar anslutna ip-adresser.
  * Än så länge finns ingen metod för att rensa listan utan den nollställs när man 
@@ -8,6 +9,8 @@ import java.util.ArrayList;
  */
 public class Association {
 
+	private static HashMap<String, String> connectedClients = new HashMap<String, String>();
+	
 	private static ArrayList<String> associations = new ArrayList<String>();
 
 	public static boolean getAdressAssociation(String ip){

@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -80,8 +81,16 @@ public class ConnectionThread extends Thread implements Runnable, Observer {
 		}
 	}
 
-	public void evaluateMessage() {
-		if(message != null)
+	public void evaluateMessage() throws JSONException {
+		if(message.equals("REQ_ALL_UNITS")){
+			ArrayList<Unit> allunits = Database.getAllUnits();
+			JSONObject json = new JSONObject();
+			for(Unit u: allunits){
+				json.put("UNITID",u.getName());
+			}
+			Send.send(json, socket.getInetAddress().getHostAddress());
+		}
+		else if(message != null)
 			System.out.println("Message from client: "+message);
 		disconnect();
 	}

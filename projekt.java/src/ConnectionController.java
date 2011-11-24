@@ -1,6 +1,8 @@
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 
 /**
  * Klass som lyssnar på LISTEN_PORT för att se om det är någon
@@ -10,7 +12,7 @@ import java.net.Socket;
  *
  */
 public class ConnectionController extends Thread implements Runnable {
-
+	
 	public static final int LISTEN_PORT = 4444;
 	private static boolean listening = true;
 	ServerSocket serverSocket = null;

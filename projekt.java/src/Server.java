@@ -16,6 +16,10 @@ public class Server {
 		Database.addUser(new User("enhet1", "password1"));
 		Database.addUser(new User("enhet2", "password2"));
 		Database.addUser(new User("enhet3", "password3"));
+		
+		Database.addUnit(new Unit(0,"ABC123"));
+		Database.addUnit(new Unit(1, "QDE223"));
+		Database.addUnit(new Unit(2, "QER343"));
 
 		cc = new ConnectionController();
 		cc.start();

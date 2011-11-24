@@ -16,7 +16,7 @@ public class Unit {
 		this.unitId = id;
 		this.regnr = regnr;
 		state = Status.OFFLINE;
-		this.name = "Ambulans "+id;
+		this.setName("Ambulans "+id);
 	}
 
 	public void createUnit(){
@@ -51,6 +51,14 @@ public class Unit {
 
 	public void setState(Status state) {
 		this.state = state;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getName() {
+		return name;
 	}
 	
 	

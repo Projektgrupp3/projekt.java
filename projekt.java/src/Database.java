@@ -5,7 +5,7 @@ public class Database {
 
 	public static Vector<Event> alarm = new Vector<Event>();
 	public static ArrayList<User> users = new ArrayList<User>();
-	public static Vector<Unit> unit = new Vector<Unit>();
+	public static ArrayList<Unit> unit = new ArrayList<Unit>();
 
 	public static void addAlarm(Event a){
 		alarm.add(a);
@@ -26,6 +26,10 @@ public class Database {
 			}
 		}
 		return null;
+	}
+	
+	public static ArrayList<Unit> getAllUnits(){
+		return unit;
 	}
 	
 	public static Event getAlarm(int al) {
