@@ -72,7 +72,7 @@ public class CommandThread implements Runnable {
 			a.createTestEvent();
 
 			Scanner in = new Scanner(System.in);
-			System.out.println("To wich ip?");
+			System.out.println("To which ip?");
 			String ip;
 			ip = in.nextLine();
 
@@ -85,7 +85,7 @@ public class CommandThread implements Runnable {
 			e.createEvent();
 
 			Scanner in = new Scanner(System.in);
-			System.out.println("To wich ip?");
+			System.out.println("To which ip?");
 			String ip;
 			ip = in.nextLine();
 			System.out.println(ip);
@@ -129,8 +129,8 @@ public class CommandThread implements Runnable {
 			}
 			while(!(MySQLDatabase.checkAlarm(alarmId)) && !(MySQLDatabase.checkUnit(unitId)));
 
-			Event alarm = MySQLDatabase.getAlarm(alarmId);
-			alarm.setUnitID(unitId);
+//			Event alarm = MySQLDatabase.getAlarm(alarmId);
+//			alarm.setUnitID(unitId);
 			System.out.println("map completed");
 		}
 	}

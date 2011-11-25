@@ -1,8 +1,5 @@
 package tddd36.grupp3.server;
 
-import java.util.Observable;
-
-
 public class LoginManager implements Runnable {
 
 	public final static int AUTH_FAILED = 1;

@@ -14,6 +14,7 @@ public class MultipleSocketServer implements Runnable {
 	private Socket connection;
 
 	private int ID = 0;
+	private static int count;
 	private int AUTH_STATUS = 0;
 	private static final int LISTEN_PORT = 4444;
 
@@ -27,12 +28,14 @@ public class MultipleSocketServer implements Runnable {
 
 	private RequestType requestType;
 
+	private ArrayList<String> allUnits = new ArrayList<String>();
+
 	public MultipleSocketServer(Socket connection, int i) {
 		this.connection = connection;
 		this.ID = i;
 	}
 	public static void main(String[] args) {
-		int count=0;
+		count = 0;
 		Database.addUser(new User("enhet1", "password1"));
 		Database.addUnit(new Unit(0, "ABC123"));
 
@@ -56,6 +59,7 @@ public class MultipleSocketServer implements Runnable {
 	@Override
 	public void run() {
 		try{
+
 			InputStreamReader isr = new InputStreamReader(connection.getInputStream());
 			BufferedReader br = new BufferedReader(isr);
 
@@ -65,11 +69,14 @@ public class MultipleSocketServer implements Runnable {
 			input = br.readLine();
 			interpretJSONString(input);
 
+			System.out.println("Connection with "+user+" @ "+connection.getInetAddress().getHostAddress());
+
 			loginThread.start();
 
 			while(AUTH_STATUS == 0){
 				//NO-OP
 			}
+
 			JSONOutput = new JSONObject();
 			System.out.println(AUTH_STATUS);
 			switch(AUTH_STATUS){
@@ -90,18 +97,21 @@ public class MultipleSocketServer implements Runnable {
 		finally{
 			try {
 				connection.close();
+				count--;
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
 	}
 	private void handleRequest() throws JSONException {
+		System.out.println("MEST LOL");
 		switch(requestType){
 		case ALL_UNITS:
-			ArrayList<Unit> allUnits = Database.getAllUnits();
-			for(Unit u: allUnits){
-				JSONOutput.put("UNITID"+u.getId(), u.getName());
-			}
+			System.out.println("REQ_ALL_UNITS");
+			allUnits = MySQLDatabase.getAllUnits();
+//			for(String str : allUnits){
+//				System.out.println(str);
+//			}
 			break;
 		case ACKNOWLEDGE:
 			break;

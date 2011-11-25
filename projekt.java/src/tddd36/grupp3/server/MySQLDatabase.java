@@ -1,4 +1,5 @@
 package tddd36.grupp3.server;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -8,16 +9,19 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+
 public class MySQLDatabase {
-	/* Använd denna istället för 
-	 * Database i MultiServer.
-	 * TODO: Fixa så att ändringar ändras på båda tables.
-	 */
 
 	public static Connection con = null;
 	public static ResultSet rs = null;
 	public static Statement st = null;
 
+
+	/**
+	 * Adds a new user to the database. If the user
+	 * already exists the add will be aborted.
+	 * @param u
+	 */
 	public static void addUser(User u){
 		if(checkUser(u.getUserName())){
 			System.out.println(u.getUserName()+" already exists in the database");
@@ -35,8 +39,8 @@ public class MySQLDatabase {
 			try {
 				st=con.createStatement();
 				String query = "INSERT INTO user(firstName,lastName,userName,Password,UnitID,assignedUnits) " +
-						"VALUES('"+firstName+"','"+lastName+"','"+userName+"','"+password+"','"+
-						UnitID+"','"+assignedUnits+"')";
+				"VALUES('"+firstName+"','"+lastName+"','"+userName+"','"+password+"','"+
+				UnitID+"','"+assignedUnits+"')";
 				st.executeUpdate(query);		
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -47,28 +51,24 @@ public class MySQLDatabase {
 
 	public static void addUnit(Unit u){
 		if(checkUnit(u.getId())){
-			System.out.println(u.getId()+" alreade exists in the database");
+			System.out.println(u.getId()+" already exists in the database");
 		}
 		else{
 			int unitID = u.getId();
-			String regNr = u.getRegnr();
+			String regNr = u.getRegnr().toUpperCase();
 			Status status = u.getState();
+			String name = null;//u.getName();
+			connect();
+			try {
+				st=con.createStatement();
+				String query = "INSERT INTO units(unitID,regNr,status,nameID) VALUES('"+
+				unitID+"','"+regNr+"','"+status+"','"+name+"')";
+				st.executeUpdate(query);		
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			disconnect();
 
-			if(checkUnit(unitID)){
-				System.out.println(unitID+" finns redan i databasen");
-			}
-			else{
-				connect();
-				try {
-					st=con.createStatement();
-					String query = "INSERT INTO units(unitID,regNr,state) VALUES('"+
-							unitID+"','"+regNr+"','"+status+"')";
-					st.executeUpdate(query);		
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-				disconnect();
-			}
 		}
 	}
 
@@ -96,8 +96,6 @@ public class MySQLDatabase {
 				e.printStackTrace();}
 			disconnect();
 		}
-		else
-			return null;
 		return null;
 	}
 
@@ -123,15 +121,11 @@ public class MySQLDatabase {
 				e.printStackTrace();}
 			disconnect();
 		}
-		else
-			return null;
 		return null;
 	}
 
 	public static void deleteUser(String userName){
-		System.out.println("Kör: deleteUser");
 		if(checkUser(userName)){
-			System.out.println("Klarar if");
 			connect();
 			String query = "DELETE FROM user WHERE userName ='"+userName+"'";
 			try{
@@ -147,7 +141,7 @@ public class MySQLDatabase {
 	public static void deleteUnit(int unitID){
 		if(checkUnit(unitID)){
 			connect();
-			String query = "DELETE FROM unit WHERE UnitID ="+unitID;
+			String query = "DELETE FROM units WHERE UnitID ="+unitID;
 			try{
 				st = con.createStatement();
 				st.executeUpdate(query);
@@ -202,6 +196,29 @@ public class MySQLDatabase {
 		}
 		disconnect();
 		return "Database does not contain any unit entries";
+	}
+
+	public static ArrayList<String> getAllUsers(){
+		connect();
+		rs=null;
+		Statement stmt = null;
+		String query ="SELECT * FROM user";
+		ArrayList<String> userIds = new ArrayList<String>();
+
+		try {
+			stmt = con.createStatement();
+			rs = stmt.executeQuery(query);
+			while (rs.next()) {
+				userIds.add(rs.getString(3));
+			}
+			disconnect();
+			return userIds;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		disconnect();
+		return null;
 	}
 
 	public static ArrayList<String> getAllUnits(){
@@ -293,7 +310,7 @@ public class MySQLDatabase {
 		return null;
 	}
 
-	public static void setUnitToUser(String userName, int UnitID){
+	public static void setUsersUnit(String userName, int UnitID){
 		if(checkUser(userName)){
 			connect();
 			st=null;
@@ -308,7 +325,7 @@ public class MySQLDatabase {
 		}
 	}
 
-	public static String getAssignedUnits(String userName) {
+	public static String getUsersUnit(String userName) {
 		if(checkUser(userName)){
 			connect();
 			st=null;
@@ -332,7 +349,11 @@ public class MySQLDatabase {
 		return "";
 	}
 
-	public static String getUserAssignedToUnit(int UnitID){
+	public static void setUnitsUser(String userName, int UnitID){
+
+	}
+
+	public static String getUnitsUser(int UnitID){
 		if(checkUnit(UnitID)){
 			connect();
 			st=null;
@@ -355,33 +376,33 @@ public class MySQLDatabase {
 		}
 		return "";
 	}
-	public static Event getAlarm(int al) {
+
+	/*public static Alarm getAlarm(int al) {
 		//TODO:
 		return null;
-	}
+	}*/
+
 	public static void printAllAlarms(){
 		//TODO:
 	}
-	
+
 	public static boolean checkAlarm(int j){
 		//TODO:
 		return false;
 	}
-	public static void addAlarm(Event a){
+
+	/*public static void addAlarm(Alarm a){
 		//TODO:
-	}
-
-	public static void setUserAssignedToUnit(String userName, int UnitID){
-
-	}
+	}*/
 
 	public static void connect(){
-		String url = "jdbc:mysql://130.236.227.58:3306/entityList";
+		String url = "jdbc:mysql://130.236.226.86:3306/entityList";
 		String user = "server";
 		String password = "starwars";
 
 		try {
 			con = DriverManager.getConnection(url,user,password);
+			System.out.println("Connected to MySQL database.");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -398,14 +419,15 @@ public class MySQLDatabase {
 			if (con != null) {
 				con.close();
 			}
+			System.out.println("Disconnected from MySQL database.");
 		} catch (SQLException ex) {
-			Logger lgr = Logger.getLogger(Database.class.getName());
+			Logger lgr = Logger.getLogger(MySQLDatabase.class.getName());
 			lgr.log(Level.WARNING, ex.getMessage(), ex);
 		}
 	}
 
-	public static void main(String[] args){
+	public static void main(String []args){
+		getAllUsers();
 	}
 
 }
-
