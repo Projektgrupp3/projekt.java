@@ -14,10 +14,39 @@ import java.util.HashMap;
 public class Association {
 
 	private static HashMap<String, String> userIpAssociations = new HashMap<String, String>();
+
 	// username, ip
 
 	public static void addUser(String name, String ip) {
 		userIpAssociations.put(name, ip);
+	}
+
+	public static String getUser(String useradress) {
+		Object[] ip;
+		Object[] users;
+
+		users = userIpAssociations.keySet().toArray();
+		ip = userIpAssociations.values().toArray();
+
+		for (int i = 0; i < users.length; i++) {
+			if (ip[i].equals(useradress))
+				return (String) users[i];
+		}
+		return null;
+	}
+
+	public static String getIP(String username) {
+		Object[] ip;
+		Object[] users;
+
+		users = userIpAssociations.keySet().toArray();
+		ip = userIpAssociations.values().toArray();
+
+		for (int i = 0; i < users.length; i++) {
+			if (users[i].equals(username))
+				return (String) ip[i];
+		}
+		return null;
 	}
 
 	public static void setUserIpAssociations(
@@ -29,15 +58,15 @@ public class Association {
 		return userIpAssociations;
 	}
 
-	public static void printAll(){
+	public static void printAll() {
 		Object[] ip;
 		Object[] users;
 
 		users = userIpAssociations.keySet().toArray();
 		ip = userIpAssociations.values().toArray();
 
-		for(int i = 0; i < users.length ; i++){
-			System.out.println("User: "+users[i]+" @ "+ip[i]);
+		for (int i = 0; i < users.length; i++) {
+			System.out.println("User: " + users[i] + " @ " + ip[i]);
 		}
 	}
 
