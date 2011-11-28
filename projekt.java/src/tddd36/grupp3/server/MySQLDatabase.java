@@ -8,16 +8,12 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 public class MySQLDatabase {
 	/* Använd denna istället för 
 	 * Database i MultiServer.
 	 * TODO: Fixa så att ändringar ändras på båda tables.
 	 */
 
-	public static JSONObject test = null;
 	public static Connection con = null;
 	public static ResultSet rs = null;
 	public static Statement st = null;
@@ -433,21 +429,25 @@ public class MySQLDatabase {
 	}
 
 
-	public static JSONObject getAllContacts() throws JSONException{
+	public static ArrayList<Contact> getAllContacts(){
 		connect();
 		rs=null;
 		Statement stmt = null;
 		String query ="SELECT * FROM contacts";
+		ArrayList<Contact> contactList = new ArrayList<Contact>();
 
 		try {
 			stmt = con.createStatement();
 			rs = stmt.executeQuery(query);
 			while (rs.next()) {
 
-				test.put(rs.getString(1), rs.getString(2));
+				Contact c = new Contact(rs.getString(1), rs.getString(2));
+
+				contactList.add(c);
 			}
 			disconnect();
-			return test;
+			return contactList;
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
