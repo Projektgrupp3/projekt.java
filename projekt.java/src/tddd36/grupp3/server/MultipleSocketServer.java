@@ -98,9 +98,9 @@ public class MultipleSocketServer implements Runnable {
 	private void handleRequest() throws JSONException {
 		switch(requestType){
 		case ALL_UNITS:
-			System.out.println("REQ_ALL_UNITS");
 			ArrayList<String> hej;
 			hej = MySQLDatabase.getAllUnits();
+			System.out.println(hej.get(0));
 			break;
 		case ACKNOWLEDGE:
 			break;
