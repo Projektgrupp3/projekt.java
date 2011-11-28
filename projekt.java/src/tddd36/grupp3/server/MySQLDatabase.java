@@ -376,7 +376,7 @@ public class MySQLDatabase {
 	}
 
 	public static void connect(){
-		String url = "jdbc:mysql://130.236.227.58:3306/entityList";
+		String url = "jdbc:mysql://130.236.226.83:3306/entityList";
 		String user = "server";
 		String password = "starwars";
 
