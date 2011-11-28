@@ -387,7 +387,8 @@ public class MySQLDatabase {
 		}
 	}
 
-	public static boolean checkContact(String name){
+	public static boolean checkContact(Contact c){
+		String name = c.getName();
 		connect();
 		st=null;
 		try{
@@ -409,8 +410,10 @@ public class MySQLDatabase {
 
 	}
 
-	public static Contact getContact(String name, String sipadress){
-		if(checkContact(name)){
+	public static Contact getContact(Contact c){
+		String name = c.getName();
+		String sipadress = c.getSipaddress();
+		if(checkContact(c)){
 			connect();
 			try{
 				st=con.createStatement();
@@ -422,9 +425,9 @@ public class MySQLDatabase {
 						name = rs.getString(1);
 						sipadress = rs.getString(2);
 
-						Contact c = new Contact (name, sipadress);
+						Contact newContact = new Contact (name, sipadress);
 						disconnect();
-						return c;
+						return newContact;
 					}
 				}
 			}catch(SQLException e){
@@ -463,9 +466,10 @@ public class MySQLDatabase {
 		return null;
 	}
 
-	public static void setContact(String name, String sipadress){
-
-		if(checkContact(name)){
+	public static void setContact(Contact c){
+		String name = c.getName();
+		String sipadress = c.getSipaddress();
+		if(checkContact(c)){
 			try {
 				st=con.createStatement();
 				String query = "update contacts SET sipadress = "+sipadress+" Where name = "+name+"";
