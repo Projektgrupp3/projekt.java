@@ -17,8 +17,7 @@ public class MySQLDatabase {
 	 * TODO: Fixa så att ändringar ändras på båda tables.
 	 */
 
-	public static ArrayList<JSONObject> allContacts;
-	public static JSONObject test;
+	public static JSONObject test = null;
 	public static Connection con = null;
 	public static ResultSet rs = null;
 	public static Statement st = null;
@@ -434,12 +433,11 @@ public class MySQLDatabase {
 	}
 
 
-	public static ArrayList<JSONObject> getAllContacts() throws JSONException{
+	public static JSONObject getAllContacts() throws JSONException{
 		connect();
 		rs=null;
 		Statement stmt = null;
 		String query ="SELECT * FROM contacts";
-		//	ArrayList<Contact> contactList = new ArrayList<Contact>();
 
 		try {
 			stmt = con.createStatement();
@@ -447,13 +445,9 @@ public class MySQLDatabase {
 			while (rs.next()) {
 
 				test.put(rs.getString(1), rs.getString(2));
-				//Contact c = new Contact(rs.getString(1), rs.getString(2));
-				allContacts.add(test);
-				//	contactList.add(c);
 			}
 			disconnect();
-			return allContacts;
-
+			return test;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
