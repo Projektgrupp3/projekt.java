@@ -362,7 +362,7 @@ public class MySQLDatabase {
 	public static void printAllAlarms(){
 		//TODO:
 	}
-	
+
 	public static boolean checkAlarm(int j){
 		//TODO:
 		return false;
@@ -374,6 +374,118 @@ public class MySQLDatabase {
 	public static void setUserAssignedToUnit(String userName, int UnitID){
 
 	}
+
+
+	public static boolean checkContact(Contact c){
+		String name = c.getName();
+		connect();
+		st=null;
+		try{
+			st=con.createStatement();
+			String query = "SELECT * from contacts WHERE name="+name;
+			rs = st.executeQuery(query);
+			while(rs.next()){
+				if(rs.getString(1)==name){
+					disconnect();
+					return true;
+				}
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+
+		disconnect();
+		return false;
+
+	}
+
+	public static Contact getContact(Contact c){
+		String name = c.getName();
+		String sipadress = c.getSipaddress();
+		if(checkContact(c)){
+			connect();
+			try{
+				st=con.createStatement();
+				String query = "SELECT * from contacts WHERE name='"+name+"'";
+				rs = st.executeQuery(query);
+
+				while(rs.next()){
+					if(rs.getString(1).equals(name)){
+						name = rs.getString(1);
+						sipadress = rs.getString(2);
+
+						Contact newContact = new Contact (name, sipadress);
+						disconnect();
+						return newContact;
+					}
+				}
+			}catch(SQLException e){
+				e.printStackTrace();}
+			disconnect();
+		}
+		else
+			return null;
+		return null;
+	}
+
+
+	public static ArrayList<Contact> getAllContacts(){
+		connect();
+		rs=null;
+		Statement stmt = null;
+		String query ="SELECT * FROM contacts";
+		ArrayList<Contact> contactList = new ArrayList<Contact>();
+
+		try {
+			stmt = con.createStatement();
+			rs = stmt.executeQuery(query);
+			while (rs.next()) {
+
+				Contact c = new Contact(rs.getString(1), rs.getString(2));
+
+				contactList.add(c);
+			}
+			disconnect();
+			return contactList;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		disconnect();
+		return null;
+	}
+
+	public static void setContact(Contact c){
+		String name = c.getName();
+		String sipadress = c.getSipaddress();
+		if(checkContact(c)){
+			try {
+				st=con.createStatement();
+				String query = "update contacts SET sipadress = "+sipadress+" Where name = "+name+"";
+				st.executeUpdate(query);       
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			disconnect();
+
+		}
+		else{
+			connect();
+			try {
+				st=con.createStatement();
+				String query = "INSERT INTO contacts(username,adress) VALUES('"+
+						name+"','"+sipadress+"')";
+				st.executeUpdate(query);       
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			disconnect();
+		}
+	}
+
+
+
+
 
 	public static void connect(){
 		String url = "jdbc:mysql://localhost:3306/entityList";
