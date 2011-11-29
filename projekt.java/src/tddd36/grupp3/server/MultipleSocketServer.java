@@ -136,15 +136,15 @@ public class MultipleSocketServer implements Runnable {
 				Sender.sendContacts(hej, ip,4445);
 			}
 
-		}
-		if(request.equals(RequestType.ALL_UNITS.toString())){
-			requestType = RequestType.ALL_UNITS;
-		}if(request.equals(RequestType.ACKNOWLEDGE.toString())){
-			requestType = RequestType.ACKNOWLEDGE;
-		}if(request.equals(RequestType.MAP_OBJECTS.toString())){
-			requestType = RequestType.MAP_OBJECTS;
-		}
 
+			if(request.equals(RequestType.ALL_UNITS.toString())){
+				requestType = RequestType.ALL_UNITS;
+			}if(request.equals(RequestType.ACKNOWLEDGE.toString())){
+				requestType = RequestType.ACKNOWLEDGE;
+			}if(request.equals(RequestType.MAP_OBJECTS.toString())){
+				requestType = RequestType.MAP_OBJECTS;
+			}
+		}
 
 		if(JSONInput.has("sipaddress")){
 			Contact c = new Contact(JSONInput.getString("contactName"),JSONInput.getString("sipaddress"));
