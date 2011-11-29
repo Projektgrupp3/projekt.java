@@ -42,9 +42,7 @@ public class MultipleSocketServer implements Runnable {
 		Database.addUser(new User("enhet3", "password3"));
 		Database.addUnit(new Unit(0, "ABC123"));
 		
-		Association.addUser("banan", "130.236.226.171");
-//		Association.addUser("Špple", "222.222.222.222");
-//		Association.addUser("apelsin", "333.333.333.333");
+//		Association.addUser("testuser", "130.236.226.171");
 
 		try {
 			ServerSocket serversocket = new ServerSocket(LISTEN_PORT);
@@ -119,6 +117,35 @@ public class MultipleSocketServer implements Runnable {
 			}
 		}
 	}
+	private void handleMapObject() throws JSONException {
+		System.out.println(JSONInput.toString());
+		HashMap<String, String> associations;
+		associations = Association.getUserIpAssociations();
+
+		Object[] ip;
+		Object[] usernames;
+
+		usernames = associations.keySet().toArray();
+		ip = associations.values().toArray();
+
+		JSONOutput = new JSONObject();
+		JSONOutput.put("MAP_OBJECTS", JSONInput.getString("req"));
+		JSONOutput.put("header", JSONInput.getString("header"));
+		JSONOutput.put("description", JSONInput.getString("description"));
+		JSONOutput.put("tempCoordX", JSONInput.getString("tempCoordX"));
+		JSONOutput.put("tempCoordY", JSONInput.getString("tempCoordY"));
+		JSONOutput.put("eventID", JSONInput.get("eventID"));
+
+
+		ipToUpdate = new String[usernames.length];
+
+		for (int i = 0; i < usernames.length; i++) {
+			if (!usernames[i].equals(user)) {
+				ipToUpdate[i] = (String) ip[i];
+				System.out.println("Update ska skickas till: "+usernames[i]+" @ "+ipToUpdate[i]);
+			}
+		}
+	}
 
 	private void handleRequest() throws JSONException {
 		switch (requestType) {
@@ -131,32 +158,7 @@ public class MultipleSocketServer implements Runnable {
 		case ACKNOWLEDGE:
 			break;
 		case MAP_OBJECTS:
-			System.out.println(JSONInput.toString());
-			HashMap<String, String> associations;
-			associations = Association.getUserIpAssociations();
-
-			Object[] ip;
-			Object[] usernames;
-
-			usernames = associations.keySet().toArray();
-			ip = associations.values().toArray();
-
-			JSONOutput = new JSONObject();
-			JSONOutput.put("MAP_OBJECTS", JSONInput.getString("req"));
-			JSONOutput.put("header", JSONInput.getString("header"));
-			JSONOutput.put("description", JSONInput.getString("description"));
-			JSONOutput.put("tempCoordX", JSONInput.getString("tempCoordX"));
-			JSONOutput.put("tempCoordY", JSONInput.getString("tempCoordY"));
-
-
-			ipToUpdate = new String[usernames.length];
-
-			for (int i = 0; i < usernames.length; i++) {
-				if (!usernames[i].equals(user)) {
-					ipToUpdate[i] = (String) ip[i];
-					System.out.println("Update ska skickas till: "+usernames[i]+" @ "+ipToUpdate[i]);
-				}
-			}
+			handleMapObject();
 			break;
 		case EVENT:
 			break;
