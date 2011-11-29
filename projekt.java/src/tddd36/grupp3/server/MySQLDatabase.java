@@ -460,6 +460,7 @@ public class MySQLDatabase {
 		String sipadress = c.getSipaddress();
 		if(checkContact(c)){
 			try {
+				connect();
 				st=con.createStatement();
 				String query = "update contacts SET sipadress = "+sipadress+" Where name = "+name+"";
 				st.executeUpdate(query);       
@@ -517,6 +518,7 @@ public class MySQLDatabase {
 	}
 
 	public static void main(String[] args){
+		System.out.println(getAllContacts().toString());
 	}
 
 }
