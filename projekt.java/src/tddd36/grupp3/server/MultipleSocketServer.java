@@ -6,6 +6,8 @@ import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Scanner;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,7 +17,7 @@ public class MultipleSocketServer implements Runnable {
 
 	private int ID = 0;
 	private int AUTH_STATUS = 0;
-	private static final int LISTEN_PORT = 4444;
+	private static final int LISTEN_PORT = 4445;
 
 	private String input;
 	private String request;
@@ -80,12 +82,13 @@ public class MultipleSocketServer implements Runnable {
 				break;
 			case 2: 
 				JSONOutput.put("auth", "authenticated");
+
 				handleRequest();
 				break;
 			}
+
 			System.out.println(JSONOutput.toString());
 			Sender.send(JSONOutput, connection.getInetAddress().getHostAddress());
-
 			isr.close();
 			br.close();
 		}catch (Exception e) {}
@@ -117,6 +120,7 @@ public class MultipleSocketServer implements Runnable {
 
 		System.out.println(input);
 
+
 		if(JSONInput.has("user")){
 			this.user = JSONInput.getString("user");
 		}
@@ -125,12 +129,42 @@ public class MultipleSocketServer implements Runnable {
 		}
 		if(JSONInput.has("req")){
 			this.request = JSONInput.getString("req");
-			if(request.equals(RequestType.ALL_UNITS.toString())){
-				requestType = RequestType.ALL_UNITS;
-			}if(request.equals(RequestType.ACKNOWLEDGE.toString())){
-				requestType = RequestType.ACKNOWLEDGE;
-			}if(request.equals(RequestType.MAP_OBJECTS.toString())){
-				requestType = RequestType.MAP_OBJECTS;
+
+			if(request.equals("getContacts")){
+				ArrayList<Contact> hej = MySQLDatabase.getAllContacts();
+				String ip = Association.getIP(user).toString();
+				Sender.sendContacts(hej, ip,4445);
+			}
+
+		}
+		if(request.equals(RequestType.ALL_UNITS.toString())){
+			requestType = RequestType.ALL_UNITS;
+		}if(request.equals(RequestType.ACKNOWLEDGE.toString())){
+			requestType = RequestType.ACKNOWLEDGE;
+		}if(request.equals(RequestType.MAP_OBJECTS.toString())){
+			requestType = RequestType.MAP_OBJECTS;
+		}
+
+
+		if(JSONInput.has("sipaddress")){
+			Contact c = new Contact(JSONInput.getString("contactName"),JSONInput.getString("sipaddress"));
+			HashMap<String, String> testing = Association.getUserIpAssociations();
+			MySQLDatabase.setContact(c);
+			Object[] users;
+			Object[] userip;
+
+			users = testing.keySet().toArray();
+			userip = testing.values().toArray();
+
+			for (int i = 0; i < users.length; i++) {
+				if(!userip[i].toString().equals(Association.getIP(getUser()))){
+					try {
+						Sender.sendContact(c, 4445, userip[i].toString());
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
 			}
 		}
 	}
