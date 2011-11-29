@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -10,7 +11,7 @@ import org.json.JSONObject;
 
 public class Sender {
 
-	private static String COM_IP = "130.236.227.37";
+	private static String COM_IP = "130.236.226.92";
 	//	private static String COM_IP = "192.168.1.7";
 	private static int COM_PORT = 4445;
 	private static PrintWriter pw;
@@ -20,7 +21,6 @@ public class Sender {
 		COM_IP = ip;
 
 		JSONObject jsonMessage = new JSONObject();
-
 
 		try {
 			jsonMessage.put("msg",message);
@@ -81,6 +81,33 @@ public class Sender {
 		try {
 			setUpConnection();
 			pw.println(object.toString());
+			closeConnection();
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public static void sendContacts(ArrayList<Contact> list, String ip, int port) throws JSONException{
+		JSONObject jsonObject = new JSONObject();
+		StringBuffer sb = new StringBuffer();
+		String name;
+		String sipaddress;
+		COM_IP = ip;
+		COM_PORT = port;
+		try {
+			setUpConnection();
+			for(Contact c: list){
+				name=c.getName();
+				sipaddress=c.getSipaddress();	
+				sb.append(name+","+ sipaddress+"/");
+			}
+			System.out.println(sb.toString());
+			jsonObject.put("contacts", sb);
+			pw.println(jsonObject.toString());
 			closeConnection();
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block

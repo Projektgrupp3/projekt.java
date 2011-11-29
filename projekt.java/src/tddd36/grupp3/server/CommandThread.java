@@ -1,6 +1,7 @@
 package tddd36.grupp3.server;
 
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Scanner;
@@ -50,7 +51,7 @@ public class CommandThread implements Runnable {
 			String message;
 			message = in.nextLine();
 
-			System.out.println("To wich ip?");
+			System.out.println("To which ip?");
 			String ip;
 			ip = in.nextLine();
 
@@ -72,7 +73,7 @@ public class CommandThread implements Runnable {
 			a.createTestEvent();
 
 			Scanner in = new Scanner(System.in);
-			System.out.println("To wich ip?");
+			System.out.println("To which ip?");
 			String ip;
 			ip = in.nextLine();
 
@@ -132,6 +133,15 @@ public class CommandThread implements Runnable {
 			Event alarm = MySQLDatabase.getAlarm(alarmId);
 			alarm.setUnitID(unitId);
 			System.out.println("map completed");
+		}
+		if(input.equals("/sendcontacts")){
+			ArrayList<Contact> hej = MySQLDatabase.getAllContacts();
+			Scanner in = new Scanner(System.in);
+			System.out.println("To wich ip?");
+			String ip;
+			ip = in.nextLine();
+			System.out.println(ip);
+			Sender.sendContacts(hej,ip,4445);
 		}
 	}
 }

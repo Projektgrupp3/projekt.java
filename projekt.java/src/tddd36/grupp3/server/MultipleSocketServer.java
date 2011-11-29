@@ -32,8 +32,10 @@ public class MultipleSocketServer implements Runnable {
 		this.ID = i;
 	}
 	public static void main(String[] args) {
-		int count=0;
+		int count = 0;
 		Database.addUser(new User("enhet1", "password1"));
+		Database.addUser(new User("enhet2", "password2"));
+		Database.addUser(new User("enhet3", "password3"));
 		Database.addUnit(new Unit(0, "ABC123"));
 
 		try{
@@ -68,7 +70,7 @@ public class MultipleSocketServer implements Runnable {
 			loginThread.start();
 
 			while(AUTH_STATUS == 0){
-				//NO-OP
+				System.out.println("Väntar på AUTH_STATUS");
 			}
 			JSONOutput = new JSONObject();
 			System.out.println(AUTH_STATUS);
@@ -101,6 +103,7 @@ public class MultipleSocketServer implements Runnable {
 			ArrayList<String> hej;
 			hej = MySQLDatabase.getAllUnits();
 			System.out.println(hej.get(0));
+			Association.printAll();
 			break;
 		case ACKNOWLEDGE:
 			break;
