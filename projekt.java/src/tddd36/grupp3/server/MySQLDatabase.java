@@ -217,14 +217,13 @@ public class MySQLDatabase {
 			while (rs.next()) {
 				nameIds.add(rs.getString(4));
 			}
-			disconnect();
-			return nameIds;
+			
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		disconnect();
-		return null;
+		return nameIds;
 	}
 
 	public static boolean checkUser(String userName){
@@ -375,14 +374,14 @@ public class MySQLDatabase {
 
 	}
 
-
 	public static boolean checkContact(Contact c){
 		String name = c.getName();
 		connect();
 		st=null;
 		try{
 			st=con.createStatement();
-			String query = "SELECT * from contacts WHERE name="+name;
+			
+			String query = "SELECT * from contacts WHERE name='"+name+"'";
 			rs = st.executeQuery(query);
 			while(rs.next()){
 				if(rs.getString(1)==name){
@@ -445,24 +444,22 @@ public class MySQLDatabase {
 
 				contactList.add(c);
 			}
-			disconnect();
-			return contactList;
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		disconnect();
-		return null;
+		return contactList;
 	}
 
 	public static void setContact(Contact c){
 		String name = c.getName();
-		String sipadress = c.getSipaddress();
+		String sipaddress = c.getSipaddress();
 		if(checkContact(c)){
 			try {
 				connect();
 				st=con.createStatement();
-				String query = "update contacts SET sipadress = "+sipadress+" Where name = "+name+"";
+				String query = "update contacts SET sipaddress = '"+sipaddress+"' Where name = '"+name+"'";
 				st.executeUpdate(query);       
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -474,8 +471,8 @@ public class MySQLDatabase {
 			connect();
 			try {
 				st=con.createStatement();
-				String query = "INSERT INTO contacts(username,adress) VALUES('"+
-						name+"','"+sipadress+"')";
+				String query = "INSERT INTO contacts(name,sipaddress) VALUES('"+
+						name+"','"+sipaddress+"')";
 				st.executeUpdate(query);       
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -489,7 +486,7 @@ public class MySQLDatabase {
 
 
 	public static void connect(){
-		String url = "jdbc:mysql://localhost:3306/entityList";
+		String url = "jdbc:mysql://130.236.227.199:3306/entityList";
 		String user = "server";
 		String password = "starwars";
 

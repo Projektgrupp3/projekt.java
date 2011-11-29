@@ -1,6 +1,10 @@
 package tddd36.grupp3.server;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Observable;
+
+import org.json.JSONException;
 
 
 public class LoginManager implements Runnable {
@@ -16,7 +20,6 @@ public class LoginManager implements Runnable {
 	//	private String password;
 	private String adress;
 
-
 	public LoginManager(MultipleSocketServer serversocket, String adress){
 		System.out.println("LoginManager created");
 		this.adress = adress;
@@ -29,11 +32,13 @@ public class LoginManager implements Runnable {
 
 	@Override
 	public void run() {
+
 		if(Database.checkUser(serversocket.getUser()) && 
 				Database.getUserPass(serversocket.getUser()).equals(serversocket.getPassword())){
 			Association.addUser(serversocket.getUser(), adress);
 			notifyAndSet(AUTH_OK);
-		}
+			
+			}
 		else{
 			notifyAndSet(AUTH_FAILED);
 		}
