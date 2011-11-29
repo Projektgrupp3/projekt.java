@@ -51,7 +51,7 @@ public class CommandThread implements Runnable {
 			String message;
 			message = in.nextLine();
 
-			System.out.println("To wich ip?");
+			System.out.println("To which ip?");
 			String ip;
 			ip = in.nextLine();
 
@@ -73,7 +73,7 @@ public class CommandThread implements Runnable {
 			a.createTestEvent();
 
 			Scanner in = new Scanner(System.in);
-			System.out.println("To wich ip?");
+			System.out.println("To which ip?");
 			String ip;
 			ip = in.nextLine();
 
