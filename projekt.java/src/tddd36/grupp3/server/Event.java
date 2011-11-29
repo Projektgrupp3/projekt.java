@@ -12,6 +12,7 @@ public class Event {
 	JSONObject json = new JSONObject();
 	private String eventID;
 	private String accidentType;
+	private String header;
 	private String coordinateX;
 	private String coordinateY;
 	private int numberOfInjured;
@@ -31,7 +32,22 @@ public class Event {
 	public Event(Prio Prio){
 		this.priority = priority;
 	}
+	
+	//Map-event
+	public Event(String header, String CoordinateX, 
+			String CoordinateY,
+			String adress, int UnitID, String description){
 
+		this.header = header;
+		this.coordinateX = CoordinateX;
+		this.coordinateY = CoordinateY;
+		this.adress = adress;
+		this.eventID = new SimpleDateFormat("yyMMddHHmmss").format(new Date());
+		this.unitID = UnitID;
+		this.description = description;
+
+	}
+	//Injury
 	public Event(String AccidentType, String CoordinateX, 
 			String CoordinateY, Prio Priority, int NumberOfInjured, 
 			String Adress, String TypeOfInjury, String AccidentAdress, int UnitID, String description){
@@ -97,20 +113,20 @@ public class Event {
 		this.adress = in.nextLine();
 		json.put("adress",adress);
 
-//		do{
-//			System.out.println("Enter X-coordinates: ");
-//		}
-//		while(!CheckCoordinateX(tempCoord = in.nextLine()));{
-//			json.put("tempCoordX",tempCoord);
-//			this.coordinateX = tempCoord;
-//		}
-//		do{
-//			System.out.println("Enter Y-coordinates: ");
-//		}
-//		while(!CheckCoordinateY(tempCoord = in.nextLine()));{
-//			json.put("tempCoordY",tempCoord );
-//			this.coordinateY = tempCoord;
-//		}
+		//		do{
+		//			System.out.println("Enter X-coordinates: ");
+		//		}
+		//		while(!CheckCoordinateX(tempCoord = in.nextLine()));{
+		//			json.put("tempCoordX",tempCoord);
+		//			this.coordinateX = tempCoord;
+		//		}
+		//		do{
+		//			System.out.println("Enter Y-coordinates: ");
+		//		}
+		//		while(!CheckCoordinateY(tempCoord = in.nextLine()));{
+		//			json.put("tempCoordY",tempCoord );
+		//			this.coordinateY = tempCoord;
+		//		}
 		json.put("tempCoordX","58395730");
 		json.put("tempCoordY","15573080" );
 
@@ -131,9 +147,9 @@ public class Event {
 		System.out.println("Description: ");
 		this.description = in.nextLine();
 		json.put("description", description);
-		
+
 		json.put("unitID","3");
-		
+
 		System.out.println(json);
 	}
 

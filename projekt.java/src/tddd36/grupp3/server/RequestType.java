@@ -17,5 +17,10 @@ public enum RequestType {
 		public String toString(){
 			return "MAP_OBJECTS";
 		}
-	}
+	},
+	EVENT(){
+		public String toString(){
+			return "EVENT";
+		}
+	},
 }
