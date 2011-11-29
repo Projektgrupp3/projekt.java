@@ -2,6 +2,7 @@ package tddd36.grupp3.server;
 
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Scanner;
@@ -141,7 +142,19 @@ public class CommandThread implements Runnable {
 			String ip;
 			ip = in.nextLine();
 			System.out.println(ip);
-			Sender.sendContacts(hej,ip,4445);
+			
+			HashMap<String, String> testing = Association.getUserIpAssociations();
+		
+			Object[] users;
+			Object[] userip;
+			
+			users = testing.keySet().toArray();
+			userip = testing.values().toArray();
+
+			for (int i = 0; i < users.length; i++) {
+					Sender.sendContacts(hej, userip[i].toString(), 4445);
+			}
+			
 		}
 	}
 }
