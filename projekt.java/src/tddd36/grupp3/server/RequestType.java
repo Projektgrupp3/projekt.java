@@ -33,4 +33,9 @@ public enum RequestType {
 			return "CONTACT";
 		}
 	},
+	LOGOUT(){
+		public String toString(){
+			return "LOGOUT";
+		}
+	},
 }

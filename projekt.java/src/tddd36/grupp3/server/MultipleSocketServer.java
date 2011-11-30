@@ -7,8 +7,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Scanner;
-import java.util.HashMap;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,7 +16,7 @@ public class MultipleSocketServer implements Runnable {
 
 	private int ID = 0;
 	private int AUTH_STATUS = 0;
-	private static final int LISTEN_PORT = 4445;
+	private static final int LISTEN_PORT = 1560;
 
 	private String input;
 	private String request;
@@ -44,7 +42,7 @@ public class MultipleSocketServer implements Runnable {
 		Database.addUser(new User("enhet3", "password3"));
 		Database.addUnit(new Unit(0, "ABC123"));
 
-		//		Association.addUser("testuser", "130.236.226.171");
+		// Association.addUser("testuser", "130.236.226.171");
 
 		try {
 			ServerSocket serversocket = new ServerSocket(LISTEN_PORT);
@@ -85,29 +83,30 @@ public class MultipleSocketServer implements Runnable {
 			while (AUTH_STATUS == 0) {
 				System.out.println("Väntar på AUTH_STATUS");
 			}
-			JSONOutput = new JSONObject();
-			System.out.println(AUTH_STATUS);
-			// Lägger til de/den ipadresser som ska updateras, oavsett om det är 1 eller fler
-			ipToUpdate = new String[1];
-			ipToUpdate[0] = connection.getInetAddress().getHostAddress();
+			
+			if(AUTH_STATUS != 9){
+				JSONOutput = new JSONObject();
+				System.out.println(AUTH_STATUS);
 
-			switch (AUTH_STATUS) {
-			case 1:
-				JSONOutput.put("auth", "authfailed");
-				break;
-			case 2:
-				JSONOutput.put("auth", "authenticated");
+				ipToUpdate = new String[1];
+				ipToUpdate[0] = connection.getInetAddress().getHostAddress();
 
-				handleRequest();
-				break;
+				switch (AUTH_STATUS) {
+				case 1:
+					JSONOutput.put("auth", "authfailed");
+					break;
+				case 2:
+					JSONOutput.put("auth", "authenticated");
+					handleRequest();
+					break;
+				}
+				System.out.println(JSONOutput.toString());
+				for (String ip : ipToUpdate) {
+					if (ip != null)
+						Sender.send(JSONOutput, ip);
+				}
 			}
 
-			System.out.println(JSONOutput.toString());
-			for(String ip: ipToUpdate){
-				if(ip != null)
-					Sender.send(JSONOutput, ip);
-				//					System.out.println(JSONOutput.toString());
-			}
 			isr.close();
 			br.close();
 		} catch (Exception e) {
@@ -119,6 +118,7 @@ public class MultipleSocketServer implements Runnable {
 			}
 		}
 	}
+
 	private void handleMapObject() throws JSONException {
 		System.out.println(JSONInput.toString());
 		HashMap<String, String> associations;
@@ -138,18 +138,20 @@ public class MultipleSocketServer implements Runnable {
 		JSONOutput.put("tempCoordY", JSONInput.getString("tempCoordY"));
 		JSONOutput.put("eventID", JSONInput.get("eventID"));
 
-
 		ipToUpdate = new String[usernames.length];
 
 		for (int i = 0; i < usernames.length; i++) {
 			if (!usernames[i].equals(user)) {
 				ipToUpdate[i] = (String) ip[i];
-				System.out.println("Update ska skickas till: "+usernames[i]+" @ "+ipToUpdate[i]);
+				System.out.println("Update ska skickas till: " + usernames[i]
+				                                                           + " @ " + ipToUpdate[i]);
 			}
 		}
 	}
+
 	private void handleContact() throws JSONException {
-		Contact c = new Contact(JSONInput.getString("contactName"),JSONInput.getString("sipaddress"));
+		Contact c = new Contact(JSONInput.getString("contactName"), JSONInput
+				.getString("sipaddress"));
 		HashMap<String, String> testing = Association.getUserIpAssociations();
 		MySQLDatabase.setContact(c);
 		Object[] users;
@@ -159,7 +161,7 @@ public class MultipleSocketServer implements Runnable {
 		userip = testing.values().toArray();
 
 		for (int i = 0; i < users.length; i++) {
-			if(!userip[i].toString().equals(Association.getIP(getUser()))){
+			if (!userip[i].toString().equals(Association.getIP(getUser()))) {
 				try {
 					Sender.sendContact(c, 4445, userip[i].toString());
 				} catch (IOException e) {
@@ -188,7 +190,7 @@ public class MultipleSocketServer implements Runnable {
 		case ALL_CONTACTS:
 			ArrayList<Contact> hej = MySQLDatabase.getAllContacts();
 			String ip = Association.getIP(user).toString();
-			Sender.sendContacts(hej, ip,4445);
+			Sender.sendContacts(hej, ip, 4445);
 			break;
 		case CONTACT:
 			handleContact();
@@ -201,8 +203,7 @@ public class MultipleSocketServer implements Runnable {
 
 		System.out.println(input);
 
-
-		if(JSONInput.has("user")){
+		if (JSONInput.has("user")) {
 			this.user = JSONInput.getString("user");
 		}
 		if (JSONInput.has("pass")) {
@@ -211,11 +212,13 @@ public class MultipleSocketServer implements Runnable {
 		if (JSONInput.has("req")) {
 			this.request = JSONInput.getString("req");
 
-			if(request.equals("getContacts")){
+			if (request.equals("getContacts")) {
 				requestType = RequestType.ALL_CONTACTS;
 			}
-
-			if(request.equals(RequestType.ALL_UNITS.toString())){
+			if (request.equals("contact")) {
+				requestType = RequestType.CONTACT;
+			}
+			if (request.equals(RequestType.ALL_UNITS.toString())) {
 				requestType = RequestType.ALL_UNITS;
 			}
 			if (request.equals(RequestType.ACKNOWLEDGE.toString())) {
@@ -224,8 +227,8 @@ public class MultipleSocketServer implements Runnable {
 			if (request.equals(RequestType.MAP_OBJECTS.toString())) {
 				requestType = RequestType.MAP_OBJECTS;
 			}
-			if(request.equals("contact")){
-				requestType = RequestType.CONTACT;
+			if (request.equals(RequestType.LOGOUT.toString())) {
+				requestType = RequestType.LOGOUT;
 			}
 		}
 	}
@@ -248,5 +251,13 @@ public class MultipleSocketServer implements Runnable {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public RequestType getRequestType() {
+		return requestType;
+	}
+
+	public void setRequestType(RequestType requestType) {
+		this.requestType = requestType;
 	}
 }
