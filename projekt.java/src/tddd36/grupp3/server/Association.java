@@ -20,7 +20,9 @@ public class Association {
 	public static void addUser(String name, String ip) {
 		userIpAssociations.put(name, ip);
 	}
-
+	public static void removeUser(String username){
+		userIpAssociations.remove(username);
+	}
 	public static String getUser(String useradress) {
 		Object[] ip;
 		Object[] users;
