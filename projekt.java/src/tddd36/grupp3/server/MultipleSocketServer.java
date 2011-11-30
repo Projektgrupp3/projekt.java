@@ -18,10 +18,11 @@ public class MultipleSocketServer implements Runnable {
 
 	private int ID = 0;
 	private int AUTH_STATUS = 0;
-	private static final int LISTEN_PORT = 4445;
+	private static final int LISTEN_PORT = 4444;
 
 	private String input;
 	private String request;
+	private String acknowledge;
 	private String user;
 	private String password;
 
@@ -119,6 +120,12 @@ public class MultipleSocketServer implements Runnable {
 			}
 		}
 	}
+
+	private void handleAcknowledge() throws JSONException {
+		String ack_type = JSONInput.getString("req");
+
+	}
+
 	private void handleMapObject() throws JSONException {
 		System.out.println(JSONInput.toString());
 		HashMap<String, String> associations;
@@ -173,12 +180,13 @@ public class MultipleSocketServer implements Runnable {
 	private void handleRequest() throws JSONException {
 		switch(requestType){
 		case ALL_UNITS:
-//			ArrayList<String> hej;
-//			hej = MySQLDatabase.getAllUnits();
-//			System.out.println(hej.get(0));
+			//			ArrayList<String> hej;
+			//			hej = MySQLDatabase.getAllUnits();
+			//			System.out.println(hej.get(0));
 			Association.printAll();
 			break;
 		case ACKNOWLEDGE:
+			handleAcknowledge();
 			break;
 		case MAP_OBJECTS:
 			handleMapObject();
@@ -214,12 +222,8 @@ public class MultipleSocketServer implements Runnable {
 			if(request.equals("getContacts")){
 				requestType = RequestType.ALL_CONTACTS;
 			}
-
 			if(request.equals(RequestType.ALL_UNITS.toString())){
 				requestType = RequestType.ALL_UNITS;
-			}
-			if (request.equals(RequestType.ACKNOWLEDGE.toString())) {
-				requestType = RequestType.ACKNOWLEDGE;
 			}
 			if (request.equals(RequestType.MAP_OBJECTS.toString())) {
 				requestType = RequestType.MAP_OBJECTS;
@@ -227,6 +231,10 @@ public class MultipleSocketServer implements Runnable {
 			if(request.equals("contact")){
 				requestType = RequestType.CONTACT;
 			}
+		}
+		if (JSONInput.has("ack")){
+			this.acknowledge = (String) JSONInput.get("ack");
+			System.out.println("Klienten ackade: "+acknowledge);
 		}
 	}
 
