@@ -148,6 +148,27 @@ public class MultipleSocketServer implements Runnable {
 			}
 		}
 	}
+	private void handleContact() throws JSONException {
+		Contact c = new Contact(JSONInput.getString("contactName"),JSONInput.getString("sipaddress"));
+		HashMap<String, String> testing = Association.getUserIpAssociations();
+		MySQLDatabase.setContact(c);
+		Object[] users;
+		Object[] userip;
+
+		users = testing.keySet().toArray();
+		userip = testing.values().toArray();
+
+		for (int i = 0; i < users.length; i++) {
+			if(!userip[i].toString().equals(Association.getIP(getUser()))){
+				try {
+					Sender.sendContact(c, 4445, userip[i].toString());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+	}
 
 	private void handleRequest() throws JSONException {
 		switch (requestType) {
@@ -163,6 +184,14 @@ public class MultipleSocketServer implements Runnable {
 			handleMapObject();
 			break;
 		case EVENT:
+			break;
+		case ALL_CONTACTS:
+			ArrayList<Contact> hej = MySQLDatabase.getAllContacts();
+			String ip = Association.getIP(user).toString();
+			Sender.sendContacts(hej, ip,4445);
+			break;
+		case CONTACT:
+			handleContact();
 			break;
 		}
 	}
@@ -183,11 +212,8 @@ public class MultipleSocketServer implements Runnable {
 			this.request = JSONInput.getString("req");
 
 			if(request.equals("getContacts")){
-				ArrayList<Contact> hej = MySQLDatabase.getAllContacts();
-				String ip = Association.getIP(user).toString();
-				Sender.sendContacts(hej, ip,4445);
+				requestType = RequestType.ALL_CONTACTS;
 			}
-
 
 			if(request.equals(RequestType.ALL_UNITS.toString())){
 				requestType = RequestType.ALL_UNITS;
@@ -198,27 +224,8 @@ public class MultipleSocketServer implements Runnable {
 			if (request.equals(RequestType.MAP_OBJECTS.toString())) {
 				requestType = RequestType.MAP_OBJECTS;
 			}
-		}
-
-		if(JSONInput.has("sipaddress")){
-			Contact c = new Contact(JSONInput.getString("contactName"),JSONInput.getString("sipaddress"));
-			HashMap<String, String> testing = Association.getUserIpAssociations();
-			MySQLDatabase.setContact(c);
-			Object[] users;
-			Object[] userip;
-
-			users = testing.keySet().toArray();
-			userip = testing.values().toArray();
-
-			for (int i = 0; i < users.length; i++) {
-				if(!userip[i].toString().equals(Association.getIP(getUser()))){
-					try {
-						Sender.sendContact(c, 4445, userip[i].toString());
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
+			if(request.equals("contact")){
+				requestType = RequestType.CONTACT;
 			}
 		}
 	}
