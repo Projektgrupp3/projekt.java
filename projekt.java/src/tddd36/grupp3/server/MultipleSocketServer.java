@@ -18,7 +18,7 @@ public class MultipleSocketServer implements Runnable {
 
 	private int ID = 0;
 	private int AUTH_STATUS = 0;
-	private static final int LISTEN_PORT = 1560;
+	private static final int LISTEN_PORT = 4445;
 
 	private String input;
 	private String request;
