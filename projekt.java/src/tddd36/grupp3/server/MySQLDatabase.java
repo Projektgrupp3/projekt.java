@@ -9,8 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class MySQLDatabase {
-	/* Använd denna istället för 
-	 * Database i MultiServer.
+	/* SENASTE VERSIONEN: 2011-11-30
 	 * TODO: Fixa så att ändringar ändras på båda tables.
 	 */
 
@@ -47,28 +46,23 @@ public class MySQLDatabase {
 
 	public static void addUnit(Unit u){
 		if(checkUnit(u.getId())){
-			System.out.println(u.getId()+" alreade exists in the database");
+			System.out.println(u.getId()+" already exists in the database");
 		}
 		else{
 			int unitID = u.getId();
 			String regNr = u.getRegnr();
 			Status status = u.getState();
-
-			if(checkUnit(unitID)){
-				System.out.println(unitID+" finns redan i databasen");
-			}
-			else{
-				connect();
-				try {
-					st=con.createStatement();
-					String query = "INSERT INTO units(unitID,regNr,state) VALUES('"+
-							unitID+"','"+regNr+"','"+status+"')";
-					st.executeUpdate(query);		
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-				disconnect();
-			}
+			//String name = u.getName();
+			connect();
+			try {
+				st=con.createStatement();
+				String query = "INSERT INTO units(unitID,regNr,state) VALUES('"+
+						unitID+"','"+regNr+"','"+status+/*+'"name"'+*/"')";
+				st.executeUpdate(query);		
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} 
+			disconnect();
 		}
 	}
 
@@ -79,7 +73,8 @@ public class MySQLDatabase {
 				st=con.createStatement();
 				String query = "SELECT * from user WHERE userName='"+userName+"'";
 				rs = st.executeQuery(query);
-
+				// TODO Det kan behöva läggas till ett fält är sedan
+				// TODO när assigedUsers kommer med.
 				while(rs.next()){
 					if(rs.getString(3).equals(userName)){
 						String firstName = rs.getString(1);
@@ -96,8 +91,6 @@ public class MySQLDatabase {
 				e.printStackTrace();}
 			disconnect();
 		}
-		else
-			return null;
 		return null;
 	}
 
@@ -123,15 +116,11 @@ public class MySQLDatabase {
 				e.printStackTrace();}
 			disconnect();
 		}
-		else
-			return null;
 		return null;
 	}
 
 	public static void deleteUser(String userName){
-		System.out.println("Kör: deleteUser");
 		if(checkUser(userName)){
-			System.out.println("Klarar if");
 			connect();
 			String query = "DELETE FROM user WHERE userName ='"+userName+"'";
 			try{
@@ -204,6 +193,29 @@ public class MySQLDatabase {
 		return "Database does not contain any unit entries";
 	}
 
+	public static ArrayList<String> getAllUsers(){
+		connect();
+		rs=null;
+		Statement stmt = null;
+		String query ="SELECT * FROM user";
+		ArrayList<String> userIds = new ArrayList<String>();
+
+		try {
+			stmt = con.createStatement();
+			rs = stmt.executeQuery(query);
+			while (rs.next()) {
+				userIds.add(rs.getString(3));
+			}
+			disconnect();
+			return userIds;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		disconnect();
+		return null;
+	}
+
 	public static ArrayList<String> getAllUnits(){
 		connect();
 		rs=null;
@@ -217,13 +229,13 @@ public class MySQLDatabase {
 			while (rs.next()) {
 				nameIds.add(rs.getString(4));
 			}
-			
-
+			disconnect();
+			return nameIds;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		disconnect();
-		return nameIds;
+		return null;
 	}
 
 	public static boolean checkUser(String userName){
@@ -292,7 +304,7 @@ public class MySQLDatabase {
 		return null;
 	}
 
-	public static void setUnitToUser(String userName, int UnitID){
+	public static void setUsersUnit(String userName, int UnitID){
 		if(checkUser(userName)){
 			connect();
 			st=null;
@@ -307,7 +319,7 @@ public class MySQLDatabase {
 		}
 	}
 
-	public static String getAssignedUnits(String userName) {
+	public static String getUsersUnit(String userName) {
 		if(checkUser(userName)){
 			connect();
 			st=null;
@@ -328,10 +340,25 @@ public class MySQLDatabase {
 
 			disconnect();
 		}
-		return "";
+		return null;
 	}
 
-	public static String getUserAssignedToUnit(int UnitID){
+	public static void setUnitsUser(String userName, int UnitID){
+		if(checkUnit(UnitID)){
+			connect();
+			st=null;
+			try{
+				st=con.createStatement();
+				st.executeUpdate("UPDATE units SET assignedUsers = '"+userName+"' "
+						+ "WHERE UnitID = '"+UnitID+"'");	
+				disconnect();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public static String getUnitsUser(int UnitID){
 		if(checkUnit(UnitID)){
 			connect();
 			st=null;
@@ -352,8 +379,34 @@ public class MySQLDatabase {
 
 			disconnect();
 		}
-		return "";
+		return null;
 	}
+
+	//	Ersatt av getUnitsUser
+	//	public static String getUserAssignedToUnit(int UnitID){
+	//		if(checkUnit(UnitID)){
+	//			connect();
+	//			st=null;
+	//			try{
+	//				st=con.createStatement();
+	//				String query = "SELECT * from units WHERE unitID='"+UnitID+"'";
+	//				rs = st.executeQuery(query);
+	//				while(rs.next()){
+	//					if(rs.getString(1).equals(UnitID)){
+	//						String s = rs.getString(5);
+	//						disconnect();
+	//						return s;
+	//					}
+	//				}
+	//			}catch(SQLException e){
+	//				e.printStackTrace();
+	//			}
+	//
+	//			disconnect();
+	//		}
+	//		return "";
+	//	}
+
 	public static Event getAlarm(int al) {
 		//TODO:
 		return null;
@@ -370,21 +423,16 @@ public class MySQLDatabase {
 		//TODO:
 	}
 
-	public static void setUserAssignedToUnit(String userName, int UnitID){
-
-	}
-
 	public static boolean checkContact(Contact c){
 		String name = c.getName();
 		connect();
 		st=null;
 		try{
 			st=con.createStatement();
-			
 			String query = "SELECT * from contacts WHERE name='"+name+"'";
 			rs = st.executeQuery(query);
 			while(rs.next()){
-				if(rs.getString(1)==name){
+				if(rs.getString(1).equals(name)){
 					disconnect();
 					return true;
 				}
@@ -395,7 +443,6 @@ public class MySQLDatabase {
 
 		disconnect();
 		return false;
-
 	}
 
 	public static Contact getContact(Contact c){
@@ -422,8 +469,6 @@ public class MySQLDatabase {
 				e.printStackTrace();}
 			disconnect();
 		}
-		else
-			return null;
 		return null;
 	}
 
@@ -481,10 +526,6 @@ public class MySQLDatabase {
 		}
 	}
 
-
-
-
-
 	public static void connect(){
 		String url = "jdbc:mysql://localhost:3306/entityList";
 		String user = "server";
@@ -513,10 +554,5 @@ public class MySQLDatabase {
 			lgr.log(Level.WARNING, ex.getMessage(), ex);
 		}
 	}
-
-	public static void main(String[] args){
-		System.out.println(getAllContacts().toString());
-	}
-
 }
 
