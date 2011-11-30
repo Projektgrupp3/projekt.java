@@ -11,6 +11,8 @@ import java.util.HashMap;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.google.gson.Gson;
+
 public class MultipleSocketServer implements Runnable {
 	private Socket connection;
 
@@ -84,8 +86,8 @@ public class MultipleSocketServer implements Runnable {
 			while (AUTH_STATUS == 0) {
 				System.out.println("Väntar på AUTH_STATUS");
 			}
-			
-			if(AUTH_STATUS != 9){
+
+			if (AUTH_STATUS != 9) {
 				JSONOutput = new JSONObject();
 				System.out.println(AUTH_STATUS);
 
@@ -107,7 +109,6 @@ public class MultipleSocketServer implements Runnable {
 						Sender.send(JSONOutput, ip);
 				}
 			}
-
 			isr.close();
 			br.close();
 		} catch (Exception e) {
@@ -120,9 +121,13 @@ public class MultipleSocketServer implements Runnable {
 		}
 	}
 
-
 	private void handleAcknowledge() throws JSONException {
-		String ack_type = JSONInput.getString("req");
+		String ack_type = JSONInput.getString("ack");
+		
+		if(ack_type.equals("unit")){
+			System.out.println(JSONInput.get("unit"));
+			//MySQLDatabase.setUnitToUser(user, UnitID)
+		}
 
 	}
 
@@ -151,9 +156,21 @@ public class MultipleSocketServer implements Runnable {
 			if (!usernames[i].equals(user)) {
 				ipToUpdate[i] = (String) ip[i];
 				System.out.println("Update ska skickas till: " + usernames[i]
-				                                                           + " @ " + ipToUpdate[i]);
+						+ " @ " + ipToUpdate[i]);
 			}
 		}
+	}
+
+	private void handleAllUnits() throws JSONException {
+		ArrayList<String> units;
+		units = MySQLDatabase.getAllUnits();
+		int count = 0;
+		for (String str : units) {
+			System.out.println(str);
+			JSONOutput.put("unit" + count, str);
+			count++;
+		}
+		JSONOutput.put("ALL_UNITS", count);
 	}
 
 	private void handleContact() throws JSONException {
@@ -180,12 +197,9 @@ public class MultipleSocketServer implements Runnable {
 	}
 
 	private void handleRequest() throws JSONException {
-		switch(requestType){
+		switch (requestType) {
 		case ALL_UNITS:
-			//			ArrayList<String> hej;
-			//			hej = MySQLDatabase.getAllUnits();
-			//			System.out.println(hej.get(0));
-			Association.printAll();
+			handleAllUnits();
 			break;
 		case ACKNOWLEDGE:
 			handleAcknowledge();
@@ -196,9 +210,9 @@ public class MultipleSocketServer implements Runnable {
 		case EVENT:
 			break;
 		case ALL_CONTACTS:
-			ArrayList<Contact> hej = MySQLDatabase.getAllContacts();
+			ArrayList<Contact> contacts = MySQLDatabase.getAllContacts();
 			String ip = Association.getIP(user).toString();
-			Sender.sendContacts(hej, ip, 4445);
+			Sender.sendContacts(contacts, ip, 4445);
 			break;
 		case CONTACT:
 			handleContact();
@@ -236,9 +250,10 @@ public class MultipleSocketServer implements Runnable {
 				requestType = RequestType.LOGOUT;
 			}
 		}
-		if (JSONInput.has("ack")){
+		if (JSONInput.has("ack")) {
 			this.acknowledge = (String) JSONInput.get("ack");
-			System.out.println("Klienten ackade: "+acknowledge);
+			requestType = RequestType.ACKNOWLEDGE;
+			System.out.println("Klienten ackade: " + acknowledge);
 		}
 	}
 

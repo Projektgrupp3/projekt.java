@@ -138,6 +138,32 @@ public class Sender {
 			e.printStackTrace();
 		}
 	}
+	public static void sendContacts(ArrayList<Contact> list, String ip) throws JSONException{
+		JSONObject jsonObject = new JSONObject();
+		StringBuffer sb = new StringBuffer();
+		String name;
+		String sipaddress;
+		COM_IP = ip;
+		try {
+			setUpConnection();
+			for(Contact c: list){
+				name=c.getName();
+				sipaddress=c.getSipaddress();	
+				sb.append(name+","+ sipaddress+"/");
+			}
+			System.out.println(sb.toString());
+			jsonObject.put("contacts", sb);
+			System.out.println();
+			pw.println(jsonObject.toString());
+			closeConnection();
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	public static void setUpConnection() throws UnknownHostException,
 			IOException {
