@@ -20,6 +20,7 @@ public class MultipleSocketServer implements Runnable {
 
 	private String input;
 	private String request;
+	private String acknowledge;
 	private String user;
 	private String password;
 
@@ -119,6 +120,12 @@ public class MultipleSocketServer implements Runnable {
 		}
 	}
 
+
+	private void handleAcknowledge() throws JSONException {
+		String ack_type = JSONInput.getString("req");
+
+	}
+
 	private void handleMapObject() throws JSONException {
 		System.out.println(JSONInput.toString());
 		HashMap<String, String> associations;
@@ -173,14 +180,15 @@ public class MultipleSocketServer implements Runnable {
 	}
 
 	private void handleRequest() throws JSONException {
-		switch (requestType) {
+		switch(requestType){
 		case ALL_UNITS:
-			// ArrayList<String> hej;
-			// hej = MySQLDatabase.getAllUnits();
-			// System.out.println(hej.get(0));
+			//			ArrayList<String> hej;
+			//			hej = MySQLDatabase.getAllUnits();
+			//			System.out.println(hej.get(0));
 			Association.printAll();
 			break;
 		case ACKNOWLEDGE:
+			handleAcknowledge();
 			break;
 		case MAP_OBJECTS:
 			handleMapObject();
@@ -221,15 +229,16 @@ public class MultipleSocketServer implements Runnable {
 			if (request.equals(RequestType.ALL_UNITS.toString())) {
 				requestType = RequestType.ALL_UNITS;
 			}
-			if (request.equals(RequestType.ACKNOWLEDGE.toString())) {
-				requestType = RequestType.ACKNOWLEDGE;
-			}
 			if (request.equals(RequestType.MAP_OBJECTS.toString())) {
 				requestType = RequestType.MAP_OBJECTS;
 			}
 			if (request.equals(RequestType.LOGOUT.toString())) {
 				requestType = RequestType.LOGOUT;
 			}
+		}
+		if (JSONInput.has("ack")){
+			this.acknowledge = (String) JSONInput.get("ack");
+			System.out.println("Klienten ackade: "+acknowledge);
 		}
 	}
 
