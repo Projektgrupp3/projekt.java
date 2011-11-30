@@ -146,7 +146,7 @@ public class CommandThread implements Runnable {
 			userip = testing.values().toArray();
 
 			for (int i = 0; i < users.length; i++) {
-				Sender.sendContacts(hej, userip[i].toString(), 4445);
+				Sender.sendContacts(hej, userip[i].toString());
 			}
 
 		}
