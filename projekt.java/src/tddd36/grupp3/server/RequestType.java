@@ -23,4 +23,14 @@ public enum RequestType {
 			return "EVENT";
 		}
 	},
+	ALL_CONTACTS(){
+		public String toString(){
+			return "ALL_CONTACTS";
+		}
+	},
+	CONTACT(){
+		public String toString(){
+			return "CONTACT";
+		}
+	},
 }
