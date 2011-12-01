@@ -18,7 +18,8 @@ public class MultipleSocketServer implements Runnable {
 
 	private int ID = 0;
 	private int AUTH_STATUS = 0;
-	private static final int LISTEN_PORT = 4445;
+
+	private static final int LISTEN_PORT = 1879;
 
 	private String input;
 	private String request;
@@ -84,15 +85,16 @@ public class MultipleSocketServer implements Runnable {
 			loginThread.start();
 
 			while (AUTH_STATUS == 0) {
-				System.out.println("VŠntar pŒ AUTH_STATUS");
+				System.out.println("VÄNTAR");
 			}
 
 			if (AUTH_STATUS != 9) {
 				JSONOutput = new JSONObject();
-				System.out.println(AUTH_STATUS);
 
 				ipToUpdate = new String[1];
 				ipToUpdate[0] = connection.getInetAddress().getHostAddress();
+
+				Association.printAll();
 
 				switch (AUTH_STATUS) {
 				case 1:
@@ -124,15 +126,20 @@ public class MultipleSocketServer implements Runnable {
 	private void handleAcknowledge() throws JSONException {
 		String ack_type = JSONInput.getString("ack");
 		
-		if(ack_type.equals("unit")){
-			System.out.println(JSONInput.get("unit"));
-			System.out.println(JSONInput.toString());
-			//MySQLDatabase.setUsersUnit(user, UnitID);
+		if(acknowledge.equals("unit")){
+			System.out.println(acknowledge);
+		}
+		else if(acknowledge.equals("event")){
+			System.out.println("Uppdrag: "+JSONInput.get("eventID")+ " har blivit "+JSONInput.get("event"));
+		}
+		else if(acknowledge.startsWith("STATUS:")){
+			System.out.println("STATUSACK"+acknowledge);
 		}
 		if(ack_type.equals("event")){
 			System.out.println(JSONInput.get("event"));
 			System.out.println(JSONInput.toString());
 		}
+		
 	}
 
 	private void handleMapObject() throws JSONException {
@@ -160,7 +167,7 @@ public class MultipleSocketServer implements Runnable {
 			if (!usernames[i].equals(user)) {
 				ipToUpdate[i] = (String) ip[i];
 				System.out.println("Update ska skickas till: " + usernames[i]
-						+ " @ " + ipToUpdate[i]);
+				                                                           + " @ " + ipToUpdate[i]);
 			}
 		}
 	}
@@ -191,7 +198,7 @@ public class MultipleSocketServer implements Runnable {
 		for (int i = 0; i < users.length; i++) {
 			if (!userip[i].toString().equals(Association.getIP(getUser()))) {
 				try {
-					Sender.sendContact(c, 4445, userip[i].toString());
+					Sender.sendContact(c, userip[i].toString());
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -209,6 +216,7 @@ public class MultipleSocketServer implements Runnable {
 			handleAcknowledge();
 			break;
 		case MAP_OBJECTS:
+			System.out.println("hŠr");
 			handleMapObject();
 			break;
 		case EVENT:
@@ -216,7 +224,7 @@ public class MultipleSocketServer implements Runnable {
 		case ALL_CONTACTS:
 			ArrayList<Contact> contacts = MySQLDatabase.getAllContacts();
 			String ip = Association.getIP(user).toString();
-			Sender.sendContacts(contacts, ip, 4445);
+			Sender.sendContacts(contacts, ip);
 			break;
 		case CONTACT:
 			handleContact();
@@ -257,7 +265,6 @@ public class MultipleSocketServer implements Runnable {
 		if (JSONInput.has("ack")) {
 			this.acknowledge = (String) JSONInput.get("ack");
 			requestType = RequestType.ACKNOWLEDGE;
-			System.out.println("Klienten ackade: " + acknowledge);
 		}
 	}
 

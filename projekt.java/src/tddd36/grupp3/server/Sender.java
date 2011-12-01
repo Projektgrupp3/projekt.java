@@ -9,12 +9,17 @@ import java.util.ArrayList;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * SERVER-SENDER-KLASS
+ */
+
 public class Sender {
 
-	private static String COM_IP;
-	// private static String COM_IP = "192.168.1.7";
+
+	private static String COM_IP = "130.236.227.61";
 	private static int COM_PORT = 4445;
 	//private static int COM_PORT = 1561;
+
 	private static PrintWriter pw;
 	private static Socket s;
 
@@ -65,6 +70,7 @@ public class Sender {
 		try {
 			setUpConnection();
 			pw.println(object.toString());
+			System.out.println("skickat");
 			closeConnection();
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
@@ -91,11 +97,10 @@ public class Sender {
 			e.printStackTrace();
 		}
 	}
-	public static void sendContact(Contact c, int port,String ip ) throws IOException, JSONException{
+	public static void sendContact(Contact c, String ip ) throws IOException, JSONException{
 		JSONObject test = new JSONObject();
 		StringBuffer sb = new StringBuffer();
 		COM_IP = ip;
-		COM_PORT = port;
 		try {
 			String name=c.getName();
 			String sipaddress=c.getSipaddress();	
