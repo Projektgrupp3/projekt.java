@@ -18,7 +18,7 @@ public class MultipleSocketServer implements Runnable {
 
 	private int ID = 0;
 	private int AUTH_STATUS = 0;
-	
+
 	private static final int LISTEN_PORT = 4444;
 
 	private String input;
@@ -85,15 +85,16 @@ public class MultipleSocketServer implements Runnable {
 			loginThread.start();
 
 			while (AUTH_STATUS == 0) {
-//				System.out.println("Väntar på AUTH_STATUS");
+				System.out.println("VÄNTAR");
 			}
 
 			if (AUTH_STATUS != 9) {
 				JSONOutput = new JSONObject();
-				System.out.println(AUTH_STATUS);
 
 				ipToUpdate = new String[1];
 				ipToUpdate[0] = connection.getInetAddress().getHostAddress();
+
+				Association.printAll();
 
 				switch (AUTH_STATUS) {
 				case 1:
@@ -123,16 +124,16 @@ public class MultipleSocketServer implements Runnable {
 	}
 
 	private void handleAcknowledge() throws JSONException {
-		
 		if(acknowledge.equals("unit")){
-			System.out.println("UNITACK"+acknowledge);
+			System.out.println(acknowledge);
 		}
-		if(acknowledge.startsWith("STATUS:")){
+		else if(acknowledge.equals("event")){
+			System.out.println("Uppdrag: "+JSONInput.get("eventID")+ " har blivit "+JSONInput.get("event"));
+		}
+		else if(acknowledge.startsWith("STATUS:")){
 			System.out.println("STATUSACK"+acknowledge);
 		}
-		if(acknowledge.startsWith("ACCEPTERAT") || acknowledge.startsWith("NEKAT")){
-			System.out.println("MISSIONACK"+acknowledge);
-		}
+
 	}
 
 	private void handleMapObject() throws JSONException {
@@ -160,7 +161,7 @@ public class MultipleSocketServer implements Runnable {
 			if (!usernames[i].equals(user)) {
 				ipToUpdate[i] = (String) ip[i];
 				System.out.println("Update ska skickas till: " + usernames[i]
-						+ " @ " + ipToUpdate[i]);
+				                                                           + " @ " + ipToUpdate[i]);
 			}
 		}
 	}
@@ -209,6 +210,7 @@ public class MultipleSocketServer implements Runnable {
 			handleAcknowledge();
 			break;
 		case MAP_OBJECTS:
+			System.out.println("hŠr");
 			handleMapObject();
 			break;
 		case EVENT:
