@@ -11,6 +11,7 @@ public class LoginManager implements Runnable {
 
 	public final static int AUTH_FAILED = 1;
 	public final static int AUTH_OK = 2;
+	public final static int LOGGED_OUT = 9;
 	//	public final static int NOT_ASSOCIATED = 3;
 	//	public final static int ASSOCIATED = 4;
 
@@ -29,18 +30,25 @@ public class LoginManager implements Runnable {
 	public void notifyAndSet(int i){
 		serversocket.setAuthentication(i);
 	}
+	public void logout(){
+		Association.removeUser(serversocket.getUser());
+		notifyAndSet(LOGGED_OUT);
+	}
 
 	@Override
 	public void run() {
+		if(serversocket.getRequestType() != RequestType.LOGOUT){
+			if(Database.checkUser(serversocket.getUser()) && 
+					Database.getUserPass(serversocket.getUser()).equals(serversocket.getPassword())){
+				Association.addUser(serversocket.getUser(), adress);
+				notifyAndSet(AUTH_OK);
 
-		if(Database.checkUser(serversocket.getUser()) && 
-				Database.getUserPass(serversocket.getUser()).equals(serversocket.getPassword())){
-			Association.addUser(serversocket.getUser(), adress);
-			notifyAndSet(AUTH_OK);
-			
 			}
-		else{
-			notifyAndSet(AUTH_FAILED);
+			else{
+				notifyAndSet(AUTH_FAILED);
+			}
 		}
+		else
+			logout();
 	}
 }
