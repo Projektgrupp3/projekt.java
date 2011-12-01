@@ -18,7 +18,7 @@ public class MultipleSocketServer implements Runnable {
 
 	private int ID = 0;
 	private int AUTH_STATUS = 0;
-	private static final int LISTEN_PORT = 1560;
+	private static final int LISTEN_PORT = 1879;
 
 	private String input;
 	private String request;
@@ -84,16 +84,17 @@ public class MultipleSocketServer implements Runnable {
 			loginThread.start();
 
 			while (AUTH_STATUS == 0) {
-				System.out.println("Väntar på AUTH_STATUS");
+				System.out.println("VÄNTAR");
 			}
 
 			if (AUTH_STATUS != 9) {
 				JSONOutput = new JSONObject();
-				System.out.println(AUTH_STATUS);
 
 				ipToUpdate = new String[1];
 				ipToUpdate[0] = connection.getInetAddress().getHostAddress();
 
+				Association.printAll();
+				
 				switch (AUTH_STATUS) {
 				case 1:
 					JSONOutput.put("auth", "authfailed");
@@ -123,10 +124,13 @@ public class MultipleSocketServer implements Runnable {
 
 	private void handleAcknowledge() throws JSONException {
 		String ack_type = JSONInput.getString("ack");
-		
+		System.out.println(ack_type);
 		if(ack_type.equals("unit")){
-			System.out.println(JSONInput.get("unit"));
+			System.out.println("Klienten valde enhet: "+JSONInput.get("unit"));
 			//MySQLDatabase.setUnitToUser(user, UnitID)
+		}
+		else if(ack_type.equals("event")){
+			System.out.println("Uppdrag: "+JSONInput.get("eventID")+ " har blivit "+JSONInput.get("event"));
 		}
 
 	}
@@ -205,6 +209,7 @@ public class MultipleSocketServer implements Runnable {
 			handleAcknowledge();
 			break;
 		case MAP_OBJECTS:
+			System.out.println("här");
 			handleMapObject();
 			break;
 		case EVENT:
