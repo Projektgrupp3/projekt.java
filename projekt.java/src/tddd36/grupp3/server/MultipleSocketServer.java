@@ -125,13 +125,13 @@ public class MultipleSocketServer implements Runnable {
 	private void handleAcknowledge() throws JSONException {
 		
 		if(acknowledge.equals("unit")){
-			System.out.println("UNITACK");
+			System.out.println("UNITACK"+acknowledge);
 		}
 		if(acknowledge.startsWith("STATUS:")){
-			System.out.println("STATUSACK");
+			System.out.println("STATUSACK"+acknowledge);
 		}
 		if(acknowledge.startsWith("ACCEPTERAT") || acknowledge.startsWith("NEKAT")){
-			System.out.println("MISSIONACK");
+			System.out.println("MISSIONACK"+acknowledge);
 		}
 	}
 
@@ -257,7 +257,6 @@ public class MultipleSocketServer implements Runnable {
 		if (JSONInput.has("ack")) {
 			this.acknowledge = (String) JSONInput.get("ack");
 			requestType = RequestType.ACKNOWLEDGE;
-			System.out.println("Klienten ackade: " + acknowledge);
 		}
 	}
 
