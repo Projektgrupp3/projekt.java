@@ -503,7 +503,7 @@ public class MySQLDatabase {
 			try {
 				connect();
 				st=con.createStatement();
-				String query = "update contacts SET sipaddress = '"+sipaddress+"' Where name = '"+name+"'";
+				String query = "update contacts SET SipAddress = '"+sipaddress+"' Where Name = '"+name+"'";
 				st.executeUpdate(query);       
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -515,7 +515,7 @@ public class MySQLDatabase {
 			connect();
 			try {
 				st=con.createStatement();
-				String query = "INSERT INTO contacts(name,sipaddress) VALUES('"+
+				String query = "INSERT INTO contacts(Name,SipAddress) VALUES('"+
 						name+"','"+sipaddress+"')";
 				st.executeUpdate(query);       
 			} catch (SQLException e) {
