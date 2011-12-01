@@ -9,12 +9,15 @@ import java.util.ArrayList;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * SERVER-SENDER-KLASS
+ */
+
 public class Sender {
+
 
 	private static String COM_IP;
 	// private static String COM_IP = "192.168.1.7";
-	
-	// private static int COM_PORT = 4445;
 
 	private static int COM_PORT = 4445;
 	//private static int COM_PORT = 1561;

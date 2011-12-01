@@ -19,7 +19,7 @@ public class MultipleSocketServer implements Runnable {
 	private int ID = 0;
 	private int AUTH_STATUS = 0;
 	
-	private static final int LISTEN_PORT = 4446;
+	private static final int LISTEN_PORT = 4444;
 
 	private String input;
 	private String request;
@@ -85,7 +85,7 @@ public class MultipleSocketServer implements Runnable {
 			loginThread.start();
 
 			while (AUTH_STATUS == 0) {
-				System.out.println("VŠntar pŒ AUTH_STATUS");
+//				System.out.println("Väntar på AUTH_STATUS");
 			}
 
 			if (AUTH_STATUS != 9) {
@@ -123,13 +123,16 @@ public class MultipleSocketServer implements Runnable {
 	}
 
 	private void handleAcknowledge() throws JSONException {
-		String ack_type = JSONInput.getString("ack");
 		
-		if(ack_type.equals("unit")){
-			System.out.println(JSONInput.get("unit"));
-			//MySQLDatabase.setUnitToUser(user, UnitID)
+		if(acknowledge.equals("unit")){
+			System.out.println("UNITACK");
 		}
-
+		if(acknowledge.startsWith("STATUS:")){
+			System.out.println("STATUSACK");
+		}
+		if(acknowledge.startsWith("ACCEPTERAT") || acknowledge.startsWith("NEKAT")){
+			System.out.println("MISSIONACK");
+		}
 	}
 
 	private void handleMapObject() throws JSONException {
