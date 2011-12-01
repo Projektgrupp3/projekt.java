@@ -306,13 +306,13 @@ public class MySQLDatabase {
 		return null;
 	}
 
-	public static void setUsersUnit(String userName, int UnitID){
+	public static void setUsersUnit(String userName, String UnitID){
 		if(checkUser(userName)){
 			connect();
 			st=null;
 			try{
 				st=con.createStatement();
-				st.executeUpdate("UPDATE user SET Assigned Unit = '"+Integer.toString(UnitID)+"' "
+				st.executeUpdate("UPDATE user SET AssignedUnit = '"+UnitID+"' "
 						+ "WHERE userName = '"+userName+"'");
 				disconnect();
 			} catch (SQLException e) {
@@ -424,13 +424,13 @@ public class MySQLDatabase {
 		//TODO:
 	}
 	
-	public static void setEvent(String userName, Event event){
+	public static void setEvent(String userName, String eventID){
 		if(checkUser(userName)){
 			connect();
 			st=null;
 			try{
 				st=con.createStatement();
-				st.executeUpdate("UPDATE user SET Event = '"+event.getID()+"' "
+				st.executeUpdate("UPDATE user SET Event = '"+eventID+"' "
 						+ "WHERE userName = '"+userName+"'");
 				disconnect();
 			} catch (SQLException e) {

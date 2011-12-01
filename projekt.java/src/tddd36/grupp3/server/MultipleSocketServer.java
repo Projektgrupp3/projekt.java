@@ -19,7 +19,7 @@ public class MultipleSocketServer implements Runnable {
 	private int ID = 0;
 	private int AUTH_STATUS = 0;
 
-	private static final int LISTEN_PORT = 1879;
+	private static final int LISTEN_PORT = 4445;
 
 	private String input;
 	private String request;
@@ -124,22 +124,21 @@ public class MultipleSocketServer implements Runnable {
 	}
 
 	private void handleAcknowledge() throws JSONException {
-		String ack_type = JSONInput.getString("ack");
 		
 		if(acknowledge.equals("unit")){
-			System.out.println(acknowledge);
+			MySQLDatabase.setUsersUnit(JSONInput.getString("user"), JSONInput.getString("unit"));
+			
 		}
 		else if(acknowledge.equals("event")){
 			System.out.println("Uppdrag: "+JSONInput.get("eventID")+ " har blivit "+JSONInput.get("event"));
+			if(JSONInput.getString("event").equals("ACCEPTERAT")){
+				MySQLDatabase.setEvent(JSONInput.getString("user"), JSONInput.getString("eventID"));
+			}
 		}
 		else if(acknowledge.startsWith("STATUS:")){
 			System.out.println("STATUSACK"+acknowledge);
 		}
-		if(ack_type.equals("event")){
-			System.out.println(JSONInput.get("event"));
-			System.out.println(JSONInput.toString());
-		}
-		
+
 	}
 
 	private void handleMapObject() throws JSONException {
