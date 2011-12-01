@@ -14,7 +14,7 @@ public class Unit {
 		createUnit();
 	}
 	
-	public Unit(int id, String regnr){
+	public Unit(int id, String status){
 		this.unitId = id;
 		this.regnr = regnr;
 		state = Status.OFFLINE;
