@@ -126,7 +126,11 @@ public class MultipleSocketServer implements Runnable {
 		
 		if(ack_type.equals("unit")){
 			System.out.println(JSONInput.get("unit"));
-			//MySQLDatabase.setUnitToUser(user, UnitID)
+			//MySQLDatabase.setUsersUnit(user, UnitID);
+		}
+		if(ack_type.equals("event")){
+			System.out.println(JSONInput.get("event"));
+			System.out.println(JSONInput.toString());
 		}
 
 	}

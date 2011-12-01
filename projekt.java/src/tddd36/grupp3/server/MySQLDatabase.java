@@ -28,13 +28,14 @@ public class MySQLDatabase {
 			String userName = u.getUserName();
 			String password = u.getPassword();
 			String assignedUnits = "?";
+			String event = null;
 			connect();
 			st=null;
 			try {
 				st=con.createStatement();
-				String query = "INSERT INTO user(firstName,lastName,userName,Password,IP,Assigned Unit) " +
+				String query = "INSERT INTO user(firstName,lastName,userName,Password,IP,Assigned Unit,Event) " +
 						"VALUES('"+firstName+"','"+lastName+"','"+userName+"','"+password+"','"+
-						"null','"+assignedUnits+"')";
+						"null','"+assignedUnits+"','"+event+"')";
 				st.executeUpdate(query);		
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -421,6 +422,44 @@ public class MySQLDatabase {
 	}
 	public static void addAlarm(Event a){
 		//TODO:
+	}
+	
+	public static void setEvent(String userName, Event event){
+		if(checkUser(userName)){
+			connect();
+			st=null;
+			try{
+				st=con.createStatement();
+				st.executeUpdate("UPDATE user SET Event = '"+event.getID()+"' "
+						+ "WHERE userName = '"+userName+"'");
+				disconnect();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public static String getEvent(String userName){
+		if(checkUser(userName)){
+			connect();
+			st=null;
+			try{
+				st=con.createStatement();
+				String query = "SELECT * from user WHERE userName='"+userName+"'";
+				rs = st.executeQuery(query);
+				while(rs.next()){
+					if(rs.getString(3).equals(userName)){
+						String s = rs.getString(7);
+						disconnect();
+						return s;
+					}
+				}
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
+			disconnect();
+		}
+		return null;
 	}
 
 	public static boolean checkContact(Contact c){
