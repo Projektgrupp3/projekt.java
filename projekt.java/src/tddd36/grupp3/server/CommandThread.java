@@ -97,9 +97,9 @@ public class CommandThread implements Runnable {
 
 		}
 		if(input.equals("/print")){
-			MySQLDatabase.printAllUsers();
-			MySQLDatabase.printAllUnits();
-			MySQLDatabase.printAllAlarms();
+			System.out.println(MySQLDatabase.printAllUsers());
+			System.out.println(MySQLDatabase.printAllUnits());
+			//MySQLDatabase.printAllAlarms();
 		}
 		if(input.equals("/mapuserunit")){
 			Scanner in = new Scanner(System.in);

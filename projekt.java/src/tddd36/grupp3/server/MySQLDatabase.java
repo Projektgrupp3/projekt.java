@@ -158,9 +158,18 @@ public class MySQLDatabase {
 			rs = stmt.executeQuery(query);
 			StringBuffer sb = new StringBuffer();
 			while (rs.next()) {
-				sb.append("--------------\nUsername: "+rs.getString(3)+
-						"\nPassword: "+rs.getString(4)+"\nIP: "+rs.getInt(5)+
-						"\nAssigned Unit: "+rs.getString(6));
+				String [] list ={rs.getString(3), rs.getString(5),
+						rs.getString(6),rs.getString(7)};
+				for(int i=0; i<list.length;i++){
+					if(list[i]==null){
+						list[i]="None\t";
+					}
+				}
+				sb.append("---User: "+list[0]+"-------------------------|"+
+						"\nIP:\t\t\t"+list[1]+"\t|" +
+						"\nAssigned unit:\t\t"+list[2]+"\t|"+
+						"\nActive event:\t\t"+list[3]+"\t|" +
+								"\n----------------------------------------|\n\n");
 			}
 			disconnect();
 			return sb.toString();
@@ -182,12 +191,20 @@ public class MySQLDatabase {
 			rs = stmt.executeQuery(query);
 			StringBuffer sb = new StringBuffer();
 			while (rs.next()) {
-				sb.append("--------------\nunitID: "+rs.getString(1)+
-						"\nStatus: "+rs.getString(2)+"\nAssignedTo: "+rs.getString(3));
-			}
+				String [] list = {rs.getString(1),rs.getString(2),
+						rs.getString(3)};
+				for(int i=0; i<list.length;i++){
+					if(list[i]==null){
+						list[i]="None\t";
+					}
+				}
+					sb.append("---Unit: "+list[0]+"---------------------------|"+
+							"\nStatus:\t\t\t"+list[1]+"\t\t|" +
+							"\nAssigned to:\t\t"+list[2]+"\t|"+
+							"\n----------------------------------------|\n\n");
+				}
 			disconnect();
 			return sb.toString();
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
