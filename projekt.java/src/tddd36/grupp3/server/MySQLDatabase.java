@@ -165,11 +165,11 @@ public class MySQLDatabase {
 						list[i]="None\t";
 					}
 				}
-				sb.append("---User: "+list[0]+"-------------------------|"+
-						"\nIP:\t\t\t"+list[1]+"\t|" +
-						"\nAssigned unit:\t\t"+list[2]+"\t|"+
-						"\nActive event:\t\t"+list[3]+"\t|" +
-								"\n----------------------------------------|\n\n");
+				sb.append("+--User: "+list[0]+"-------------------------+"+
+						"\n|IP:\t\t\t"+list[1]+
+						"\n|Assigned unit:\t\t"+list[2]+
+						"\n|Active event:\t\t"+list[3]+
+								"\n+---------------------------------------+\n\n");
 			}
 			disconnect();
 			return sb.toString();
@@ -195,13 +195,13 @@ public class MySQLDatabase {
 						rs.getString(3)};
 				for(int i=0; i<list.length;i++){
 					if(list[i]==null){
-						list[i]="None\t";
+						list[i]="None\t\t";
 					}
 				}
-					sb.append("---Unit: "+list[0]+"---------------------------|"+
-							"\nStatus:\t\t\t"+list[1]+"\t\t|" +
-							"\nAssigned to:\t\t"+list[2]+"\t|"+
-							"\n----------------------------------------|\n\n");
+					sb.append("+--Unit: "+list[0]+"---------------------------+"+
+							"\n|Status:\t\t"+list[1] +
+							"\n|Assigned to:\t\t"+list[2]+
+							"\n+---------------------------------------+\n\n");
 				}
 			disconnect();
 			return sb.toString();
@@ -611,6 +611,8 @@ public class MySQLDatabase {
 	}
 	
 	public static void main(String [] args){
+		System.out.println(printAllUnits());
+		System.out.println(printAllUsers());
 	}
 }
 
