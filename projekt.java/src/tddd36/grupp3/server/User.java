@@ -6,6 +6,8 @@ public class User {
 	private String lastName;
 	private String userName;
 	private String password;
+	private String IP;
+	private String assignedUnit;
 	private int unitID;
 
 	public User (){
@@ -22,6 +24,16 @@ public class User {
 		this.userName = userName;
 		this.password = password;
 		this.unitID = unitID;
+	} 
+	
+	public User (String firstName, String lastName, String userName, String password, String IP, 
+			String assignedUnit){
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.userName = userName;
+		this.password = password;
+		this.IP = IP;
+		this.assignedUnit=assignedUnit;
 	} 
 
 	public void createUser(){

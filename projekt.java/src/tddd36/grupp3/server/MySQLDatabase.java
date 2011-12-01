@@ -27,15 +27,14 @@ public class MySQLDatabase {
 			String lastName = u.getLastName();
 			String userName = u.getUserName();
 			String password = u.getPassword();
-			int UnitID = u.getUnitID();
 			String assignedUnits = "?";
 			connect();
 			st=null;
 			try {
 				st=con.createStatement();
-				String query = "INSERT INTO user(firstName,lastName,userName,Password,UnitID,assignedUnits) " +
+				String query = "INSERT INTO user(firstName,lastName,userName,Password,IP,Assigned Unit) " +
 						"VALUES('"+firstName+"','"+lastName+"','"+userName+"','"+password+"','"+
-						UnitID+"','"+assignedUnits+"')";
+						"null','"+assignedUnits+"')";
 				st.executeUpdate(query);		
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -56,8 +55,8 @@ public class MySQLDatabase {
 			connect();
 			try {
 				st=con.createStatement();
-				String query = "INSERT INTO units(unitID,regNr,state) VALUES('"+
-						unitID+"','"+regNr+"','"+status+/*+'"name"'+*/"')";
+				String query = "INSERT INTO units(unitID,Status,AssignedTo,Name) VALUES('"+
+						unitID+"','"+status+"','"+/*+'"name"'+*/"')";
 				st.executeUpdate(query);		
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -81,8 +80,9 @@ public class MySQLDatabase {
 						String lastName = rs.getString(2);
 						String user = rs.getString(3);
 						String password = rs.getString(4);
-						int unitID = rs.getInt(5);
-						User u = new User(firstName, lastName, user,password, unitID);
+						String IP = rs.getString(5);
+						String assignedUnit = rs.getString(6);
+						User u = new User(firstName, lastName, user,password, IP,assignedUnit);
 						disconnect();
 						return u;
 					}
@@ -105,9 +105,9 @@ public class MySQLDatabase {
 				while(rs.next()){
 					if(rs.getString(1).equals(unitID)){
 						int ID = rs.getInt(1);
-						String regNr = rs.getString(2);
-						//Status status = rs.getString(3);
-						Unit u = new Unit(ID, regNr);
+						String status = rs.getString(2);
+						String assignedTo = rs.getString(3);
+						Unit u = new Unit(ID, status);
 						disconnect();
 						return u;
 					}
@@ -158,7 +158,8 @@ public class MySQLDatabase {
 			StringBuffer sb = new StringBuffer();
 			while (rs.next()) {
 				sb.append("--------------\nUsername: "+rs.getString(3)+
-						"\nPassword: "+rs.getString(4)+"\nUnitID: "+rs.getInt(5)+"\n");
+						"\nPassword: "+rs.getString(4)+"\nIP: "+rs.getInt(5)+
+						"\nAssigned Unit: "+rs.getString(6));
 			}
 			disconnect();
 			return sb.toString();
@@ -181,7 +182,7 @@ public class MySQLDatabase {
 			StringBuffer sb = new StringBuffer();
 			while (rs.next()) {
 				sb.append("--------------\nunitID: "+rs.getString(1)+
-						"\nregnr: "+rs.getString(2)+"\n");
+						"\nStatus: "+rs.getString(2)+"\nAssignedTo: "+rs.getString(3));
 			}
 			disconnect();
 			return sb.toString();
@@ -310,7 +311,7 @@ public class MySQLDatabase {
 			st=null;
 			try{
 				st=con.createStatement();
-				st.executeUpdate("UPDATE user SET assignedUnits = '"+Integer.toString(UnitID)+"' "
+				st.executeUpdate("UPDATE user SET Assigned Unit = '"+Integer.toString(UnitID)+"' "
 						+ "WHERE userName = '"+userName+"'");
 				disconnect();
 			} catch (SQLException e) {
@@ -349,8 +350,8 @@ public class MySQLDatabase {
 			st=null;
 			try{
 				st=con.createStatement();
-				st.executeUpdate("UPDATE units SET assignedUsers = '"+userName+"' "
-						+ "WHERE UnitID = '"+UnitID+"'");	
+				st.executeUpdate("UPDATE units SET AssignedTo = '"+userName+"' "
+						+ "WHERE unitID = '"+UnitID+"'");	
 				disconnect();
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -368,7 +369,7 @@ public class MySQLDatabase {
 				rs = st.executeQuery(query);
 				while(rs.next()){
 					if(rs.getString(1).equals(UnitID)){
-						String s = rs.getString(5);
+						String s = rs.getString(3);
 						disconnect();
 						return s;
 					}
@@ -376,7 +377,6 @@ public class MySQLDatabase {
 			}catch(SQLException e){
 				e.printStackTrace();
 			}
-
 			disconnect();
 		}
 		return null;
@@ -472,7 +472,6 @@ public class MySQLDatabase {
 		return null;
 	}
 
-
 	public static ArrayList<Contact> getAllContacts(){
 		connect();
 		rs=null;
@@ -527,9 +526,9 @@ public class MySQLDatabase {
 	}
 
 	public static void connect(){
-		String url = "jdbc:mysql://localhost:3306/entityList";
-		String user = "server";
-		String password = "starwars";
+		String url = "jdbc:mysql://db-und.ida.liu.se:3306/tddd36_proj3";
+		String user = "tddd36_proj3";
+		String password = "tddd36_proj3_94b3";
 
 		try {
 			con = DriverManager.getConnection(url,user,password);
@@ -553,6 +552,9 @@ public class MySQLDatabase {
 			Logger lgr = Logger.getLogger(Database.class.getName());
 			lgr.log(Level.WARNING, ex.getMessage(), ex);
 		}
+	}
+	
+	public static void main(String [] args){
 	}
 }
 
