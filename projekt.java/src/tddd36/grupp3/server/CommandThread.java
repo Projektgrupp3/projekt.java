@@ -70,7 +70,6 @@ public class CommandThread implements Runnable {
 		}
 		if(input.equals("/createevent")){
 			Event a = new Event();
-
 			a.createTestEvent();
 
 			Scanner in = new Scanner(System.in);

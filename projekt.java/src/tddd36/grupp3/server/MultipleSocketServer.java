@@ -32,7 +32,7 @@ public class MultipleSocketServer implements Runnable {
 	private int ID = 0;
 	private int AUTH_STATUS = 0;
 
-	private static final int LISTEN_PORT = 4445;
+	private static final int LISTEN_PORT = 1560;
 
 	private String input;
 	private String request;
@@ -93,11 +93,11 @@ public class MultipleSocketServer implements Runnable {
 			loginThread.start();
 
 			while (AUTH_STATUS == 0) {
-				test++;
-				test--;
+				System.out.println("VÄNTAR");
 			}
-
+			System.out.println("SLUT PÅ OÄNDLIG WHILE");
 			if (AUTH_STATUS != 9) {
+				System.out.println("AUTH_STATUS != 9");
 				JSONOutput = new JSONObject();
 
 				ipToUpdate = new String[1];
