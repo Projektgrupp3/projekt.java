@@ -19,7 +19,7 @@ public class MultipleSocketServer implements Runnable {
 	private int ID = 0;
 	private int AUTH_STATUS = 0;
 
-	private static final int LISTEN_PORT = 4444;
+	private static final int LISTEN_PORT = 1879;
 
 	private String input;
 	private String request;
@@ -192,7 +192,7 @@ public class MultipleSocketServer implements Runnable {
 		for (int i = 0; i < users.length; i++) {
 			if (!userip[i].toString().equals(Association.getIP(getUser()))) {
 				try {
-					Sender.sendContact(c, 4445, userip[i].toString());
+					Sender.sendContact(c, userip[i].toString());
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -218,7 +218,7 @@ public class MultipleSocketServer implements Runnable {
 		case ALL_CONTACTS:
 			ArrayList<Contact> contacts = MySQLDatabase.getAllContacts();
 			String ip = Association.getIP(user).toString();
-			Sender.sendContacts(contacts, ip, 4445);
+			Sender.sendContacts(contacts, ip);
 			break;
 		case CONTACT:
 			handleContact();
