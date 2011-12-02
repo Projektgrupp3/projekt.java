@@ -22,7 +22,7 @@ public class Event {
 	private String typeOfInjury;
 	private String accidentAdress;
 	private String description;
-	private int unitID;
+	private String unitID;
 
 	// TODO: MSTE FIXA String message och allt vad det innebŠr
 
@@ -36,21 +36,21 @@ public class Event {
 	//Map-event
 	public Event(String header, String CoordinateX, 
 			String CoordinateY,
-			String adress, int UnitID, String description){
+			String adress, String unitID, String description){
 
 		this.header = header;
 		this.coordinateX = CoordinateX;
 		this.coordinateY = CoordinateY;
 		this.adress = adress;
 		this.eventID = new SimpleDateFormat("yyMMddHHmmss").format(new Date());
-		this.unitID = UnitID;
+		this.unitID = unitID;
 		this.description = description;
 
 	}
 	//Injury
 	public Event(String AccidentType, String CoordinateX, 
 			String CoordinateY, Prio Priority, int NumberOfInjured, 
-			String Adress, String TypeOfInjury, String AccidentAdress, int UnitID, String description){
+			String Adress, String TypeOfInjury, String AccidentAdress, String UnitID, String description){
 
 		this.numberOfInjured = NumberOfInjured;
 		this.accidentType = AccidentType;
@@ -76,9 +76,9 @@ public class Event {
 		json.put("tempCoordY","15573080" );
 		json.put("accidentType", "Bilolycka");	
 		json.put("numberOfInjured", "3");
-		json.put("typeOfInjury", "Ryggont och šppna skŠrsŒr");
-		json.put("description", "Ihopkšrning mellan tvŒ bilar pŒ RiksvŠg 12");
-		json.put("unitID", "1");
+		json.put("typeOfInjury", "Ryggont och öppna skärsr");
+		json.put("description", "Ihopörning mellan två bilar på Riksväg 12");
+		//json.put("unitID", "1");
 
 	}
 	public void createEvent() throws JSONException{
@@ -256,11 +256,11 @@ public class Event {
 		this.eventID = eventID;
 	}
 
-	public int getUnitID() {
+	public String getUnitID() {
 		return unitID;
 	}
 
-	public void setUnitID(int unitID) {
+	public void setUnitID(String unitID) {
 		this.unitID = unitID;
 	}
 

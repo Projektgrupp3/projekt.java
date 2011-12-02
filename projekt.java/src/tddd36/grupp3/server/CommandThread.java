@@ -79,6 +79,7 @@ public class CommandThread implements Runnable {
 			ip = in.nextLine();
 
 			//			MySQLDatabase.addAlarm(a);	LŠgg in alarm i Databas
+			a.setUnitID(MySQLDatabase.getUsersUnit(Association.getUser(ip)));
 			Sender.send(a.getJSON(),ip);
 
 		}
@@ -87,7 +88,7 @@ public class CommandThread implements Runnable {
 			e.createEvent();
 
 			Scanner in = new Scanner(System.in);
-			System.out.println("To wich ip?");
+			System.out.println("To which ip?");
 			String ip;
 			ip = in.nextLine();
 			System.out.println(ip);
@@ -104,13 +105,13 @@ public class CommandThread implements Runnable {
 		if(input.equals("/mapuserunit")){
 			Scanner in = new Scanner(System.in);
 			String name;
-			int unitId;
+			String unitId;
 
 			do {
 				System.out.println("username to map");
 				name = in.nextLine();
 				System.out.println("unitId to map");
-				unitId = in.nextInt(); 
+				unitId = in.next(); 
 			}
 			while(!(MySQLDatabase.checkUser(name)) && !(MySQLDatabase.checkUnit(unitId)));
 
@@ -121,13 +122,13 @@ public class CommandThread implements Runnable {
 		if(input.equals("/mapalarmunit")){
 			Scanner in = new Scanner(System.in);
 			int alarmId;
-			int unitId;
+			String unitId;
 
 			do{
 				System.out.println("alarmId to map");
 				alarmId = in.nextInt();
 				System.out.println("unitId to map");
-				unitId = in.nextInt();
+				unitId = in.next();
 			}
 			while(!(MySQLDatabase.checkAlarm(alarmId)) && !(MySQLDatabase.checkUnit(unitId)));
 

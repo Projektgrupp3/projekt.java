@@ -8,7 +8,7 @@ public class User {
 	private String password;
 	private String IP;
 	private String assignedUnit;
-	private int unitID;
+	private String unitID;
 
 	public User (){
 	}
@@ -18,7 +18,7 @@ public class User {
 		this.password = password;
 	}
 	
-	public User (String firstName, String lastName, String userName, String password, int unitID){
+	public User (String firstName, String lastName, String userName, String password, String unitID){
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.userName = userName;
@@ -83,10 +83,10 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public int getUnitID() {
+	public String getUnitID() {
 		return unitID;
 	}
-	public void setUnitID(int unitID) {
+	public void setUnitID(String unitID) {
 		this.unitID = unitID;
 	}
 	public static void main(String[] args){

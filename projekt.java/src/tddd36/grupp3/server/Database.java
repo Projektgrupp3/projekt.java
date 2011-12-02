@@ -51,7 +51,7 @@ public class Database {
 		return false;
 	}
 
-	public static boolean checkUnit(int i){
+	public static boolean checkUnit(String i){
 		for(Unit u : unit){
 			if(u.getId() == i){
 				return true;
@@ -79,11 +79,11 @@ public class Database {
 	
 	public static void printAllAlarms(){
 		for(Event a : alarm){
+			if(a != null){
 			System.out.println("-------------");
 			System.out.println("Alarm created: " + a.getTime());
 			System.out.println("Alarm id: " + a.getID());
-			if(a.getUnitID() != 0)
-				System.out.println("UnitID: "+a.getUnitID());
+			System.out.println("UnitID: "+a.getUnitID());
 			System.out.println("Priority: " + a.getPriority());
 			System.out.println("Accident Adress: " + a.getAccidentAdress());
 			System.out.println("Coordinates: (X,Y): " + a.getCoordinateX() + "," + a.getCoordinateY());
@@ -91,17 +91,19 @@ public class Database {
 			System.out.println("Number of injured: " +a.getNumberOfInjured());
 			System.out.println("Type of injury/injuries: " + a.getTypeOfInjury());
 			System.out.println("-------------");
+			}
 		}
 	}
 	
 	public static void printAllUsers(){
 		for(User u : users){
+			if(u != null){
 			System.out.println("--------------");
 			System.out.println("username: "+u.getUserName());
 			System.out.println("password: "+u.getPassword());
-			if(u.getUnitID() != 0)
-				System.out.println("unitID: "+u.getUnitID());
+			System.out.println("unitID: "+u.getUnitID());
 			System.out.println("--------------");
+			}
 		}
 	}
 	

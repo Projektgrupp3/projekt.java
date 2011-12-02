@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class Unit {
 
-	private int unitId;
+	private String unitId;
 	private String regnr;
 	private Status state;
 	private String name;
@@ -14,7 +14,7 @@ public class Unit {
 		createUnit();
 	}
 	
-	public Unit(int id, String status){
+	public Unit(String id, String status){
 		this.unitId = id;
 		this.regnr = regnr;
 		state = Status.OFFLINE;
@@ -24,7 +24,7 @@ public class Unit {
 	public void createUnit(){
 		Scanner in = new Scanner(System.in);
 		System.out.println("Please enter a unitId");
-		this.unitId= in.nextInt();
+		this.unitId= in.next();
 
 		System.out.println("Please enter a registration number");
 		in.nextLine();
@@ -38,11 +38,11 @@ public class Unit {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public int getId() {
+	public String getId() {
 		return unitId;
 	}
 
-	public void setId(int id) {
+	public void setId(String id) {
 		this.unitId = id;
 	}
 

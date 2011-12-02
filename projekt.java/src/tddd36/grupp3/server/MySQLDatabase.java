@@ -49,7 +49,7 @@ public class MySQLDatabase {
 			System.out.println(u.getId()+" already exists in the database");
 		}
 		else{
-			int unitID = u.getId();
+			String unitID = u.getId();
 			String regNr = u.getRegnr();
 			Status status = u.getState();
 			//String name = u.getName();
@@ -95,7 +95,7 @@ public class MySQLDatabase {
 		return null;
 	}
 
-	public static Unit getUnit(int unitID){
+	public static Unit getUnit(String unitID){
 		if(checkUnit(unitID)){
 			connect();
 			try{
@@ -104,8 +104,8 @@ public class MySQLDatabase {
 				rs = st.executeQuery(query);
 
 				while(rs.next()){
-					if(rs.getString(1).equals(unitID)){
-						int ID = rs.getInt(1);
+					if(rs.getString(4).equals(unitID)){
+						String ID = rs.getString(1);
 						String status = rs.getString(2);
 						String assignedTo = rs.getString(3);
 						Unit u = new Unit(ID, status);
@@ -134,7 +134,7 @@ public class MySQLDatabase {
 		}
 	}
 
-	public static void deleteUnit(int unitID){
+	public static void deleteUnit(String unitID){
 		if(checkUnit(unitID)){
 			connect();
 			String query = "DELETE FROM unit WHERE UnitID ="+unitID;
@@ -278,7 +278,7 @@ public class MySQLDatabase {
 		return false;
 	}
 
-	public static boolean checkUnit(int unitID){
+	public static boolean checkUnit(String unitID){
 		connect();
 		st=null;
 		try{
@@ -286,7 +286,7 @@ public class MySQLDatabase {
 			String query = "SELECT * from units WHERE unitID="+unitID;
 			rs = st.executeQuery(query);
 			while(rs.next()){
-				if(rs.getInt(1)==unitID){
+				if(rs.getString(4).equals(unitID)){
 					disconnect();
 					return true;
 				}
@@ -362,22 +362,20 @@ public class MySQLDatabase {
 		return null;
 	}
 
-	public static void setUnitsUser(String userName, int UnitID){
-		if(checkUnit(UnitID)){
+	public static void setUnitsUser(String userName, String unitName){
 			connect();
 			st=null;
 			try{
 				st=con.createStatement();
 				st.executeUpdate("UPDATE units SET AssignedTo = '"+userName+"' "
-						+ "WHERE unitID = '"+UnitID+"'");	
+						+ "WHERE Name = '"+unitName+"'");	
 				disconnect();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-		}
 	}
 
-	public static String getUnitsUser(int UnitID){
+	public static String getUnitsUser(String UnitID){
 		if(checkUnit(UnitID)){
 			connect();
 			st=null;

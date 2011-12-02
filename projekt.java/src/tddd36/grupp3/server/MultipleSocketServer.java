@@ -14,6 +14,19 @@ import org.json.JSONObject;
 import com.google.gson.Gson;
 
 public class MultipleSocketServer implements Runnable {
+	
+	public static final String REQ_ALL_UNITS = "REQ_ALL_UNITS";
+	public static final String REQ_MAP_OBJECTS = "REQ_MAP_OBJECTS";
+	public static final String REQ_ALL_CONTACTS ="REQ_ALL_CONTACTS";
+	public static final String REQ_CONTACT ="REQ_CONTACT";
+	public static final String UPDATE_MAP_OBJECT = "UPDATE_MAP_OBJECT";
+	public static final String ACK_RECIEVED_EVENT = "ACK_RECIEVED_EVENT";
+	public static final String ACK_ACCEPTED_EVENT = "ACK_ACCEPTED_EVENT";
+	public static final String ACK_REJECTED_EVENT = "ACK_REJECTED_EVENT";
+	public static final String ACK_STATUS = "ACK_STATUS";
+	public static final String ACK_CHOSEN_UNIT = "ACK_CHOSEN_UNIT";
+	public static final String LOG_OUT = "LOG_OUT";
+	
 	private Socket connection;
 
 	private int ID = 0;
@@ -31,6 +44,7 @@ public class MultipleSocketServer implements Runnable {
 	private JSONObject JSONOutput;
 
 	private String[] ipToUpdate;
+	private int test;
 
 	private RequestType requestType;
 
@@ -41,12 +55,6 @@ public class MultipleSocketServer implements Runnable {
 
 	public static void main(String[] args) {
 		int count = 0;
-		Database.addUser(new User("enhet1", "password1"));
-		Database.addUser(new User("enhet2", "password2"));
-		Database.addUser(new User("enhet3", "password3"));
-		Database.addUnit(new Unit(0, "ABC123"));
-
-		// Association.addUser("testuser", "130.236.226.171");
 
 		try {
 			ServerSocket serversocket = new ServerSocket(LISTEN_PORT);
@@ -85,7 +93,8 @@ public class MultipleSocketServer implements Runnable {
 			loginThread.start();
 
 			while (AUTH_STATUS == 0) {
-				System.out.println("VÄNTAR");
+				test++;
+				test--;
 			}
 
 			if (AUTH_STATUS != 9) {
@@ -127,16 +136,22 @@ public class MultipleSocketServer implements Runnable {
 		
 		if(acknowledge.equals("unit")){
 			MySQLDatabase.setUsersUnit(JSONInput.getString("user"), JSONInput.getString("unit"));
+			MySQLDatabase.setUnitsUser(JSONInput.getString("user"), JSONInput.getString("unit"));
 			
 		}
 		else if(acknowledge.equals("event")){
 			System.out.println("Uppdrag: "+JSONInput.get("eventID")+ " har blivit "+JSONInput.get("event"));
-			if(JSONInput.getString("event").equals("ACCEPTERAT")){
+			if(JSONInput.getString("event").equals(ACK_RECIEVED_EVENT)){
+				
+			}
+			else if(JSONInput.getString("event").equals(ACK_ACCEPTED_EVENT)){
 				MySQLDatabase.setEvent(JSONInput.getString("user"), JSONInput.getString("eventID"));
+			}else if(JSONInput.getString("event").equals(ACK_REJECTED_EVENT)){
+				
 			}
 		}
-		else if(acknowledge.startsWith("STATUS:")){
-			System.out.println("STATUSACK"+acknowledge);
+		else if(acknowledge.equals("status")){
+			System.out.println("Användare: "+JSONInput.getString("user")+ " status: " + JSONInput.get("status"));
 		}
 
 	}
@@ -153,7 +168,7 @@ public class MultipleSocketServer implements Runnable {
 		ip = associations.values().toArray();
 
 		JSONOutput = new JSONObject();
-		JSONOutput.put("MAP_OBJECTS", JSONInput.getString("req"));
+		JSONOutput.put(UPDATE_MAP_OBJECT, JSONInput.getString("req"));
 		JSONOutput.put("header", JSONInput.getString("header"));
 		JSONOutput.put("description", JSONInput.getString("description"));
 		JSONOutput.put("tempCoordX", JSONInput.getString("tempCoordX"));
@@ -215,7 +230,6 @@ public class MultipleSocketServer implements Runnable {
 			handleAcknowledge();
 			break;
 		case MAP_OBJECTS:
-			System.out.println("hŠr");
 			handleMapObject();
 			break;
 		case EVENT:
@@ -245,20 +259,20 @@ public class MultipleSocketServer implements Runnable {
 		if (JSONInput.has("req")) {
 			this.request = JSONInput.getString("req");
 
-			if (request.equals("getContacts")) {
+			if (request.equals(REQ_ALL_CONTACTS)) {
 				requestType = RequestType.ALL_CONTACTS;
 			}
-			if (request.equals("contact")) {
+			if (request.equals(REQ_CONTACT)) {
 				requestType = RequestType.CONTACT;
 			}
-			if (request.equals(RequestType.ALL_UNITS.toString())) {
+			if (request.equals(REQ_ALL_UNITS)) {
 				requestType = RequestType.ALL_UNITS;
 			}
-			if (request.equals(RequestType.MAP_OBJECTS.toString())) {
+			if (request.equals(UPDATE_MAP_OBJECT)) {
 				requestType = RequestType.MAP_OBJECTS;
 			}
-			if (request.equals(RequestType.LOGOUT.toString())) {
-				requestType = RequestType.LOGOUT;
+			if (request.equals(LOG_OUT)) {
+				requestType = RequestType.LOG_OUT;
 			}
 		}
 		if (JSONInput.has("ack")) {
