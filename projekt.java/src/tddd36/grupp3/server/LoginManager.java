@@ -37,12 +37,14 @@ public class LoginManager implements Runnable {
 
 	@Override
 	public void run() {
-		if(serversocket.getRequestType() != RequestType.LOGOUT){
-			if(Database.checkUser(serversocket.getUser()) && 
-					Database.getUserPass(serversocket.getUser()).equals(serversocket.getPassword())){
+		if(serversocket.getRequestType() != RequestType.LOG_OUT){
+			System.out.println("User: "+serversocket.getUser() +"\n"+
+					"Password: "+serversocket.getPassword() + "\n"+
+					"Database Password: "+ MySQLDatabase.getUserPass(serversocket.getUser()));
+			if(MySQLDatabase.checkUser(serversocket.getUser()) && 
+					MySQLDatabase.getUserPass(serversocket.getUser()).equals(serversocket.getPassword())){
 				Association.addUser(serversocket.getUser(), adress);
 				notifyAndSet(AUTH_OK);
-
 			}
 			else{
 				notifyAndSet(AUTH_FAILED);

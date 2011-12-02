@@ -28,13 +28,14 @@ public class MySQLDatabase {
 			String userName = u.getUserName();
 			String password = u.getPassword();
 			String assignedUnits = "?";
+			String event = null;
 			connect();
 			st=null;
 			try {
 				st=con.createStatement();
-				String query = "INSERT INTO user(firstName,lastName,userName,Password,IP,Assigned Unit) " +
+				String query = "INSERT INTO user(firstName,lastName,userName,Password,IP,Assigned Unit,Event) " +
 						"VALUES('"+firstName+"','"+lastName+"','"+userName+"','"+password+"','"+
-						"null','"+assignedUnits+"')";
+						"null','"+assignedUnits+"','"+event+"')";
 				st.executeUpdate(query);		
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -48,7 +49,7 @@ public class MySQLDatabase {
 			System.out.println(u.getId()+" already exists in the database");
 		}
 		else{
-			int unitID = u.getId();
+			String unitID = u.getId();
 			String regNr = u.getRegnr();
 			Status status = u.getState();
 			//String name = u.getName();
@@ -94,7 +95,7 @@ public class MySQLDatabase {
 		return null;
 	}
 
-	public static Unit getUnit(int unitID){
+	public static Unit getUnit(String unitID){
 		if(checkUnit(unitID)){
 			connect();
 			try{
@@ -103,8 +104,8 @@ public class MySQLDatabase {
 				rs = st.executeQuery(query);
 
 				while(rs.next()){
-					if(rs.getString(1).equals(unitID)){
-						int ID = rs.getInt(1);
+					if(rs.getString(4).equals(unitID)){
+						String ID = rs.getString(1);
 						String status = rs.getString(2);
 						String assignedTo = rs.getString(3);
 						Unit u = new Unit(ID, status);
@@ -133,7 +134,7 @@ public class MySQLDatabase {
 		}
 	}
 
-	public static void deleteUnit(int unitID){
+	public static void deleteUnit(String unitID){
 		if(checkUnit(unitID)){
 			connect();
 			String query = "DELETE FROM unit WHERE UnitID ="+unitID;
@@ -157,9 +158,18 @@ public class MySQLDatabase {
 			rs = stmt.executeQuery(query);
 			StringBuffer sb = new StringBuffer();
 			while (rs.next()) {
-				sb.append("--------------\nUsername: "+rs.getString(3)+
-						"\nPassword: "+rs.getString(4)+"\nIP: "+rs.getInt(5)+
-						"\nAssigned Unit: "+rs.getString(6));
+				String [] list ={rs.getString(3), rs.getString(5),
+						rs.getString(6),rs.getString(7)};
+				for(int i=0; i<list.length;i++){
+					if(list[i]==null){
+						list[i]="None\t";
+					}
+				}
+				sb.append("+--User: "+list[0]+"-------------------------+"+
+						"\n|IP:\t\t\t"+list[1]+
+						"\n|Assigned unit:\t\t"+list[2]+
+						"\n|Active event:\t\t"+list[3]+
+								"\n+---------------------------------------+\n\n");
 			}
 			disconnect();
 			return sb.toString();
@@ -181,12 +191,20 @@ public class MySQLDatabase {
 			rs = stmt.executeQuery(query);
 			StringBuffer sb = new StringBuffer();
 			while (rs.next()) {
-				sb.append("--------------\nunitID: "+rs.getString(1)+
-						"\nStatus: "+rs.getString(2)+"\nAssignedTo: "+rs.getString(3));
-			}
+				String [] list = {rs.getString(1),rs.getString(2),
+						rs.getString(3)};
+				for(int i=0; i<list.length;i++){
+					if(list[i]==null){
+						list[i]="None\t\t";
+					}
+				}
+					sb.append("+--Unit: "+list[0]+"---------------------------+"+
+							"\n|Status:\t\t"+list[1] +
+							"\n|Assigned to:\t\t"+list[2]+
+							"\n+---------------------------------------+\n\n");
+				}
 			disconnect();
 			return sb.toString();
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -260,7 +278,7 @@ public class MySQLDatabase {
 		return false;
 	}
 
-	public static boolean checkUnit(int unitID){
+	public static boolean checkUnit(String unitID){
 		connect();
 		st=null;
 		try{
@@ -268,7 +286,7 @@ public class MySQLDatabase {
 			String query = "SELECT * from units WHERE unitID="+unitID;
 			rs = st.executeQuery(query);
 			while(rs.next()){
-				if(rs.getInt(1)==unitID){
+				if(rs.getString(4).equals(unitID)){
 					disconnect();
 					return true;
 				}
@@ -305,13 +323,13 @@ public class MySQLDatabase {
 		return null;
 	}
 
-	public static void setUsersUnit(String userName, int UnitID){
+	public static void setUsersUnit(String userName, String UnitID){
 		if(checkUser(userName)){
 			connect();
 			st=null;
 			try{
 				st=con.createStatement();
-				st.executeUpdate("UPDATE user SET Assigned Unit = '"+Integer.toString(UnitID)+"' "
+				st.executeUpdate("UPDATE user SET AssignedUnit = '"+UnitID+"' "
 						+ "WHERE userName = '"+userName+"'");
 				disconnect();
 			} catch (SQLException e) {
@@ -344,22 +362,20 @@ public class MySQLDatabase {
 		return null;
 	}
 
-	public static void setUnitsUser(String userName, int UnitID){
-		if(checkUnit(UnitID)){
+	public static void setUnitsUser(String userName, String unitName){
 			connect();
 			st=null;
 			try{
 				st=con.createStatement();
 				st.executeUpdate("UPDATE units SET AssignedTo = '"+userName+"' "
-						+ "WHERE unitID = '"+UnitID+"'");	
+						+ "WHERE Name = '"+unitName+"'");	
 				disconnect();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-		}
 	}
 
-	public static String getUnitsUser(int UnitID){
+	public static String getUnitsUser(String UnitID){
 		if(checkUnit(UnitID)){
 			connect();
 			st=null;
@@ -421,6 +437,44 @@ public class MySQLDatabase {
 	}
 	public static void addAlarm(Event a){
 		//TODO:
+	}
+	
+	public static void setEvent(String userName, String eventID){
+		if(checkUser(userName)){
+			connect();
+			st=null;
+			try{
+				st=con.createStatement();
+				st.executeUpdate("UPDATE user SET Event = '"+eventID+"' "
+						+ "WHERE userName = '"+userName+"'");
+				disconnect();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public static String getEvent(String userName){
+		if(checkUser(userName)){
+			connect();
+			st=null;
+			try{
+				st=con.createStatement();
+				String query = "SELECT * from user WHERE userName='"+userName+"'";
+				rs = st.executeQuery(query);
+				while(rs.next()){
+					if(rs.getString(3).equals(userName)){
+						String s = rs.getString(7);
+						disconnect();
+						return s;
+					}
+				}
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
+			disconnect();
+		}
+		return null;
 	}
 
 	public static boolean checkContact(Contact c){
@@ -555,6 +609,8 @@ public class MySQLDatabase {
 	}
 	
 	public static void main(String [] args){
+		System.out.println(printAllUnits());
+		System.out.println(printAllUsers());
 	}
 }
 

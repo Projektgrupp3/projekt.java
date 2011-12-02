@@ -17,9 +17,10 @@ public class Sender {
 
 
 	private static String COM_IP;
-	// private static String COM_IP = "192.168.1.7";
-	private static int COM_PORT = 1880;
-	// private static int COM_PORT = 4445;
+	//private static String COM_IP = "130.236.227.61";
+	private static int COM_PORT = 4444;
+	//private static int COM_PORT = 1561;
+
 	private static PrintWriter pw;
 	private static Socket s;
 
