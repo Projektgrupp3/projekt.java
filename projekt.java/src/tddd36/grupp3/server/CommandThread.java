@@ -19,14 +19,14 @@ import org.json.JSONObject;
 public class CommandThread implements Runnable {
 
 	public CommandThread(){
-		System.out.println("New input thread created");
+		System.out.println("Kommandotråd skapad");
 	}
 
 	public void run(){
 		Scanner in = new Scanner(System.in);
 		String cmd;
 		do{
-			System.out.println("Enter command");
+			System.out.println("Kommando:");
 			cmd = in.nextLine();
 
 			try {
@@ -52,7 +52,7 @@ public class CommandThread implements Runnable {
 			String message;
 			message = in.nextLine();
 
-			System.out.println("To which ip?");
+			System.out.println("Till vilket ip?");
 			String ip;
 			ip = in.nextLine();
 
@@ -73,7 +73,7 @@ public class CommandThread implements Runnable {
 			a.createTestEvent();
 
 			Scanner in = new Scanner(System.in);
-			System.out.println("To which ip?");
+			System.out.println("Till vilket ip?");
 			String ip;
 			ip = in.nextLine();
 
@@ -87,7 +87,7 @@ public class CommandThread implements Runnable {
 			e.createEvent();
 
 			Scanner in = new Scanner(System.in);
-			System.out.println("To which ip?");
+			System.out.println("Till vilket ip?");
 			String ip;
 			ip = in.nextLine();
 			System.out.println(ip);

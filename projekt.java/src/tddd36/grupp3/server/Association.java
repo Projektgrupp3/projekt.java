@@ -69,7 +69,7 @@ public class Association {
 		ip = userIpAssociations.values().toArray();
 
 		for (int i = 0; i < users.length; i++) {
-			System.out.println("User: " + users[i] + " @ " + ip[i]);
+			System.out.println(users[i] + " @ " + ip[i]);
 		}
 	}
 
