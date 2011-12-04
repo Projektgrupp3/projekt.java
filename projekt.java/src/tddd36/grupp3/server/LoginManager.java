@@ -41,9 +41,11 @@ public class LoginManager implements Runnable {
 			if(MySQLDatabase.checkUser(serversocket.getUser()) && 
 					MySQLDatabase.getUserPass(serversocket.getUser()).equals(serversocket.getPassword())){
 				Association.addUser(serversocket.getUser(), adress);
+				System.out.println("AUTH OK");
 				notifyAndSet(AUTH_OK);
 			}
 			else{
+				System.out.println("AUTH FAILED");
 				notifyAndSet(AUTH_FAILED);
 			}
 		}

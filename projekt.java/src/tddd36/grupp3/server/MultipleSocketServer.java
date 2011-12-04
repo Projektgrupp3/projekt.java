@@ -17,8 +17,8 @@ public class MultipleSocketServer implements Runnable {
 
 	public static final String REQ_ALL_UNITS = "REQ_ALL_UNITS";
 	public static final String REQ_MAP_OBJECTS = "REQ_MAP_OBJECTS";
-	public static final String REQ_ALL_CONTACTS ="REQ_ALL_CONTACTS";
-	public static final String REQ_CONTACT ="REQ_CONTACT";
+	public static final String REQ_ALL_CONTACTS = "REQ_ALL_CONTACTS";
+	public static final String REQ_CONTACT = "REQ_CONTACT";
 	public static final String UPDATE_MAP_OBJECT = "UPDATE_MAP_OBJECT";
 
 	public static final String ACK_RECIEVED_EVENT = "ACK_RECIEVED_EVENT";
@@ -101,6 +101,7 @@ public class MultipleSocketServer implements Runnable {
 			}
 			System.out.println();
 			if (AUTH_STATUS != 9) {
+				System.out.println("AUTH_STATUS != 9");
 				JSONOutput = new JSONObject();
 
 				ipToUpdate = new String[1];
@@ -124,7 +125,7 @@ public class MultipleSocketServer implements Runnable {
 				for (String ip : ipToUpdate) {
 					if (ip != null)
 						Sender.send(JSONOutput, ip);
-					System.out.println("Meddelande skickat till "+ip);
+					System.out.println("Meddelande skickat till " + ip);
 				}
 			}
 			isr.close();
@@ -141,51 +142,70 @@ public class MultipleSocketServer implements Runnable {
 
 	private void handleAcknowledge() throws JSONException {
 
-		if(acknowledge.equals("unit")){
-			MySQLDatabase.setUsersUnit(JSONInput.getString("user"), JSONInput.getString("unit"));
-			MySQLDatabase.setUnitsUser(JSONInput.getString("user"), JSONInput.getString("unit"));
+		if (acknowledge.equals("unit")) {
+			MySQLDatabase.setUsersUnit(JSONInput.getString("user"), JSONInput
+					.getString("unit"));
+			MySQLDatabase.setUnitsUser(JSONInput.getString("user"), JSONInput
+					.getString("unit"));
 
-		}
-		else if(acknowledge.equals("event")){
-			System.out.println("Uppdrag: "+JSONInput.get("eventID")+ " har blivit "+JSONInput.get("event"));
-			if(JSONInput.getString("event").equals(ACK_RECIEVED_EVENT)){
+		} else if (acknowledge.equals("event")) {
+			System.out.println("Uppdrag: " + JSONInput.get("eventID")
+					+ " har blivit " + JSONInput.get("event"));
+			if (JSONInput.getString("event").equals(ACK_RECIEVED_EVENT)) {
+
+			} else if (JSONInput.getString("event").equals(ACK_ACCEPTED_EVENT)) {
+				MySQLDatabase.setEvent(JSONInput.getString("user"), JSONInput
+						.getString("eventID"));
+			} else if (JSONInput.getString("event").equals(ACK_REJECTED_EVENT)) {
 
 			}
-			else if(JSONInput.getString("event").equals(ACK_ACCEPTED_EVENT)){
-				MySQLDatabase.setEvent(JSONInput.getString("user"), JSONInput.getString("eventID"));
-			}else if(JSONInput.getString("event").equals(ACK_REJECTED_EVENT)){
-
-			}
-		}
-		else if(acknowledge.equals("status")){
-			System.out.println("Anv‰ndare: "+JSONInput.getString("user")+ " status: " + JSONInput.get("status"));
-		}
-		else if(acknowledge.equals("report")){
-			if(JSONInput.getString("report").equals(ACK_VERIFICATION_REPORT)){
+		} else if (acknowledge.equals("status")) {
+			System.out.println("Anv‰ndare: " + JSONInput.getString("user")
+					+ " status: " + JSONInput.get("status"));
+		} else if (acknowledge.equals("report")) {
+			if (JSONInput.getString("report").equals(ACK_VERIFICATION_REPORT)) {
 				System.out.println("----------");
 				System.out.println("Verifikationsrapport mottagen:");
-				System.out.println("Event ID: "+JSONInput.getString("eventID"));
-				System.out.println("Enhet: "+MySQLDatabase.getUsersUnit(JSONInput.getString("user")));
-				System.out.println("Allvarlig händelse: "+JSONInput.getString("seriousEvent"));
-				System.out.println("Typ av skador: "+JSONInput.getString("typeOfInjury"));
-				System.out.println("Hot / Risker: "+JSONInput.getString("threats"));
-				System.out.println("Antal skadade: "+JSONInput.getString("numberOfInjuries"));
-				System.out.println("Behöver extra resurser: "+JSONInput.getString("extraResources"));
-				System.out.println("Antal % av området genomsökt"+JSONInput.getString("areaSearched"));
-				System.out.println("Tid för avtransport "+JSONInput.getString("timeOfDeparture"));
+				System.out.println("Event ID: "
+						+ JSONInput.getString("eventID"));
+				System.out.println("Enhet: "
+						+ MySQLDatabase.getUsersUnit(JSONInput
+								.getString("user")));
+				System.out.println("Allvarlig händelse: "
+						+ JSONInput.getString("seriousEvent"));
+				System.out.println("Typ av skador: "
+						+ JSONInput.getString("typeOfInjury"));
+				System.out.println("Hot / Risker: "
+						+ JSONInput.getString("threats"));
+				System.out.println("Antal skadade: "
+						+ JSONInput.getString("numberOfInjuries"));
+				System.out.println("Behöver extra resurser: "
+						+ JSONInput.getString("extraResources"));
+				System.out.println("Antal % av området genomsökt"
+						+ JSONInput.getString("areaSearched"));
+				System.out.println("Tid för avtransport "
+						+ JSONInput.getString("timeOfDeparture"));
 				System.out.println("----------");
-			}
-			else if(JSONInput.getString("report").equals(ACK_WINDOW_REPORT)){
+			} else if (JSONInput.getString("report").equals(ACK_WINDOW_REPORT)) {
 				System.out.println("----------");
 				System.out.println("Vindruterapport mottagen:");
-				System.out.println("Event ID: "+JSONInput.getString("eventID"));
-				System.out.println("Enhet: "+MySQLDatabase.getUsersUnit(JSONInput.getString("user")));
-				System.out.println("Allvarlig händelse: "+JSONInput.getString("seriousEvent"));
-				System.out.println("Typ av skador: "+JSONInput.getString("typeOfInjury"));
-				System.out.println("Hot / Risker: "+JSONInput.getString("threats"));
-				System.out.println("Antal skadade: "+JSONInput.getString("numberOfInjuries"));
-				System.out.println("Behöver extra resurser: "+JSONInput.getString("extraResources"));
-				System.out.println("Exakt lokalisation på olycka: "+JSONInput.getString("exactLocation"));
+				System.out.println("Event ID: "
+						+ JSONInput.getString("eventID"));
+				System.out.println("Enhet: "
+						+ MySQLDatabase.getUsersUnit(JSONInput
+								.getString("user")));
+				System.out.println("Allvarlig händelse: "
+						+ JSONInput.getString("seriousEvent"));
+				System.out.println("Typ av skador: "
+						+ JSONInput.getString("typeOfInjury"));
+				System.out.println("Hot / Risker: "
+						+ JSONInput.getString("threats"));
+				System.out.println("Antal skadade: "
+						+ JSONInput.getString("numberOfInjuries"));
+				System.out.println("Behöver extra resurser: "
+						+ JSONInput.getString("extraResources"));
+				System.out.println("Exakt lokalisation på olycka: "
+						+ JSONInput.getString("exactLocation"));
 				System.out.println("----------");
 			}
 		}
@@ -216,7 +236,7 @@ public class MultipleSocketServer implements Runnable {
 			if (!usernames[i].equals(user)) {
 				ipToUpdate[i] = (String) ip[i];
 				System.out.println("Update ska skickas till: " + usernames[i]
-				                                                           + " @ " + ipToUpdate[i]);
+						+ " @ " + ipToUpdate[i]);
 			}
 		}
 	}
@@ -282,7 +302,7 @@ public class MultipleSocketServer implements Runnable {
 	private void interpretJSONString(String input) throws JSONException {
 		JSONInput = new JSONObject(input);
 
-		System.out.println("Meddelande från klient: "+input);
+		System.out.println("Meddelande från klient: " + input);
 
 		if (JSONInput.has("user")) {
 			this.user = JSONInput.getString("user");
