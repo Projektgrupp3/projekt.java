@@ -78,7 +78,7 @@ public class Event {
 		json.put("numberOfInjured", "3");
 		json.put("typeOfInjury", "Ryggont och öppna skärsr");
 		json.put("description", "Ihopörning mellan två bilar på Riksväg 12");
-		//json.put("unitID", "1");
+		
 
 	}
 	public void createEvent() throws JSONException{
@@ -262,6 +262,11 @@ public class Event {
 
 	public void setUnitID(String unitID) {
 		this.unitID = unitID;
+		try {
+			json.put("unitID", unitID);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public String processInput(String typeOfAccident) {
