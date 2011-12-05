@@ -175,7 +175,7 @@ public class MultipleSocketServer implements Runnable {
 				System.out.println("Hot / Risker: "+JSONInput.getString("threats"));
 				System.out.println("Antal skadade: "+JSONInput.getString("numberOfInjuries"));
 				System.out.println("Behöver extra resurser: "+JSONInput.getString("extraResources"));
-				System.out.println("Antal % av omrŒdet genomsškt"+JSONInput.getString("areaSearched"));
+				System.out.println("Antal % av området genomsškt"+JSONInput.getString("areaSearched"));
 				System.out.println("Tid för avtransport "+JSONInput.getString("timeOfDeparture"));
 				System.out.println("----------");
 			} else if (JSONInput.getString("report").equals(ACK_WINDOW_REPORT)) {
