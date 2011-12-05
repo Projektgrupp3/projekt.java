@@ -36,7 +36,7 @@ public class MultipleSocketServer implements Runnable {
 	private int ID = 0;
 	private int AUTH_STATUS = 0;
 
-	private static final int LISTEN_PORT = 1560;
+	private static final int LISTEN_PORT = 3333;
 
 	private String input;
 	private String request;
@@ -146,7 +146,7 @@ public class MultipleSocketServer implements Runnable {
 			MySQLDatabase.setUsersUnit(JSONInput.getString("user"), JSONInput
 					.getString("unit"));
 			MySQLDatabase.setUnitsUser(JSONInput.getString("user"), JSONInput
-					.getString("unit"));
+					.getString("unit"),"add");
 
 		} else if (acknowledge.equals("event")) {
 			System.out.println("Uppdrag: " + JSONInput.get("eventID")
