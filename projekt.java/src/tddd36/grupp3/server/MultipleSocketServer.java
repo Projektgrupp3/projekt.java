@@ -36,7 +36,7 @@ public class MultipleSocketServer implements Runnable {
 	private int ID = 0;
 	private int AUTH_STATUS = 0;
 
-	private static final int LISTEN_PORT = 3333;
+	private static final int LISTEN_PORT = 1560;
 
 	private String input;
 	private String request;
@@ -91,45 +91,47 @@ public class MultipleSocketServer implements Runnable {
 					.getInetAddress().getHostAddress());
 			Thread loginThread = new Thread(loginRunnable);
 
-			input = br.readLine();
-			interpretJSONString(input);
+			while((input = br.readLine()) != null) {
 
-			loginThread.start();
+				interpretJSONString(input);
 
-			while (AUTH_STATUS == 0) {
-				System.out.print("");
-			}
-			System.out.println();
-			if (AUTH_STATUS != 9) {
-				System.out.println("AUTH_STATUS != 9");
-				JSONOutput = new JSONObject();
+				loginThread.start();
 
-				ipToUpdate = new String[1];
-				ipToUpdate[0] = connection.getInetAddress().getHostAddress();
-
-				System.out.println("----------");
-				System.out.println("Anslutna enheter: ");
-				Association.printAll();
-				System.out.println("----------");
-
-				switch (AUTH_STATUS) {
-				case 1:
-					JSONOutput.put("auth", "authfailed");
-					break;
-				case 2:
-					JSONOutput.put("auth", "authenticated");
-					handleRequest();
-					break;
+				while (AUTH_STATUS == 0) {
+					System.out.print("");
 				}
-				System.out.println(JSONOutput.toString());
-				for (String ip : ipToUpdate) {
-					if (ip != null)
-						Sender.send(JSONOutput, ip);
-					System.out.println("Meddelande skickat till " + ip);
+				System.out.println();
+				if (AUTH_STATUS != 9) {
+					System.out.println("AUTH_STATUS != 9");
+					JSONOutput = new JSONObject();
+
+					ipToUpdate = new String[1];
+					ipToUpdate[0] = connection.getInetAddress().getHostAddress();
+
+					System.out.println("----------");
+					System.out.println("Anslutna enheter: ");
+					Association.printAll();
+					System.out.println("----------");
+
+					switch (AUTH_STATUS) {
+					case 1:
+						JSONOutput.put("auth", "authfailed");
+						break;
+					case 2:
+						JSONOutput.put("auth", "authenticated");
+						handleRequest();
+						break;
+					}
+					System.out.println(JSONOutput.toString());
+					for (String ip : ipToUpdate) {
+						if (ip != null)
+							Sender.send(JSONOutput, ip);
+						System.out.println("Meddelande skickat till " + ip);
+					}
 				}
+				isr.close();
+				br.close();
 			}
-			isr.close();
-			br.close();
 		} catch (Exception e) {
 		} finally {
 			try {
@@ -138,6 +140,7 @@ public class MultipleSocketServer implements Runnable {
 				e.printStackTrace();
 			}
 		}
+
 	}
 
 	private void handleAcknowledge() throws JSONException {
@@ -217,7 +220,7 @@ public class MultipleSocketServer implements Runnable {
 			if (!usernames[i].equals(user)) {
 				ipToUpdate[i] = (String) ip[i];
 				System.out.println("Update ska skickas till: " + usernames[i]
-						+ " @ " + ipToUpdate[i]);
+				                                                           + " @ " + ipToUpdate[i]);
 			}
 		}
 	}
