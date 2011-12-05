@@ -70,7 +70,6 @@ public class Sender {
 		try {
 			setUpConnection();
 			pw.println(object.toString());
-			System.out.println("skickat");
 			closeConnection();
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
@@ -156,9 +155,7 @@ public class Sender {
 				sipaddress=c.getSipaddress();	
 				sb.append(name+","+ sipaddress+"/");
 			}
-			System.out.println(sb.toString());
 			jsonObject.put("contacts", sb);
-			System.out.println();
 			pw.println(jsonObject.toString());
 			closeConnection();
 		} catch (UnknownHostException e) {

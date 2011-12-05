@@ -22,7 +22,7 @@ public class LoginManager implements Runnable {
 	private String adress;
 
 	public LoginManager(MultipleSocketServer serversocket, String adress){
-		System.out.println("LoginManager created");
+		System.out.println("LoginManager skapad");
 		this.adress = adress;
 		this.serversocket = serversocket;
 	}
