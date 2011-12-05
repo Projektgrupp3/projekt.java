@@ -277,13 +277,13 @@ public class MySQLDatabase {
 		disconnect();
 		return false;
 	}
-
+	// TODO Här ändras unitID till Name
 	public static boolean checkUnit(String unitID){
 		connect();
 		st=null;
 		try{
 			st=con.createStatement();
-			String query = "SELECT * from units WHERE unitID="+unitID;
+			String query = "SELECT * from units WHERE Name rlike '"+unitID+"'";
 			rs = st.executeQuery(query);
 			while(rs.next()){
 				if(rs.getString(4).equals(unitID)){
@@ -324,6 +324,7 @@ public class MySQLDatabase {
 	}
 
 	public static void setUsersUnit(String userName, String UnitID){
+		
 		if(checkUser(userName)){
 			connect();
 			st=null;
@@ -363,31 +364,70 @@ public class MySQLDatabase {
 	}
 
 	public static void setUnitsUser(String userName, String unitName){
-			connect();
-			st=null;
-			try{
-				st=con.createStatement();
-				st.executeUpdate("UPDATE units SET AssignedTo = '"+userName+"' "
-						+ "WHERE Name = '"+unitName+"'");	
-				disconnect();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+		connect();
+		st=null;
+		try{
+			st=con.createStatement();
+			st.executeUpdate("UPDATE units SET AssignedTo = '"+userName+"' "
+					+ "WHERE Name rlike '"+unitName+"'");	
+			disconnect();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void setUnitsUser(String userName, String unitName, String action){
+		StringBuffer sb = new StringBuffer();
+		ArrayList<String> userlist = new ArrayList<String>();
+		if(action.equals("add")){
+			if(getUnitsUser(unitName)!=null){
+				userlist = getUnitsUser(unitName);
+				if(!userlist.contains(userName)){
+					userlist.add(userName);
+				}
+			}else{userlist.add(userName);}
+		}
+		if(action.equals("delete")){
+			userlist = getUnitsUser(unitName);
+			userlist.remove(userName);
+		}
+
+		for(String s:userlist){
+			sb.append(s+",");
+		}
+		connect();
+		st=null;
+		try{
+			st=con.createStatement();
+			st.executeUpdate("UPDATE units SET AssignedTo = '"+sb+"' "
+					+ "WHERE Name rlike '"+unitName+"'");	
+			disconnect();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
-	public static String getUnitsUser(String UnitID){
+	public static ArrayList<String> getUnitsUser(String UnitID){
+		String [] list;
 		if(checkUnit(UnitID)){
 			connect();
 			st=null;
 			try{
+				ArrayList<String> userlist = new ArrayList<String>();
 				st=con.createStatement();
-				String query = "SELECT * from units WHERE unitID='"+UnitID+"'";
+				String query = "SELECT * from units WHERE Name rlike '"+UnitID+"'";
 				rs = st.executeQuery(query);
 				while(rs.next()){
-					if(rs.getString(1).equals(UnitID)){
-						String s = rs.getString(3);
-						disconnect();
-						return s;
+					if(rs.getString(4).equals(UnitID)){
+						if(rs.getString(3)!=null){
+							String s = rs.getString(3);
+							disconnect();
+							list = s.split(",");
+							for(String temp: list){
+								userlist.add(temp);
+							}
+							return userlist;
+						}
 					}
 				}
 			}catch(SQLException e){
@@ -397,31 +437,6 @@ public class MySQLDatabase {
 		}
 		return null;
 	}
-
-	//	Ersatt av getUnitsUser
-	//	public static String getUserAssignedToUnit(int UnitID){
-	//		if(checkUnit(UnitID)){
-	//			connect();
-	//			st=null;
-	//			try{
-	//				st=con.createStatement();
-	//				String query = "SELECT * from units WHERE unitID='"+UnitID+"'";
-	//				rs = st.executeQuery(query);
-	//				while(rs.next()){
-	//					if(rs.getString(1).equals(UnitID)){
-	//						String s = rs.getString(5);
-	//						disconnect();
-	//						return s;
-	//					}
-	//				}
-	//			}catch(SQLException e){
-	//				e.printStackTrace();
-	//			}
-	//
-	//			disconnect();
-	//		}
-	//		return "";
-	//	}
 
 	public static Event getAlarm(int al) {
 		//TODO:
@@ -537,9 +552,7 @@ public class MySQLDatabase {
 			stmt = con.createStatement();
 			rs = stmt.executeQuery(query);
 			while (rs.next()) {
-
 				Contact c = new Contact(rs.getString(1), rs.getString(2));
-
 				contactList.add(c);
 			}
 
@@ -578,7 +591,23 @@ public class MySQLDatabase {
 			disconnect();
 		}
 	}
-
+	
+	public static void logoutUser(String userName){
+		setUnitsUser(userName, getUsersUnit(userName), "delete");
+		if(checkUser(userName)){
+			st=null;
+			try{
+				connect();
+				st=con.createStatement();
+				st.executeUpdate("UPDATE user SET IP = 'None' WHERE userName = '"+userName+"'");
+				st.executeUpdate("UPDATE user SET AssignedUnit = 'None' WHERE userName = '"+userName+"'");
+				st.executeUpdate("UPDATE user SET Event = 'None' WHERE userName = '"+userName+"'");
+			}catch(SQLException e){
+				e.printStackTrace();}
+			disconnect();	
+		}
+	}
+	
 	public static void connect(){
 		String url = "jdbc:mysql://db-und.ida.liu.se:3306/tddd36_proj3";
 		String user = "tddd36_proj3";
@@ -609,8 +638,7 @@ public class MySQLDatabase {
 	}
 	
 	public static void main(String [] args){
-		System.out.println(printAllUnits());
-		System.out.println(printAllUsers());
+		
 	}
 }
 
