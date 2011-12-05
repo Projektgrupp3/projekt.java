@@ -23,6 +23,7 @@ public class Event {
 	private String accidentAdress;
 	private String description;
 	private String unitID;
+	private boolean accepted;
 
 	// TODO: MSTE FIXA String message och allt vad det innebŠr
 
@@ -45,6 +46,7 @@ public class Event {
 		this.eventID = new SimpleDateFormat("yyMMddHHmmss").format(new Date());
 		this.unitID = unitID;
 		this.description = description;
+		accepted = false;
 
 	}
 	//Injury
@@ -63,7 +65,8 @@ public class Event {
 		this.eventID = new SimpleDateFormat("yyMMddHHmmss").format(new Date());
 		this.unitID = UnitID;
 		this.description = description;
-
+		accepted = false;
+		
 	}
 	public void createTestEvent() throws JSONException{
 		this.eventID = new SimpleDateFormat("yyMMddHHmmss").format(new Date());
@@ -78,6 +81,7 @@ public class Event {
 		json.put("numberOfInjured", "3");
 		json.put("typeOfInjury", "Ryggont och öppna skärsr");
 		json.put("description", "Ihopörning mellan två bilar på Riksväg 12");
+		json.put("accepted",accepted);
 		
 
 	}

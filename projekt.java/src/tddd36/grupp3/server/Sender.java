@@ -166,6 +166,29 @@ public class Sender {
 			e.printStackTrace();
 		}
 	}
+	
+	public static void broadcastEvent(Event a, String IP){
+		String unitID = MySQLDatabase.getUsersUnit(Association.getUser(IP));
+		a.setUnitID(unitID);
+		ArrayList<String> unitsUser = MySQLDatabase.getUnitsUser(unitID);
+		for(String s:unitsUser){
+			String tempIP = Association.getIP(s);
+			if(tempIP != IP){
+				send(a.getJSON(),tempIP);
+			}
+		}
+	}
+	
+	public static void broadcastString(String a, String IP){
+		String unitID = MySQLDatabase.getUsersUnit(Association.getUser(IP));
+		ArrayList<String> unitsUser = MySQLDatabase.getUnitsUser(unitID);
+		for(String s:unitsUser){
+			String tempIP = Association.getIP(s);
+			if(tempIP != IP){
+				send(a,tempIP);
+			}
+		}
+	}
 
 	public static void setUpConnection() throws UnknownHostException,
 			IOException {
