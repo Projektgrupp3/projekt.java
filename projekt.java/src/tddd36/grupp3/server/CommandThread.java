@@ -77,9 +77,12 @@ public class CommandThread implements Runnable {
 			String ip;
 			ip = in.nextLine();
 
+			String unitID = MySQLDatabase.getUsersUnit(Association.getUser(ip));
+			a.setUnitID(unitID);
+			
 			//MySQLDatabase.addAlarm(a);	LŠgg in alarm i Databas
-			broadcastEvent(a,ip);
-			//Sender.send(a.getJSON(),ip);
+			Sender.broadcastEvent(a,ip);
+			Sender.send(a.getJSON(),ip);
 		}
 		if(input.equals("/sendevent")){
 			Event e = new Event();
@@ -150,16 +153,6 @@ public class CommandThread implements Runnable {
 
 		}
 	}
-	
-	public void broadcastEvent(Event a, String IP){
-		String unitID = MySQLDatabase.getUsersUnit(Association.getUser(IP));
-		a.setUnitID(unitID);
-		ArrayList<String> unitsUser = MySQLDatabase.getUnitsUser(unitID);
-		for(String s:unitsUser){
-			String tempUser = Association.getIP(s);
-			Sender.send(a.getJSON(),tempUser);
-		}
-		
-	}
+
 }
 

@@ -155,7 +155,9 @@ public class MultipleSocketServer implements Runnable {
 
 			} else if (JSONInput.getString("event").equals(ACK_ACCEPTED_EVENT)) {
 				MySQLDatabase.setEvent(JSONInput.getString("user"), JSONInput
-						.getString("eventID"));
+						.getString("eventID"),true);
+				Sender.broadcastString(JSONInput.getString("event"), Association.getIP(JSONInput.getString("user")));
+				
 			} else if (JSONInput.getString("event").equals(ACK_REJECTED_EVENT)) {
 
 			}
