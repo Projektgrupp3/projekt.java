@@ -37,6 +37,7 @@ public class LoginManager implements Runnable {
 
 	@Override
 	public void run() {
+		System.out.println("LoginManager kör");
 		if(serversocket.getRequestType() != RequestType.LOG_OUT){
 			if(MySQLDatabase.checkUser(serversocket.getUser()) && 
 					MySQLDatabase.getUserPass(serversocket.getUser()).equals(serversocket.getPassword())){
@@ -51,5 +52,6 @@ public class LoginManager implements Runnable {
 		}
 		else
 			logout();
+		System.out.println("LoginManager avslutad");
 	}
 }

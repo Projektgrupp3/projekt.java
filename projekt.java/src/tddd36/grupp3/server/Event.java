@@ -78,7 +78,6 @@ public class Event {
 		json.put("numberOfInjured", "3");
 		json.put("typeOfInjury", "Ryggont och öppna skärsår");
 		json.put("description", "Ihopörning mellan två bilar på Riksväg 12");
-		
 
 	}
 	public void createEvent() throws JSONException{
