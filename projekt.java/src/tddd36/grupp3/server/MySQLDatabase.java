@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.json.JSONException;
+
 public class MySQLDatabase {
 	/* SENASTE VERSIONEN: 2011-11-30
 	 * TODO: Fixa så att ändringar ändras på båda tables.
@@ -470,6 +472,65 @@ public class MySQLDatabase {
 		}
 	}
 	
+	public static void setEvent(Event ev){
+		String eventID 		= ev.getID();
+		Prio priority 		= ev.getPriority();
+		String address		= ev.getAdress();
+		String coordX 		= ev.getCoordinateX();
+		String coordY 		= ev.getCoordinateY();
+		String accidentType	= ev.getTypeOfInjury();
+		int numberOfInjured = ev.getNumberOfInjured();
+		String typeOfInjury = ev.getTypeOfInjury();
+		String description 	= "null";
+		String assignedUnit = ev.getUnitID();
+		String acceptedBy 	= "null";
+
+		connect();
+		try {
+			st=con.createStatement();
+			st.executeUpdate("UPDATE events SET Priority='"+priority+"' WHERE eventID='"+eventID+"'");
+			st.executeUpdate("UPDATE events SET Address ='"+address+"' WHERE eventID='"+eventID+"'");
+			st.executeUpdate("UPDATE events SET CoordX='"+coordX+"' WHERE eventID='"+eventID+"'");
+			st.executeUpdate("UPDATE events SET CoordY='"+coordY+"' WHERE eventID='"+eventID+"'");
+			st.executeUpdate("UPDATE events SET AccidentType='"+accidentType+"' WHERE eventID='"+eventID+"'");
+			st.executeUpdate("UPDATE events SET NumberOfInjured='"+numberOfInjured+"' WHERE eventID='"+eventID+"'");
+			st.executeUpdate("UPDATE events SET TypeOfInjury='"+typeOfInjury+"' WHERE eventID='"+eventID+"'");
+			st.executeUpdate("UPDATE events SET Description='"+description+"' WHERE eventID='"+eventID+"'");
+			st.executeUpdate("UPDATE events SET AssignedUnit='"+assignedUnit+"' WHERE eventID='"+eventID+"'");
+			st.executeUpdate("UPDATE events SET AcceptedBy='"+acceptedBy+"' WHERE eventID='"+eventID+"'");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} 
+		disconnect();
+	}
+	
+	public static void updateEvent(Event ev){
+		String eventID 		= ev.getID();
+		Prio priority 		= ev.getPriority();
+		String address		= ev.getAdress();
+		String coordX 		= ev.getCoordinateX();
+		String coordY 		= ev.getCoordinateY();
+		String accidentType	= ev.getTypeOfInjury();
+		int numberOfInjured = ev.getNumberOfInjured();
+		String typeOfInjury = ev.getTypeOfInjury();
+		String description 	= "null";
+		String assignedUnit = ev.getUnitID();
+		String acceptedBy 	= "null";
+
+		connect();
+		try {
+			st=con.createStatement();
+			String query = "INSERT INTO events(EventID,Priority,Address,CoordX,CoordY,AccidentType,NumberOfInjured,TypeOfInjury,Description," +
+					"AssignedUnit,AcceptedBy) VALUES('"+eventID+"','"+priority+"','"+address+"','"+coordX+"','"+coordY+"','"+accidentType+"','"
+					+numberOfInjured+"','"+typeOfInjury+"','"+description+"','"+assignedUnit+"','"+acceptedBy+"')";
+			System.out.println(query);
+			st.executeUpdate(query);		
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} 
+		disconnect();
+	}
+	
 	public static String getEvent(String userName){
 		if(checkUser(userName)){
 			connect();
@@ -638,8 +699,7 @@ public class MySQLDatabase {
 		}
 	}
 	
-	public static void main(String [] args){
-		
+	public static void main(String [] args) throws JSONException{
 	}
 }
 

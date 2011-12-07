@@ -280,4 +280,11 @@ public class Event {
 	public JSONObject getJSON(){
 		return json;
 	}
+	
+	public void setAccepted(boolean flag) throws JSONException{
+		if(flag){
+			json.put("accepted", true);
+			this.accepted = true;
+		}
+	}
 }

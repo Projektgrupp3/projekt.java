@@ -12,6 +12,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.google.gson.Gson;
+import com.sun.corba.se.spi.legacy.connection.GetEndPointInfoAgainException;
 
 public class MultipleSocketServer implements Runnable {
 
@@ -156,8 +157,15 @@ public class MultipleSocketServer implements Runnable {
 			} else if (JSONInput.getString("event").equals(ACK_ACCEPTED_EVENT)) {
 				MySQLDatabase.setEvent(JSONInput.getString("user"), JSONInput
 						.getString("eventID"),true);
-				Sender.broadcastString(JSONInput.getString("event"), Association.getIP(JSONInput.getString("user")));
-				
+			JSONInput.put("accepted",true);
+			
+			System.out.println(JSONInput.toString());
+			
+			// TODO fixa: kan ju för fan inte vara ett testEvent
+			Event a = new Event();
+			a.createTestEvent();
+			a.setAccepted(true);
+			Sender.broadcastEvent(a, Association.getIP(JSONInput.getString("user")));	
 			} else if (JSONInput.getString("event").equals(ACK_REJECTED_EVENT)) {
 
 			}

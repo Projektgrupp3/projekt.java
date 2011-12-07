@@ -81,8 +81,8 @@ public class CommandThread implements Runnable {
 			a.setUnitID(unitID);
 			
 			//MySQLDatabase.addAlarm(a);	LŠgg in alarm i Databas
-			Sender.broadcastEvent(a,ip);
 			Sender.send(a.getJSON(),ip);
+			Sender.broadcastEvent(a,ip);
 		}
 		if(input.equals("/sendevent")){
 			Event e = new Event();
