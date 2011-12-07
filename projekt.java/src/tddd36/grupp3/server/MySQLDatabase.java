@@ -469,6 +469,21 @@ public class MySQLDatabase {
 			}
 		}
 	}
+	public static void setEvent(String userName, String eventID){
+		if(checkUser(userName)){
+			connect();
+			st=null;
+			try{
+				// FIXA
+				st=con.createStatement();
+				st.executeUpdate("UPDATE user SET Event = '"+eventID+"' "
+						+ "WHERE userName = '"+userName+"'");
+				disconnect();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 	
 	public static String getEvent(String userName){
 		if(checkUser(userName)){
