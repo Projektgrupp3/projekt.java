@@ -19,7 +19,6 @@ public class Sender {
 
 
 	private static String COM_IP;
-	//private static String COM_IP = "130.236.227.61";
 	private static int COM_PORT = 1561;
 
 	private static PrintWriter pw;
@@ -172,23 +171,27 @@ public class Sender {
 	public static void broadcastEvent(Event a, String IP){
 		Gson gson = new Gson();
 		String unitID = MySQLDatabase.getUsersUnit(Association.getUser(IP));
-		a.setUnitID(unitID);
+		// H�mtar alla users i unit
 		ArrayList<String> unitsUser = MySQLDatabase.getUnitsUser(unitID);
 		for(String s:unitsUser){
-			String tempIP = Association.getIP(s);
-			if(tempIP != IP){
-				send(gson.toJson(a),tempIP);
+			if(Association.getIP(s)!=null){
+				String tempIP = Association.getIP(s);
+				if(!tempIP.equals(IP)){
+					send(a.getJSON(),tempIP);
+				}
 			}
 		}
 	}
-	
+
 	public static void broadcastString(String a, String IP){
 		String unitID = MySQLDatabase.getUsersUnit(Association.getUser(IP));
 		ArrayList<String> unitsUser = MySQLDatabase.getUnitsUser(unitID);
 		for(String s:unitsUser){
-			String tempIP = Association.getIP(s);
-			if(tempIP != IP){
-				send(a,tempIP);
+			if(Association.getIP(s)!=null){
+				String tempIP = Association.getIP(s);
+				if(tempIP!=IP){
+					send(a,tempIP);
+				}
 			}
 		}
 	}

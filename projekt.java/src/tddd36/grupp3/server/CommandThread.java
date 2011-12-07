@@ -11,7 +11,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Tråd som lyssnar på kommandon från serverns console
+ * Tr√•d som lyssnar p√• kommandon fr√•n serverns console
  * @author Bauwie
  *
  */
@@ -19,7 +19,7 @@ import org.json.JSONObject;
 public class CommandThread implements Runnable {
 
 	public CommandThread(){
-		System.out.println("Kommandotråd skapad");
+		System.out.println("Kommandotr√•d skapad");
 	}
 
 	public void run(){
@@ -40,7 +40,7 @@ public class CommandThread implements Runnable {
 		while(true);
 	}
 	/**
-	 * Undersöker vad det är för kommando som matats in
+	 * Unders√∂ker vad det √§r f√∂r kommando som matats in
 	 * @param input - det angivna kommandot
 	 * @throws UnknownHostException
 	 * @throws JSONException
@@ -76,13 +76,15 @@ public class CommandThread implements Runnable {
 			System.out.println("Till vilket ip?");
 			String ip;
 			ip = in.nextLine();
-
+			
 			String unitID = MySQLDatabase.getUsersUnit(Association.getUser(ip));
 			a.setUnitID(unitID);
-			
-			//MySQLDatabase.addAlarm(a);	Lägg in alarm i Databas
+	
+			//MySQLDatabase.addAlarm(a);	LÔøΩgg in alarm i Databas
 			//Sender.broadcastEvent(a,ip);
+
 			Sender.send(a.getJSON(),ip);
+			Sender.broadcastEvent(a,ip);
 		}
 		if(input.equals("/sendevent")){
 			Event e = new Event();
@@ -94,7 +96,7 @@ public class CommandThread implements Runnable {
 			ip = in.nextLine();
 			System.out.println(ip);
 
-			//			MySQLDatabase.addAlarm(a);	Lägg in alarm i Databas
+			//			MySQLDatabase.addAlarm(a);	L√§gg in alarm i Databas
 			Sender.send(e.getJSON(),ip);
 
 		}
@@ -153,6 +155,16 @@ public class CommandThread implements Runnable {
 
 		}
 	}
-
+	
+//	public void broadcastEvent(Event a, String IP){
+//		String unitID = MySQLDatabase.getUsersUnit(Association.getUser(IP));
+//		a.setUnitID(unitID);
+//		ArrayList<String> unitsUser = MySQLDatabase.getUnitsUser(unitID);
+//		for(String s:unitsUser){
+//			String tempUser = Association.getIP(s);
+//			Sender.send(a.getJSON(),tempUser);
+//		}
+//		
+//	}
 }
 

@@ -16,9 +16,6 @@ public class LoginManager implements Runnable {
 	//	public final static int ASSOCIATED = 4;
 
 	public MultipleSocketServer serversocket;
-
-	//	private String username;
-	//	private String password;
 	private String adress;
 
 	public LoginManager(MultipleSocketServer serversocket, String adress){
@@ -37,6 +34,7 @@ public class LoginManager implements Runnable {
 
 	@Override
 	public void run() {
+		System.out.println("LoginManager kör");
 		if(serversocket.getRequestType() != RequestType.LOG_OUT){
 			if(MySQLDatabase.checkUser(serversocket.getUser()) && 
 					MySQLDatabase.getUserPass(serversocket.getUser()).equals(serversocket.getPassword())){
@@ -51,5 +49,6 @@ public class LoginManager implements Runnable {
 		}
 		else
 			logout();
+		System.out.println("LoginManager avslutad");
 	}
 }

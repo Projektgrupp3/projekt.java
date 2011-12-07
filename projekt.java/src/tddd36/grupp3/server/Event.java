@@ -24,7 +24,6 @@ public class Event {
 	private String description;
 	private String unitID;
 	private boolean accepted;
-
 	// TODO: MSTE FIXA String message och allt vad det innebŠr
 
 	public Event() throws JSONException{
@@ -46,7 +45,6 @@ public class Event {
 		this.eventID = new SimpleDateFormat("yyMMddHHmmss").format(new Date());
 		this.unitID = unitID;
 		this.description = description;
-		accepted = false;
 
 	}
 	//Injury
@@ -65,8 +63,7 @@ public class Event {
 		this.eventID = new SimpleDateFormat("yyMMddHHmmss").format(new Date());
 		this.unitID = UnitID;
 		this.description = description;
-		accepted = false;
-		
+
 	}
 	public void createTestEvent() throws JSONException{
 		this.eventID = new SimpleDateFormat("yyMMddHHmmss").format(new Date());
@@ -79,10 +76,8 @@ public class Event {
 		json.put("tempCoordY","15573080" );
 		json.put("accidentType", "Bilolycka");	
 		json.put("numberOfInjured", "3");
-		json.put("typeOfInjury", "Ryggont och öppna skärsr");
+		json.put("typeOfInjury", "Ryggont och öppna skärsår");
 		json.put("description", "Ihopörning mellan två bilar på Riksväg 12");
-		json.put("accepted",accepted);
-		
 
 	}
 	public void createEvent() throws JSONException{
@@ -279,5 +274,12 @@ public class Event {
 
 	public JSONObject getJSON(){
 		return json;
+	}
+	
+	public void setAccepted(boolean flag) throws JSONException{
+		if(flag){
+			json.put("accepted", true);
+			this.accepted = true;
+		}
 	}
 }

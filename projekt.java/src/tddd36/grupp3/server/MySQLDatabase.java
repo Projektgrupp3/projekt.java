@@ -8,9 +8,11 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.json.JSONException;
+
 public class MySQLDatabase {
 	/* SENASTE VERSIONEN: 2011-11-30
-	 * TODO: Fixa så att ändringar ändras på båda tables.
+	 * TODO: Fixa sï¿½ att ï¿½ndringar ï¿½ndras pï¿½ bï¿½da tables.
 	 */
 
 	public static Connection con = null;
@@ -73,8 +75,8 @@ public class MySQLDatabase {
 				st=con.createStatement();
 				String query = "SELECT * from user WHERE userName='"+userName+"'";
 				rs = st.executeQuery(query);
-				// TODO Det kan behöva läggas till ett fält är sedan
-				// TODO när assigedUsers kommer med.
+				// TODO Det kan behï¿½va lï¿½ggas till ett fï¿½lt ï¿½r sedan
+				// TODO nï¿½r assigedUsers kommer med.
 				while(rs.next()){
 					if(rs.getString(3).equals(userName)){
 						String firstName = rs.getString(1);
@@ -277,7 +279,7 @@ public class MySQLDatabase {
 		disconnect();
 		return false;
 	}
-	// TODO Här ändras unitID till Name
+	// TODO Hï¿½r ï¿½ndras unitID till Name
 	public static boolean checkUnit(String unitID){
 		connect();
 		st=null;
@@ -454,12 +456,11 @@ public class MySQLDatabase {
 		//TODO:
 	}
 	
-	public static void setEvent(String userName, String eventID, boolean accepted){
+	public static void setEvent(String userName, String eventID){
 		if(checkUser(userName)){
 			connect();
 			st=null;
 			try{
-				// FIXA
 				st=con.createStatement();
 				st.executeUpdate("UPDATE user SET Event = '"+eventID+"' "
 						+ "WHERE userName = '"+userName+"'");
@@ -468,6 +469,65 @@ public class MySQLDatabase {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	public static void setEvent(Event ev){
+		String eventID 		= ev.getID();
+		Prio priority 		= ev.getPriority();
+		String address		= ev.getAdress();
+		String coordX 		= ev.getCoordinateX();
+		String coordY 		= ev.getCoordinateY();
+		String accidentType	= ev.getTypeOfInjury();
+		int numberOfInjured = ev.getNumberOfInjured();
+		String typeOfInjury = ev.getTypeOfInjury();
+		String description 	= "null";
+		String assignedUnit = ev.getUnitID();
+		String acceptedBy 	= "null";
+
+		connect();
+		try {
+			st=con.createStatement();
+			st.executeUpdate("UPDATE events SET Priority='"+priority+"' WHERE eventID='"+eventID+"'");
+			st.executeUpdate("UPDATE events SET Address ='"+address+"' WHERE eventID='"+eventID+"'");
+			st.executeUpdate("UPDATE events SET CoordX='"+coordX+"' WHERE eventID='"+eventID+"'");
+			st.executeUpdate("UPDATE events SET CoordY='"+coordY+"' WHERE eventID='"+eventID+"'");
+			st.executeUpdate("UPDATE events SET AccidentType='"+accidentType+"' WHERE eventID='"+eventID+"'");
+			st.executeUpdate("UPDATE events SET NumberOfInjured='"+numberOfInjured+"' WHERE eventID='"+eventID+"'");
+			st.executeUpdate("UPDATE events SET TypeOfInjury='"+typeOfInjury+"' WHERE eventID='"+eventID+"'");
+			st.executeUpdate("UPDATE events SET Description='"+description+"' WHERE eventID='"+eventID+"'");
+			st.executeUpdate("UPDATE events SET AssignedUnit='"+assignedUnit+"' WHERE eventID='"+eventID+"'");
+			st.executeUpdate("UPDATE events SET AcceptedBy='"+acceptedBy+"' WHERE eventID='"+eventID+"'");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} 
+		disconnect();
+	}
+	
+	public static void updateEvent(Event ev){
+		String eventID 		= ev.getID();
+		Prio priority 		= ev.getPriority();
+		String address		= ev.getAdress();
+		String coordX 		= ev.getCoordinateX();
+		String coordY 		= ev.getCoordinateY();
+		String accidentType	= ev.getTypeOfInjury();
+		int numberOfInjured = ev.getNumberOfInjured();
+		String typeOfInjury = ev.getTypeOfInjury();
+		String description 	= "null";
+		String assignedUnit = ev.getUnitID();
+		String acceptedBy 	= "null";
+
+		connect();
+		try {
+			st=con.createStatement();
+			String query = "INSERT INTO events(EventID,Priority,Address,CoordX,CoordY,AccidentType,NumberOfInjured,TypeOfInjury,Description," +
+					"AssignedUnit,AcceptedBy) VALUES('"+eventID+"','"+priority+"','"+address+"','"+coordX+"','"+coordY+"','"+accidentType+"','"
+					+numberOfInjured+"','"+typeOfInjury+"','"+description+"','"+assignedUnit+"','"+acceptedBy+"')";
+			System.out.println(query);
+			st.executeUpdate(query);		
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} 
+		disconnect();
 	}
 	
 	public static String getEvent(String userName){
@@ -638,8 +698,7 @@ public class MySQLDatabase {
 		}
 	}
 	
-	public static void main(String [] args){
-		
+	public static void main(String [] args) throws JSONException{
 	}
 }
 
