@@ -11,9 +11,6 @@ public class LoginManager implements Runnable {
 	//	public final static int ASSOCIATED = 4;
 
 	public MultipleSocketServer serversocket;
-
-	//	private String username;
-	//	private String password;
 	private String adress;
 
 	public LoginManager(MultipleSocketServer serversocket, String adress){
