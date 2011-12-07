@@ -454,11 +454,12 @@ public class MySQLDatabase {
 		//TODO:
 	}
 	
-	public static void setEvent(String userName, String eventID){
+	public static void setEvent(String userName, String eventID, boolean accepted){
 		if(checkUser(userName)){
 			connect();
 			st=null;
 			try{
+				// FIXA
 				st=con.createStatement();
 				st.executeUpdate("UPDATE user SET Event = '"+eventID+"' "
 						+ "WHERE userName = '"+userName+"'");

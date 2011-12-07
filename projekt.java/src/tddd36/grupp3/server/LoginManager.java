@@ -1,10 +1,5 @@
 package tddd36.grupp3.server;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Observable;
-
-import org.json.JSONException;
 
 
 public class LoginManager implements Runnable {

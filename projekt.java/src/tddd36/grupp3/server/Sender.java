@@ -17,7 +17,7 @@ public class Sender {
 
 
 	private static String COM_IP;
-	private static int COM_PORT = 1561;
+	private static int COM_PORT = 3334;
 
 	private static PrintWriter pw;
 	private static Socket s;
@@ -163,6 +163,29 @@ public class Sender {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+	}
+	
+	public static void broadcastEvent(Event a, String IP){
+		String unitID = MySQLDatabase.getUsersUnit(Association.getUser(IP));
+		a.setUnitID(unitID);
+		ArrayList<String> unitsUser = MySQLDatabase.getUnitsUser(unitID);
+		for(String s:unitsUser){
+			String tempIP = Association.getIP(s);
+			if(tempIP != IP){
+				send(a.getJSON(),tempIP);
+			}
+		}
+	}
+	
+	public static void broadcastString(String a, String IP){
+		String unitID = MySQLDatabase.getUsersUnit(Association.getUser(IP));
+		ArrayList<String> unitsUser = MySQLDatabase.getUnitsUser(unitID);
+		for(String s:unitsUser){
+			String tempIP = Association.getIP(s);
+			if(tempIP != IP){
+				send(a,tempIP);
+			}
 		}
 	}
 
