@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.google.gson.Gson;
+
 /**
  * SERVER-SENDER-KLASS
  */
@@ -168,13 +170,14 @@ public class Sender {
 	}
 	
 	public static void broadcastEvent(Event a, String IP){
+		Gson gson = new Gson();
 		String unitID = MySQLDatabase.getUsersUnit(Association.getUser(IP));
 		a.setUnitID(unitID);
 		ArrayList<String> unitsUser = MySQLDatabase.getUnitsUser(unitID);
 		for(String s:unitsUser){
 			String tempIP = Association.getIP(s);
 			if(tempIP != IP){
-				send(a.getJSON(),tempIP);
+				send(gson.toJson(a),tempIP);
 			}
 		}
 	}

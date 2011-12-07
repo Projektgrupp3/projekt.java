@@ -36,7 +36,7 @@ public class MultipleSocketServer implements Runnable {
 	private int ID = 0;
 	private int AUTH_STATUS = 0;
 
-	private static final int LISTEN_PORT = 3333;
+	private static final int LISTEN_PORT = 1560;
 
 	private String input;
 	private String request;
@@ -156,7 +156,7 @@ public class MultipleSocketServer implements Runnable {
 			} else if (JSONInput.getString("event").equals(ACK_ACCEPTED_EVENT)) {
 				MySQLDatabase.setEvent(JSONInput.getString("user"), JSONInput
 						.getString("eventID"),true);
-				Sender.broadcastString(JSONInput.getString("event"), Association.getIP(JSONInput.getString("user")));
+				//Sender.broadcastString(JSONInput.getString("event"), Association.getIP(JSONInput.getString("user")));
 				
 			} else if (JSONInput.getString("event").equals(ACK_REJECTED_EVENT)) {
 
