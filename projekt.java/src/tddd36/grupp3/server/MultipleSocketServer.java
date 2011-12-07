@@ -173,7 +173,7 @@ public class MultipleSocketServer implements Runnable {
 			
 			System.out.println(JSONInput.toString());
 			
-			// TODO fixa: kan ju f�r fan inte vara ett testEvent
+			// TODO fixa: kan ju för fan inte vara ett testEvent
 			Event a = new Event();
 			a.createTestEvent();
 			a.setAccepted(true);
