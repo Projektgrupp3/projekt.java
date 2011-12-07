@@ -19,7 +19,7 @@ import org.json.JSONObject;
 public class CommandThread implements Runnable {
 
 	public CommandThread(){
-		System.out.println("KommandotrŒd skapad");
+		System.out.println("Kommandotråd skapad");
 	}
 
 	public void run(){

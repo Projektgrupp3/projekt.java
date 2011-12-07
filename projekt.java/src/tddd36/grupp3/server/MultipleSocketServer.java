@@ -176,46 +176,27 @@ public class MultipleSocketServer implements Runnable {
 			if (JSONInput.getString("report").equals(ACK_VERIFICATION_REPORT)) {
 				System.out.println("----------");
 				System.out.println("Verifikationsrapport mottagen:");
-				System.out.println("Event ID: "
-						+ JSONInput.getString("eventID"));
-				System.out.println("Enhet: "
-						+ MySQLDatabase.getUsersUnit(JSONInput
-								.getString("user")));
-				System.out.println("Allvarlig hŠndelse: "
-						+ JSONInput.getString("seriousEvent"));
-				System.out.println("Typ av skador: "
-						+ JSONInput.getString("typeOfInjury"));
-				System.out.println("Hot / Risker: "
-						+ JSONInput.getString("threats"));
-				System.out.println("Antal skadade: "
-						+ JSONInput.getString("numberOfInjuries"));
-				System.out.println("Behšver extra resurser: "
-						+ JSONInput.getString("extraResources"));
-				System.out.println("Antal % av omrŒdet genomsškt"
-						+ JSONInput.getString("areaSearched"));
-				System.out.println("Tid fšr avtransport "
-						+ JSONInput.getString("timeOfDeparture"));
+				System.out.println("Event ID: "+JSONInput.getString("eventID"));
+				System.out.println("Enhet: "+MySQLDatabase.getUsersUnit(JSONInput.getString("user")));
+				System.out.println("Allvarlig händelse: "+JSONInput.getString("seriousEvent"));
+				System.out.println("Typ av skador: "+JSONInput.getString("typeOfInjury"));
+				System.out.println("Hot / Risker: "+JSONInput.getString("threats"));
+				System.out.println("Antal skadade: "+JSONInput.getString("numberOfInjuries"));
+				System.out.println("Behöver extra resurser: "+JSONInput.getString("extraResources"));
+				System.out.println("Antal % av området genomsškt"+JSONInput.getString("areaSearched"));
+				System.out.println("Tid för avtransport "+JSONInput.getString("timeOfDeparture"));
 				System.out.println("----------");
 			} else if (JSONInput.getString("report").equals(ACK_WINDOW_REPORT)) {
 				System.out.println("----------");
 				System.out.println("Vindruterapport mottagen:");
-				System.out.println("Event ID: "
-						+ JSONInput.getString("eventID"));
-				System.out.println("Enhet: "
-						+ MySQLDatabase.getUsersUnit(JSONInput
-								.getString("user")));
-				System.out.println("Allvarlig hŠndelse: "
-						+ JSONInput.getString("seriousEvent"));
-				System.out.println("Typ av skador: "
-						+ JSONInput.getString("typeOfInjury"));
-				System.out.println("Hot / Risker: "
-						+ JSONInput.getString("threats"));
-				System.out.println("Antal skadade: "
-						+ JSONInput.getString("numberOfInjuries"));
-				System.out.println("Behšver extra resurser: "
-						+ JSONInput.getString("extraResources"));
-				System.out.println("Exakt lokalisation pŒ olycka: "
-						+ JSONInput.getString("exactLocation"));
+				System.out.println("Event ID: "+JSONInput.getString("eventID"));
+				System.out.println("Enhet: "+MySQLDatabase.getUsersUnit(JSONInput.getString("user")));
+				System.out.println("Allvarlig hŠndelse: "+JSONInput.getString("seriousEvent"));
+				System.out.println("Typ av skador: "+JSONInput.getString("typeOfInjury"));
+				System.out.println("Hot / Risker: "+JSONInput.getString("threats"));
+				System.out.println("Antal skadade: "+JSONInput.getString("numberOfInjuries"));
+				System.out.println("Behšver extra resurser: "+JSONInput.getString("extraResources"));
+				System.out.println("Exakt lokalisation på olycka: "+JSONInput.getString("exactLocation"));
 				System.out.println("----------");
 			}
 		}
@@ -312,7 +293,7 @@ public class MultipleSocketServer implements Runnable {
 	private void interpretJSONString(String input) throws JSONException {
 		JSONInput = new JSONObject(input);
 
-		System.out.println("Meddelande frŒn klient: " + input);
+		System.out.println("Meddelande från klient: "+input);
 
 		if (JSONInput.has("user")) {
 			this.user = JSONInput.getString("user");
