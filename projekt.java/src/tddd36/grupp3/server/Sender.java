@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.google.gson.Gson;
+
 /**
  * SERVER-SENDER-KLASS
  */
@@ -163,6 +165,34 @@ public class Sender {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+	}
+	
+	public static void broadcastEvent(Event a, String IP){
+		// H�mtar unit
+		String unitID = MySQLDatabase.getUsersUnit(Association.getUser(IP));
+		// H�mtar alla users i unit
+		ArrayList<String> unitsUser = MySQLDatabase.getUnitsUser(unitID);
+		for(String s:unitsUser){
+			if(Association.getIP(s)!=null){
+				String tempIP = Association.getIP(s);
+				if(!tempIP.equals(IP)){
+					send(a.getJSON(),tempIP);
+				}
+			}
+		}
+	}
+
+	public static void broadcastString(String a, String IP){
+		String unitID = MySQLDatabase.getUsersUnit(Association.getUser(IP));
+		ArrayList<String> unitsUser = MySQLDatabase.getUnitsUser(unitID);
+		for(String s:unitsUser){
+			if(Association.getIP(s)!=null){
+				String tempIP = Association.getIP(s);
+				if(tempIP!=IP){
+					send(a,tempIP);
+				}
+			}
 		}
 	}
 

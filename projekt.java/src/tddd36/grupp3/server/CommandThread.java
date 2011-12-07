@@ -76,12 +76,12 @@ public class CommandThread implements Runnable {
 			System.out.println("Till vilket ip?");
 			String ip;
 			ip = in.nextLine();
-
-			//MySQLDatabase.addAlarm(a);	Lägg in alarm i Databas
-//			broadcastEvent(a,ip);
+			
 			String unitID = MySQLDatabase.getUsersUnit(Association.getUser(ip));
 			a.setUnitID(unitID);
+
 			Sender.send(a.getJSON(),ip);
+			Sender.broadcastEvent(a,ip);
 		}
 		if(input.equals("/sendevent")){
 			Event e = new Event();

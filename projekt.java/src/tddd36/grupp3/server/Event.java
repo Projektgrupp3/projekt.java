@@ -23,7 +23,7 @@ public class Event {
 	private String accidentAdress;
 	private String description;
 	private String unitID;
-
+	private boolean accepted;
 	// TODO: MSTE FIXA String message och allt vad det innebŠr
 
 	public Event() throws JSONException{
@@ -274,5 +274,12 @@ public class Event {
 
 	public JSONObject getJSON(){
 		return json;
+	}
+	
+	public void setAccepted(boolean flag) throws JSONException{
+		if(flag){
+			json.put("accepted", true);
+			this.accepted = true;
+		}
 	}
 }
