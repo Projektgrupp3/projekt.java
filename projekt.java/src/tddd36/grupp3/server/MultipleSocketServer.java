@@ -8,6 +8,10 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.net.ssl.SSLServerSocket;
+import javax.net.ssl.SSLServerSocketFactory;
+import javax.net.ssl.SSLSocket;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -32,12 +36,12 @@ public class MultipleSocketServer implements Runnable {
 
 	public static final String LOG_OUT = "LOG_OUT";
 
-	private Socket connection;
+	private SSLSocket connection;
 
 	private int ID = 0;
 	private int AUTH_STATUS = 0;
 
-	private static final int LISTEN_PORT = 1560;
+	private static final int LISTEN_PORT = 3333;
 
 	private String input;
 	private String request;
@@ -54,7 +58,7 @@ public class MultipleSocketServer implements Runnable {
 
 	private ArrayList<String> buffer = new ArrayList<String>();
 
-	public MultipleSocketServer(Socket connection, int i) {
+	public MultipleSocketServer(SSLSocket connection, int i) {
 		this.connection = connection;
 		this.ID = i;
 	}
@@ -62,9 +66,16 @@ public class MultipleSocketServer implements Runnable {
 	public static void main(String[] args) {
 		int count = 0;
 
+        System.setProperty("javax.net.ssl.keyStore","assets/serverKeyStore.key");
+	    System.setProperty("javax.net.ssl.keyStorePassword","starwars");
+	    System.setProperty("javax.net.ssl.trustStore","assets/serverTrustStore");
+	    System.setProperty("javax.net.ssl.trustStorePassword","starwars");
+		
 		try {
-			ServerSocket serversocket = new ServerSocket(LISTEN_PORT);
-
+			SSLServerSocket serversocket;// = new SSLServerSocket(LISTEN_PORT);
+			serversocket = (SSLServerSocket)SSLServerSocketFactory.getDefault().createServerSocket(LISTEN_PORT);
+			serversocket.setEnabledCipherSuites(new String[] { "SSL_DH_anon_WITH_RC4_128_MD5" });
+			
 			System.out.println("Servern startad.");
 
 			Runnable commandrunnable = new CommandThread();
@@ -72,13 +83,14 @@ public class MultipleSocketServer implements Runnable {
 			commandthread.start();
 
 			while (true) {
-				Socket connection = serversocket.accept();
+				SSLSocket connection = (SSLSocket) serversocket.accept();
 				Runnable runnable = new MultipleSocketServer(connection,
 						++count);
 				Thread connectionthread = new Thread(runnable);
 				connectionthread.start();
 			}
-		} catch (Exception e) {
+		} catch (Exception e) {System.out.println("FEL SOMETHING");
+		e.printStackTrace();
 		}
 	}
 	// KAOÅDKAWDKÅAWKDÅAKWOD
