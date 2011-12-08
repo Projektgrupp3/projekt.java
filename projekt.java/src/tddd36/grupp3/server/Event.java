@@ -45,6 +45,7 @@ public class Event {
 		this.eventID = new SimpleDateFormat("yyMMddHHmmss").format(new Date());
 		this.unitID = unitID;
 		this.description = description;
+		accepted = false;
 
 	}
 	//Injury
@@ -150,7 +151,7 @@ public class Event {
 		json.put("description", description);
 
 		json.put("unitID","3");
-
+		
 		System.out.println(json);
 	}
 
@@ -277,7 +278,6 @@ public class Event {
 	public JSONObject getJSON(){
 		return json;
 	}
-	
 	public void setAccepted(boolean flag) throws JSONException{
 		if(flag){
 			json.put("accepted", true);

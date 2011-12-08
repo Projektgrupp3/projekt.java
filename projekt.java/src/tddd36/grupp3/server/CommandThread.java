@@ -3,12 +3,9 @@ package tddd36.grupp3.server;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.Scanner;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * Tråd som lyssnar på kommandon från serverns console
@@ -164,4 +161,3 @@ public class CommandThread implements Runnable {
 //		
 //	}
 }
-
