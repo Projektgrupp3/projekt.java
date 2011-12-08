@@ -47,8 +47,10 @@ public class LoginManager implements Runnable {
 				notifyAndSet(AUTH_FAILED);
 			}
 		}
-		else
+		else{
+			MySQLDatabase.logoutUser(serversocket.getUser());
 			logout();
 		System.out.println("LoginManager avslutad");
+		}
 	}
 }
