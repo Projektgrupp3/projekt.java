@@ -19,7 +19,7 @@ public class Sender {
 
 
 	private static String COM_IP;
-	private static int COM_PORT = 3334;
+	private static int COM_PORT = 1561;
 
 	private static PrintWriter pw;
 	private static Socket s;

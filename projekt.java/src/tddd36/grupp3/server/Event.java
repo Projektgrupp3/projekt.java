@@ -45,6 +45,7 @@ public class Event {
 		this.eventID = new SimpleDateFormat("yyMMddHHmmss").format(new Date());
 		this.unitID = unitID;
 		this.description = description;
+		accepted = false;
 
 	}
 	//Injury
@@ -63,6 +64,7 @@ public class Event {
 		this.eventID = new SimpleDateFormat("yyMMddHHmmss").format(new Date());
 		this.unitID = UnitID;
 		this.description = description;
+		accepted = false;
 
 	}
 	public void createTestEvent() throws JSONException{
@@ -78,6 +80,7 @@ public class Event {
 		json.put("numberOfInjured", "3");
 		json.put("typeOfInjury", "Ryggont och öppna skärsår");
 		json.put("description", "Ihopörning mellan två bilar på Riksväg 12");
+		json.put("accepted", false);
 
 	}
 	public void createEvent() throws JSONException{
@@ -148,7 +151,7 @@ public class Event {
 		json.put("description", description);
 
 		json.put("unitID","3");
-
+		
 		System.out.println(json);
 	}
 
