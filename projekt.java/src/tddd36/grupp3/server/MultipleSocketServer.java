@@ -183,7 +183,9 @@ public class MultipleSocketServer implements Runnable {
 			}
 		} 
 		else if (acknowledge.equals("status")) {
-			System.out.println("Användare: " + JSONInput.getString("user")+" status: " + JSONInput.get("status"));
+			System.out.println("Användare: " + JSONInput.getString("user")+" status: " + JSONInput.get("status") +"\n"+
+					"Händelse-ID: "+JSONInput.getString("Händelse-ID"));
+			
 		} 
 		else if (acknowledge.equals("report")) {
 			if (JSONInput.getString("report").equals(ACK_VERIFICATION_REPORT)) {
