@@ -25,6 +25,7 @@ public class MultipleSocketServer implements Runnable {
 	public static final String REQ_ALL_CONTACTS = "REQ_ALL_CONTACTS";
 	public static final String REQ_CONTACT = "REQ_CONTACT";
 	public static final String UPDATE_MAP_OBJECT = "UPDATE_MAP_OBJECT";
+	public static final String UPDATE_EVENT = "UPDATE_EVENT";
 
 	public static final String ACK_RECIEVED_EVENT = "ACK_RECIEVED_EVENT";
 	public static final String ACK_ACCEPTED_EVENT = "ACK_ACCEPTED_EVENT";
@@ -41,7 +42,7 @@ public class MultipleSocketServer implements Runnable {
 	private int ID = 0;
 	private int AUTH_STATUS = 0;
 
-	private static final int LISTEN_PORT = 3333;
+	private static final int LISTEN_PORT = 1560;
 
 	private String input;
 	private String request;
@@ -289,6 +290,15 @@ public class MultipleSocketServer implements Runnable {
 			}
 		}
 	}
+	private void handleEventUpdate() throws JSONException {
+		
+		JSONInput.put("accepted", true);
+		JSONInput.remove("req");
+		JSONInput.put("UPDATE_EVENT","UPDATE_EVENT");
+		JSONInput.put("event",JSONInput.get("eventID"));
+		System.out.println(JSONInput.toString());
+		Sender.broadcastJSONString(JSONInput, Association.getIP(JSONInput.getString("user")));
+	}
 
 	private void handleRequest() throws JSONException {
 		switch (requestType) {
@@ -310,6 +320,9 @@ public class MultipleSocketServer implements Runnable {
 			break;
 		case CONTACT:
 			handleContact();
+			break;
+		case UPDATE_EVENT:
+			handleEventUpdate();
 			break;
 		}
 	}
@@ -342,6 +355,9 @@ public class MultipleSocketServer implements Runnable {
 			}
 			if (request.equals(LOG_OUT)) {
 				requestType = RequestType.LOG_OUT;
+			}
+			if (request.equals(UPDATE_EVENT)) {
+				requestType = RequestType.UPDATE_EVENT;
 			}
 		}
 		if (JSONInput.has("ack")) {

@@ -23,7 +23,7 @@ public class Sender {
 
 
 	private static String COM_IP;
-	private static int COM_PORT = 3334;
+	private static int COM_PORT = 1561;
 
 	private static PrintWriter pw;
 	private static SSLSocket s;
@@ -174,9 +174,7 @@ public class Sender {
 	
 	public static void broadcastEvent(Event a, String IP){
 		System.out.println("broadcastEvent");
-		// H�mtar unit
 		String unitID = MySQLDatabase.getUsersUnit(Association.getUser(IP));
-		// H�mtar alla users i unit
 		ArrayList<String> unitsUser = MySQLDatabase.getUnitsUser(unitID);
 		for(String s:unitsUser){
 			if(Association.getIP(s)!=null){
@@ -197,6 +195,20 @@ public class Sender {
 				String tempIP = Association.getIP(s);
 				if(tempIP!=IP){
 					send(a,tempIP);
+				}
+			}
+		}
+	}
+	public static void broadcastJSONString(JSONObject obj, String IP){
+		System.out.println("broadcastJson");
+		String unitID = MySQLDatabase.getUsersUnit(Association.getUser(IP));
+		ArrayList<String> unitsUser = MySQLDatabase.getUnitsUser(unitID);
+		for(String s:unitsUser){
+			if(Association.getIP(s)!=null){
+				String tempIP = Association.getIP(s);
+				if(tempIP!=IP){
+					send(obj,tempIP);
+					System.out.println("Broadcasten skickas till: "+tempIP);
 				}
 			}
 		}
