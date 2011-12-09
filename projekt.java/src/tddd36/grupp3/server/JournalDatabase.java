@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 
@@ -51,20 +52,30 @@ public class JournalDatabase {
 	
 	public static JSONObject getJournal(String Identifier){
 		Identifier = Identifier+".txt";
-		String link = null;
+		String journal = null;
 		try{
 			connect();
+			System.out.println("conncet klar");
 			st=con.createStatement();
 			String query = "SELECT * from journals";
 			rs = st.executeQuery(query);
+			System.out.println("query klar");
 			while(rs.next()){
+				System.out.println("while");
 				if(rs.getString(2).equals(Identifier)){
-					link = rs.getString(3);
-					JSONObject content = null;
+					System.out.println("inne");
+					journal = rs.getString(3);
+					System.out.println(rs.getString(3));
+					JSONObject content = new JSONObject();
+					String [] field = journal.split(":");
 					try {
-						content = getContent(link);
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
+						content.put(field[0],field[1]);
+						content.put(field[2],field[3]);
+						content.put(field[4],field[5]);
+						content.put(field[6],field[7]);
+						content.put(field[8],field[9]);
+						content.put(field[10],field[11]);
+					} catch (JSONException e) {
 						e.printStackTrace();
 					}
 					disconnect();
@@ -79,7 +90,7 @@ public class JournalDatabase {
 	}
 	
 	/**
-	 * Kalla aldrig p� denna metod.
+	 * Kalla aldrig på denna metod. /Roger that.
 	 * @param link
 	 * @return
 	 * @throws IOException
@@ -90,8 +101,8 @@ public class JournalDatabase {
 		BufferedReader br 			= new BufferedReader(new InputStreamReader(in));
 		JSONObject content			= new JSONObject();
 		String strLine;
-		
 		while ((strLine = br.readLine()) != null)   {
+			System.out.println("hej");
 			String [] field = strLine.split(":");
 			try {
 				content.put(field[0], field[1]);

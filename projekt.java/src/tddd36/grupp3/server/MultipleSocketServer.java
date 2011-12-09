@@ -333,9 +333,9 @@ public class MultipleSocketServer implements Runnable {
 			handleEventUpdate();
 		case JOURNAL:
 			System.out.println("INNE I JOURNAL");
-			JSONObject json = MySQLDatabase.getJournal(JSONInput.getString("identifier"));
+			JSONObject json = MySQLDatabase.getJournal(JSONInput.getString("ssn"));
 			json.put("JOURNAL","JOURNAL");
-			Sender.send(json.toString(),Association.getIP(user).toString());
+			Sender.send(json,Association.getIP(user).toString());
 			break;
 		}
 	}
