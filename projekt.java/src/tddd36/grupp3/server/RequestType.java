@@ -38,4 +38,9 @@ public enum RequestType {
 			return "LOG_OUT";
 		}
 	},
+	JOURNAL(){
+		public String toString(){
+			return "JOURNAL";
+		}
+	},
 }

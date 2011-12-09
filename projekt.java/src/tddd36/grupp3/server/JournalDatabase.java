@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.json.JSONObject;
+
 
 public class JournalDatabase {
 	
@@ -47,7 +49,7 @@ public class JournalDatabase {
 		}
 	}
 	
-	public static ArrayList<String> getJournal(String Identifier){
+	public static JSONObject getJournal(String Identifier){
 		Identifier = Identifier+".txt";
 		String link = null;
 		try{
@@ -58,7 +60,7 @@ public class JournalDatabase {
 			while(rs.next()){
 				if(rs.getString(2).equals(Identifier)){
 					link = rs.getString(3);
-					ArrayList<String> content = null;
+					JSONObject content = null;
 					try {
 						content = getContent(link);
 					} catch (IOException e) {
@@ -82,21 +84,26 @@ public class JournalDatabase {
 	 * @return
 	 * @throws IOException
 	 */
-	public static ArrayList<String> getContent(String link) throws IOException{
-		ArrayList<String> content 	= new ArrayList<String>();
+	public static JSONObject getContent(String link) throws IOException{
 		FileInputStream fstream 	= new FileInputStream(link);
 		DataInputStream in 			= new DataInputStream(fstream);
 		BufferedReader br 			= new BufferedReader(new InputStreamReader(in));
+		JSONObject content			= new JSONObject();
 		String strLine;
-
+		
 		while ((strLine = br.readLine()) != null)   {
+			String [] field = strLine.split(":");
 			try {
-				content.add(strLine);
+				content.put(field[0], field[1]);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 		return content;
+	}
+	
+	public static void main(String [] args){
+		System.out.println(getJournal("551224-1367").toString());
 	}
 	
 }

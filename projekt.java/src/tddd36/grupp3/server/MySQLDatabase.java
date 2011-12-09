@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 
 public class MySQLDatabase {
@@ -718,8 +719,9 @@ public class MySQLDatabase {
 	public static void main(String [] args) throws JSONException{
 	}
 	
-	public static ArrayList<String> getJournal(String identifier){
-		ArrayList<String> journal = JournalDatabase.getJournal(identifier);
+	public static JSONObject getJournal(String identifier){
+		System.out.println("inne i getJournal");
+		JSONObject journal = JournalDatabase.getJournal(identifier);
 		return journal;
 	}
 }
