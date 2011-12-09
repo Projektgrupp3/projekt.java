@@ -147,10 +147,12 @@ public class Event {
 		System.out.println("Description: ");
 		this.description = in.nextLine();
 		json.put("description", description);
-		
+
 		accepted = false;
 		json.put("accepted", false);
 
+		json.put("unitID","3");
+		
 		System.out.println(json);
 	}
 
@@ -277,7 +279,6 @@ public class Event {
 	public JSONObject getJSON(){
 		return json;
 	}
-	
 	public void setAccepted(boolean flag) throws JSONException{
 		if(flag){
 			json.put("accepted", true);
