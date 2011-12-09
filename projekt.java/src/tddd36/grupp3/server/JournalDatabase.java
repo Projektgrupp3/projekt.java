@@ -79,7 +79,7 @@ public class JournalDatabase {
 	}
 	
 	/**
-	 * Kalla aldrig på denna metod.
+	 * Kalla aldrig pï¿½ denna metod.
 	 * @param link
 	 * @return
 	 * @throws IOException
@@ -100,10 +100,6 @@ public class JournalDatabase {
 			}
 		}
 		return content;
-	}
-	
-	public static void main(String [] args){
-		System.out.println(getJournal("551224-1367").toString());
 	}
 	
 }

@@ -720,7 +720,6 @@ public class MySQLDatabase {
 	}
 	
 	public static JSONObject getJournal(String identifier){
-		System.out.println("inne i getJournal");
 		JSONObject journal = JournalDatabase.getJournal(identifier);
 		return journal;
 	}
