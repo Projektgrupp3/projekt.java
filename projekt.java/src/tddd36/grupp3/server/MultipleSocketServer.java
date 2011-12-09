@@ -41,7 +41,7 @@ public class MultipleSocketServer implements Runnable {
 	private int ID = 0;
 	private int AUTH_STATUS = 0;
 
-	private static final int LISTEN_PORT = 3333;
+	private static final int LISTEN_PORT = 1560;
 
 	private String input;
 	private String request;
@@ -93,7 +93,7 @@ public class MultipleSocketServer implements Runnable {
 		e.printStackTrace();
 		}
 	}
-	// KAOÅDKAWDKÅAWKDÅAKWOD
+	
 	@Override
 	public void run() {
 		try {
@@ -349,6 +349,9 @@ public class MultipleSocketServer implements Runnable {
 		if (JSONInput.has("ack")) {
 			this.acknowledge = (String) JSONInput.get("ack");
 			requestType = RequestType.ACKNOWLEDGE;
+		}
+		if (JSONInput.has("event")){
+			System.out.println("Nu kom det in ett event");
 		}
 	}
 

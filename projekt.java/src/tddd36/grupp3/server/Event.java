@@ -84,8 +84,6 @@ public class Event {
 
 	}
 	public void createEvent() throws JSONException{
-		String tempCoord;
-
 		this.eventID = new SimpleDateFormat("yyMMddHHmmss").format(new Date());
 		json.put("event",eventID);
 		System.out.println("EventID: " + eventID);
@@ -149,8 +147,9 @@ public class Event {
 		System.out.println("Description: ");
 		this.description = in.nextLine();
 		json.put("description", description);
-
-		json.put("unitID","3");
+		
+		accepted = false;
+		json.put("accepted", false);
 
 		System.out.println(json);
 	}
