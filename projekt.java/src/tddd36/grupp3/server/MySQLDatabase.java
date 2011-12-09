@@ -1,4 +1,5 @@
 package tddd36.grupp3.server;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -7,8 +8,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.json.JSONException;
+import org.json.JSONObject;
+
 
 public class MySQLDatabase {
 	/* SENASTE VERSIONEN: 2011-11-30
@@ -715,6 +717,11 @@ public class MySQLDatabase {
 	}
 	
 	public static void main(String [] args) throws JSONException{
+	}
+	
+	public static JSONObject getJournal(String identifier){
+		JSONObject journal = JournalDatabase.getJournal(identifier);
+		return journal;
 	}
 }
 

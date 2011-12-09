@@ -31,6 +31,7 @@ public class LoginManager implements Runnable {
 	public void run() {
 		System.out.println("LoginManager kör");
 		if(serversocket.getRequestType() != RequestType.LOG_OUT){
+			System.out.println(serversocket.getUser());
 			if(MySQLDatabase.checkUser(serversocket.getUser()) && 
 					MySQLDatabase.getUserPass(serversocket.getUser()).equals(serversocket.getPassword())){
 				Association.addUser(serversocket.getUser(), adress);

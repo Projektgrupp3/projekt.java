@@ -24,6 +24,7 @@ public class MultipleSocketServer implements Runnable {
 	public static final String REQ_MAP_OBJECTS = "REQ_MAP_OBJECTS";
 	public static final String REQ_ALL_CONTACTS = "REQ_ALL_CONTACTS";
 	public static final String REQ_CONTACT = "REQ_CONTACT";
+	public static final String REQ_JOURNAL = "REQ_JOURNAL";
 	public static final String UPDATE_MAP_OBJECT = "UPDATE_MAP_OBJECT";
 	public static final String UPDATE_EVENT = "UPDATE_EVENT";
 
@@ -325,10 +326,15 @@ public class MultipleSocketServer implements Runnable {
 			Sender.sendContacts(contacts, ip);
 			break;
 		case CONTACT:
+			System.out.println("INNE I CONTACT");
 			handleContact();
 			break;
 		case UPDATE_EVENT:
 			handleEventUpdate();
+		case JOURNAL:
+			System.out.println("INNE I JOURNAL");
+			JSONObject json = MySQLDatabase.getJournal(JSONInput.getString("identifier"));
+			Sender.send(json.toString(),Association.getIP(user).toString());
 			break;
 		}
 	}
@@ -355,6 +361,9 @@ public class MultipleSocketServer implements Runnable {
 			}
 			if (request.equals(REQ_ALL_UNITS)) {
 				requestType = RequestType.ALL_UNITS;
+			}
+			if (request.equals(REQ_JOURNAL)) {
+				requestType = RequestType.JOURNAL;
 			}
 			if (request.equals(UPDATE_MAP_OBJECT)) {
 				requestType = RequestType.MAP_OBJECTS;

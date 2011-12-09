@@ -38,9 +38,15 @@ public enum RequestType {
 			return "LOG_OUT";
 		}
 	},
+
 	UPDATE_EVENT(){
 		public String toString(){
 			return "UPDATE_EVENT";
+		}
+	},
+	JOURNAL(){
+		public String toString(){
+			return "JOURNAL";
 		}
 	},
 }
