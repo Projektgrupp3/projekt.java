@@ -3,7 +3,12 @@ package tddd36.grupp3.server;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Scanner;
+import java.util.Timer;
+
+import misc.EventTimer;
 
 import org.json.JSONException;
 
@@ -13,7 +18,7 @@ import org.json.JSONException;
  *
  */
 
-public class CommandThread implements Runnable {
+public class CommandThread implements Runnable, Observer{
 
 	public CommandThread(){
 		System.out.println("Kommandotråd skapad");
@@ -76,9 +81,15 @@ public class CommandThread implements Runnable {
 			
 			String unitID = MySQLDatabase.getUsersUnit(Association.getUser(ip));
 			a.setUnitID(unitID);
+	
+			//MySQLDatabase.addAlarm(a);	L�gg in alarm i Databas
+			//Sender.broadcastEvent(a,ip);
 
 			Sender.send(a.getJSON(),ip);
 			Sender.broadcastEvent(a,ip);
+			Runnable EventTimerRunnable = new EventTimer(CommandThread.this);
+			Thread t = new Thread(EventTimerRunnable);
+			t.start();
 		}
 		if(input.equals("/sendevent")){
 			Event e = new Event();
@@ -88,11 +99,17 @@ public class CommandThread implements Runnable {
 			System.out.println("Till vilket ip?");
 			String ip;
 			ip = in.nextLine();
-			System.out.println(ip);
+			
+			String unitID = MySQLDatabase.getUsersUnit(Association.getUser(ip));
+			e.setUnitID(unitID);
 
 			//			MySQLDatabase.addAlarm(a);	Lägg in alarm i Databas
 			Sender.send(e.getJSON(),ip);
-
+			Sender.broadcastEvent(e, ip);
+			
+			Runnable EventTimerRunnable = new EventTimer(CommandThread.this);
+			Thread t = new Thread(EventTimerRunnable);
+			t.start();
 		}
 		if(input.equals("/print")){
 			System.out.println(MySQLDatabase.printAllUsers());
@@ -147,6 +164,14 @@ public class CommandThread implements Runnable {
 				Sender.sendContacts(hej, userip[i].toString());
 			}
 
+		}
+	}
+
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		String countDownFromEvent = (String) arg1;
+		if(countDownFromEvent.equals("0")){
+			System.out.println("Klienten svarade inte på uppdraget inom utsatt tid!");
 		}
 	}
 	

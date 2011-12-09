@@ -94,7 +94,7 @@ public class MultipleSocketServer implements Runnable {
 		e.printStackTrace();
 		}
 	}
-	// KAOÅDKAWDKÅAWKDÅAKWOD
+	
 	@Override
 	public void run() {
 		try {
@@ -185,18 +185,24 @@ public class MultipleSocketServer implements Runnable {
 			JSONInput.put("accepted",true);
 			
 			System.out.println(JSONInput.toString());
-			
-			// TODO fixa: kan ju för fan inte vara ett testEvent
+			// TODO fixa: kan ju f�r fan inte vara ett testEvent
+			System.out.println("Skapar ett testEvent");
+			System.out.println("JSON: "+JSONInput.toString());
+
 			Event a = new Event();
 			a.createTestEvent();
 			a.setAccepted(true);
+			
 			Sender.broadcastEvent(a, Association.getIP(JSONInput.getString("user")));	
+			Sender.broadcastString(JSONInput.toString(), Association.getIP(JSONInput.getString("user")));
 			} else if (JSONInput.getString("event").equals(ACK_REJECTED_EVENT)) {
 
 			}
 		} 
 		else if (acknowledge.equals("status")) {
-			System.out.println("Användare: " + JSONInput.getString("user")+" status: " + JSONInput.get("status"));
+			System.out.println("Användare: " + JSONInput.getString("user")+" status: " + JSONInput.get("status") +"\n"+
+					"Händelse-ID: "+JSONInput.getString("Händelse-ID"));
+			
 		} 
 		else if (acknowledge.equals("report")) {
 			if (JSONInput.getString("report").equals(ACK_VERIFICATION_REPORT)) {
@@ -363,6 +369,9 @@ public class MultipleSocketServer implements Runnable {
 		if (JSONInput.has("ack")) {
 			this.acknowledge = (String) JSONInput.get("ack");
 			requestType = RequestType.ACKNOWLEDGE;
+		}
+		if (JSONInput.has("event")){
+			System.out.println("Nu kom det in ett event");
 		}
 	}
 

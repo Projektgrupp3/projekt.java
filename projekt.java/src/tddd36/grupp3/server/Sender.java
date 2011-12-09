@@ -179,7 +179,9 @@ public class Sender {
 		for(String s:unitsUser){
 			if(Association.getIP(s)!=null){
 				String tempIP = Association.getIP(s);
+				System.out.println("broadcastEvent skickar: "+a.getJSON());
 				if(!tempIP.equals(IP)){
+					
 					send(a.getJSON(),tempIP);
 				}
 			}
@@ -192,6 +194,7 @@ public class Sender {
 		ArrayList<String> unitsUser = MySQLDatabase.getUnitsUser(unitID);
 		for(String s:unitsUser){
 			if(Association.getIP(s)!=null){
+				System.out.println("broadcastString skickar: "+a);
 				String tempIP = Association.getIP(s);
 				if(tempIP!=IP){
 					send(a,tempIP);
