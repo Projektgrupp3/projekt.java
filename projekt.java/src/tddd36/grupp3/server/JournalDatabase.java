@@ -23,7 +23,7 @@ public class JournalDatabase {
 	private static Statement st 	= null;
 
 	public static void connect(){
-		String url = "jdbc:mysql://127.0.0.1:3306/journal_db";
+		String url = "jdbc:mysql://130.236.226.66:3306/journal_db";
 		String user = "server";
 		String password = "starwars";
 
