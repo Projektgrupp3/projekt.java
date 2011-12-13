@@ -281,7 +281,7 @@ public class MySQLDatabase {
 		disconnect();
 		return false;
 	}
-	// TODO H�r �ndras unitID till Name
+	// TODO Här ändras unitID till Name
 	public static boolean checkUnit(String unitID){
 		connect();
 		st=null;
@@ -361,7 +361,6 @@ public class MySQLDatabase {
 			}catch(SQLException e){
 				e.printStackTrace();
 			}
-
 			disconnect();
 		}
 		return null;
@@ -496,10 +495,10 @@ public class MySQLDatabase {
 		String coordX 		= ev.getCoordinateX();
 		String coordY 		= ev.getCoordinateY();
 		String accidentType	= ev.getTypeOfInjury();
-		int numberOfInjured = ev.getNumberOfInjured();
-		String typeOfInjury = ev.getTypeOfInjury();
+		int numberOfInjured 	= ev.getNumberOfInjured();
+		String typeOfInjury 	= ev.getTypeOfInjury();
 		String description 	= "null";
-		String assignedUnit = ev.getUnitID();
+		String assignedUnit 	= ev.getUnitID();
 		String acceptedBy 	= "null";
 
 		connect();
@@ -520,7 +519,6 @@ public class MySQLDatabase {
 		} 
 		disconnect();
 	}
-	
 	public static void updateEvent(Event ev){
 		String eventID 		= ev.getID();
 		Prio priority 		= ev.getPriority();
@@ -528,10 +526,10 @@ public class MySQLDatabase {
 		String coordX 		= ev.getCoordinateX();
 		String coordY 		= ev.getCoordinateY();
 		String accidentType	= ev.getTypeOfInjury();
-		int numberOfInjured = ev.getNumberOfInjured();
-		String typeOfInjury = ev.getTypeOfInjury();
+		int numberOfInjured 	= ev.getNumberOfInjured();
+		String typeOfInjury 	= ev.getTypeOfInjury();
 		String description 	= "null";
-		String assignedUnit = ev.getUnitID();
+		String assignedUnit 	= ev.getUnitID();
 		String acceptedBy 	= "null";
 
 		connect();
