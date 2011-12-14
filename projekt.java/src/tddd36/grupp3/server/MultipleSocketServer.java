@@ -187,17 +187,13 @@ public class MultipleSocketServer implements Runnable {
 			
 			System.out.println(JSONInput.toString());
 			// TODO fixa: kan ju f�r fan inte vara ett testEvent
-			System.out.println("Skapar ett testEvent");
 			System.out.println("JSON: "+JSONInput.toString());
-
-			Event a = new Event();
-			a.createTestEvent();
-			a.setAccepted(true);
 			
-			Sender.broadcastEvent(a, Association.getIP(JSONInput.getString("user")));	
-			Sender.broadcastString(JSONInput.toString(), Association.getIP(JSONInput.getString("user")));
+			JSONInput.put("accepted", true);
+			
+			Sender.broadcastJSONString(JSONInput, Association.getIP(JSONInput.getString("user")));	
 			} else if (JSONInput.getString("event").equals(ACK_REJECTED_EVENT)) {
-
+				
 			}
 		} 
 		else if (acknowledge.equals("status")) {

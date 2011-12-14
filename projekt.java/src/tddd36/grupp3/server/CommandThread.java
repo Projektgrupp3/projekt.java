@@ -81,7 +81,7 @@ public class CommandThread implements Runnable, Observer{
 			
 			String unitID = MySQLDatabase.getUsersUnit(Association.getUser(ip));
 			a.setUnitID(unitID);
-	
+			
 			//MySQLDatabase.addAlarm(a);	L�gg in alarm i Databas
 			//Sender.broadcastEvent(a,ip);
 
@@ -90,6 +90,8 @@ public class CommandThread implements Runnable, Observer{
 			Runnable EventTimerRunnable = new EventTimer(CommandThread.this);
 			Thread t = new Thread(EventTimerRunnable);
 			t.start();
+			
+			MySQLDatabase.setEvent(a);
 		}
 		if(input.equals("/sendevent")){
 			Event e = new Event();
@@ -110,6 +112,7 @@ public class CommandThread implements Runnable, Observer{
 			Runnable EventTimerRunnable = new EventTimer(CommandThread.this);
 			Thread t = new Thread(EventTimerRunnable);
 			t.start();
+			MySQLDatabase.setEvent(e);
 		}
 		if(input.equals("/print")){
 			System.out.println(MySQLDatabase.printAllUsers());
