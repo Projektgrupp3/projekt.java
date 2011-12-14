@@ -68,16 +68,16 @@ public class MultipleSocketServer implements Runnable {
 	public static void main(String[] args) {
 		int count = 0;
 
-        System.setProperty("javax.net.ssl.keyStore","assets/serverKeyStore.key");
-	    System.setProperty("javax.net.ssl.keyStorePassword","starwars");
-	    System.setProperty("javax.net.ssl.trustStore","assets/serverTrustStore");
-	    System.setProperty("javax.net.ssl.trustStorePassword","starwars");
-		
+		System.setProperty("javax.net.ssl.keyStore","assets/serverKeyStore.key");
+		System.setProperty("javax.net.ssl.keyStorePassword","starwars");
+		System.setProperty("javax.net.ssl.trustStore","assets/serverTrustStore");
+		System.setProperty("javax.net.ssl.trustStorePassword","starwars");
+
 		try {
 			SSLServerSocket serversocket;// = new SSLServerSocket(LISTEN_PORT);
 			serversocket = (SSLServerSocket)SSLServerSocketFactory.getDefault().createServerSocket(LISTEN_PORT);
 			serversocket.setEnabledCipherSuites(new String[] { "SSL_DH_anon_WITH_RC4_128_MD5" });
-			
+
 			System.out.println("Servern startad.");
 
 			Runnable commandrunnable = new CommandThread();
@@ -95,7 +95,7 @@ public class MultipleSocketServer implements Runnable {
 		e.printStackTrace();
 		}
 	}
-	
+
 	@Override
 	public void run() {
 		try {
@@ -117,7 +117,7 @@ public class MultipleSocketServer implements Runnable {
 			for(int i = 0; i< buffer.size() ; i++){
 				input = buffer.get(i);
 				interpretJSONString(input);
-				
+
 				if(AUTH_STATUS == 0)
 					loginThread.start();
 
@@ -126,7 +126,6 @@ public class MultipleSocketServer implements Runnable {
 				}
 				System.out.println();
 				if (AUTH_STATUS != 9) {
-					System.out.println("AUTH_STATUS != 9");
 					JSONOutput = new JSONObject();
 
 					ipToUpdate = new String[1];
@@ -150,7 +149,7 @@ public class MultipleSocketServer implements Runnable {
 					for (String ip : ipToUpdate) {
 						if (ip != null){
 							Sender.send(JSONOutput, ip);
-							System.out.println("Meddelande skickat till " + ip);
+							System.out.println("Meddelande skickat till: "+ Association.getUser(ip) +" @ " + ip);
 						}
 					}
 				}
@@ -168,13 +167,12 @@ public class MultipleSocketServer implements Runnable {
 	}
 
 	private void handleAcknowledge() throws JSONException {
-
+		
 		if (acknowledge.equals("unit")) {
 			MySQLDatabase.setUsersUnit(JSONInput.getString("user"), JSONInput
 					.getString("unit"));
 			MySQLDatabase.setUnitsUser(JSONInput.getString("user"), JSONInput
 					.getString("unit"),"add");
-
 		} 
 		else if (acknowledge.equals("event")) {
 			System.out.println("Uppdrag: " + JSONInput.get("eventID")+" har blivit " + JSONInput.get("event"));
@@ -183,23 +181,16 @@ public class MultipleSocketServer implements Runnable {
 			} 
 			else if (JSONInput.getString("event").equals(ACK_ACCEPTED_EVENT)) {
 				MySQLDatabase.setEvent(JSONInput.getString("user"), JSONInput.getString("eventID"));
-			JSONInput.put("accepted",true);
-			
-			System.out.println(JSONInput.toString());
-			// TODO fixa: kan ju f�r fan inte vara ett testEvent
-			System.out.println("JSON: "+JSONInput.toString());
-			
-			JSONInput.put("accepted", true);
-			
-			Sender.broadcastJSONString(JSONInput, Association.getIP(JSONInput.getString("user")));	
+				JSONInput.put("accepted", true);
+				Sender.broadcastJSONString(JSONInput, Association.getIP(JSONInput.getString("user")));	
 			} else if (JSONInput.getString("event").equals(ACK_REJECTED_EVENT)) {
-				
+
 			}
 		} 
 		else if (acknowledge.equals("status")) {
-			System.out.println("Användare: " + JSONInput.getString("user")+" status: " + JSONInput.get("status") +"\n"+
-					"Händelse-ID: "+JSONInput.getString("Händelse-ID"));
-			
+			System.out.println("Användare: " + JSONInput.getString("user")+" status: " + JSONInput.get("status"));
+//			System.out.println("Användare: " + JSONInput.getString("user")+" status: " + JSONInput.get("status") +"\n"+
+//					"Händelse-ID: "+JSONInput.getString("Händelse-ID"));
 		} 
 		else if (acknowledge.equals("report")) {
 			if (JSONInput.getString("report").equals(ACK_VERIFICATION_REPORT)) {
@@ -294,12 +285,10 @@ public class MultipleSocketServer implements Runnable {
 		}
 	}
 	private void handleEventUpdate() throws JSONException {
-		
 		JSONInput.put("accepted", true);
 		JSONInput.remove("req");
 		JSONInput.put("UPDATE_EVENT","UPDATE_EVENT");
 		JSONInput.put("event",JSONInput.get("eventID"));
-		System.out.println(JSONInput.toString());
 		Sender.broadcastJSONString(JSONInput, Association.getIP(JSONInput.getString("user")));
 	}
 
@@ -322,13 +311,11 @@ public class MultipleSocketServer implements Runnable {
 			Sender.sendContacts(contacts, ip);
 			break;
 		case CONTACT:
-			System.out.println("INNE I CONTACT");
 			handleContact();
 			break;
 		case UPDATE_EVENT:
 			handleEventUpdate();
 		case JOURNAL:
-			System.out.println("INNE I JOURNAL");
 			JSONObject json = MySQLDatabase.getJournal(JSONInput.getString("identifier"));
 			json.put("JOURNAL","JOURNAL");
 			Sender.send(json,Association.getIP(user).toString());
@@ -338,8 +325,6 @@ public class MultipleSocketServer implements Runnable {
 
 	private void interpretJSONString(String input) throws JSONException {
 		JSONInput = new JSONObject(input);
-
-		System.out.println("Meddelande från klient: "+input);
 
 		if (JSONInput.has("user")) {
 			this.user = JSONInput.getString("user");

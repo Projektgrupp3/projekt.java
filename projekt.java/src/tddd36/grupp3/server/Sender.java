@@ -2,6 +2,7 @@ package tddd36.grupp3.server;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.ConnectException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -173,7 +174,6 @@ public class Sender {
 	}
 	
 	public static void broadcastEvent(Event a, String IP){
-		System.out.println("broadcastEvent");
 		String unitID = MySQLDatabase.getUsersUnit(Association.getUser(IP));
 		ArrayList<String> unitsUser = MySQLDatabase.getUnitsUser(unitID);
 		for(String s:unitsUser){
@@ -189,7 +189,6 @@ public class Sender {
 	}
 
 	public static void broadcastString(String a, String IP){
-		System.out.println("broadcastString");
 		String unitID = MySQLDatabase.getUsersUnit(Association.getUser(IP));
 		ArrayList<String> unitsUser = MySQLDatabase.getUnitsUser(unitID);
 		for(String s:unitsUser){
@@ -203,7 +202,6 @@ public class Sender {
 		}
 	}
 	public static void broadcastJSONString(JSONObject obj, String IP){
-		System.out.println("broadcastJson");
 		String unitID = MySQLDatabase.getUsersUnit(Association.getUser(IP));
 		ArrayList<String> unitsUser = MySQLDatabase.getUnitsUser(unitID);
 		for(String s:unitsUser){
@@ -220,8 +218,11 @@ public class Sender {
 	public static void setUpConnection() throws UnknownHostException,
 			IOException {
 		SSLSocketFactory sslsocketfactory = (SSLSocketFactory) SSLSocketFactory.getDefault();
-		
+		try{
 		s = (SSLSocket) sslsocketfactory.createSocket(COM_IP, COM_PORT);
+		}catch(ConnectException e){
+			
+		}
 		s.setEnabledCipherSuites(new String[] { "SSL_DH_anon_WITH_RC4_128_MD5" });
 		SSLSession sslsession = s.getSession();
 		//s = new Socket(COM_IP, COM_PORT);

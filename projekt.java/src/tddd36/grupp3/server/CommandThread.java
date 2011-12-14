@@ -177,15 +177,4 @@ public class CommandThread implements Runnable, Observer{
 			System.out.println("Klienten svarade inte på uppdraget inom utsatt tid!");
 		}
 	}
-	
-//	public void broadcastEvent(Event a, String IP){
-//		String unitID = MySQLDatabase.getUsersUnit(Association.getUser(IP));
-//		a.setUnitID(unitID);
-//		ArrayList<String> unitsUser = MySQLDatabase.getUnitsUser(unitID);
-//		for(String s:unitsUser){
-//			String tempUser = Association.getIP(s);
-//			Sender.send(a.getJSON(),tempUser);
-//		}
-//		
-//	}
 }

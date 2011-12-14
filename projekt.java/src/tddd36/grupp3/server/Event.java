@@ -32,7 +32,7 @@ public class Event {
 	public Event(Prio Prio){
 		this.priority = priority;
 	}
-	
+
 	//Map-event
 	public Event(String header, String CoordinateX, 
 			String CoordinateY,
@@ -90,61 +90,62 @@ public class Event {
 
 		Scanner in = new Scanner(System.in);
 
-		System.out.println("Please enter priority 1-3: ");
+		System.out.println("Skriv in prioritet 1-3 (1 = akut): ");
 		switch(in.nextInt()){
 
 		case 1: 
 			this.priority = Prio.RED;
-			json.put("priority","red");
+			json.put("priority","Röd");
 			break;
 		case 2: 
 			this.priority = Prio.YELLOW;
-			json.put("priority","yellow");
+			json.put("priority","Gul");
 			break;
 		case 3: 
 			this.priority = Prio.GREEN;
-			json.put("priority","green");
+			json.put("priority","Grön");
 			break;
 		}
 
 		in.nextLine();
 
-		System.out.println("Please enter an adress: ");
+		System.out.println("Skriv in adress: ");
 		this.adress = in.nextLine();
 		json.put("adress",adress);
 
-		//		do{
-		//			System.out.println("Enter X-coordinates: ");
-		//		}
-		//		while(!CheckCoordinateX(tempCoord = in.nextLine()));{
-		//			json.put("tempCoordX",tempCoord);
-		//			this.coordinateX = tempCoord;
-		//		}
-		//		do{
-		//			System.out.println("Enter Y-coordinates: ");
-		//		}
-		//		while(!CheckCoordinateY(tempCoord = in.nextLine()));{
-		//			json.put("tempCoordY",tempCoord );
-		//			this.coordinateY = tempCoord;
-		//		}
-		json.put("tempCoordX","58395730");
-		json.put("tempCoordY","15573080" );
+		do{
+			System.out.println("Skriv in X-koordinater: ");
+		}
+		while(!CheckCoordinateX(coordinateX = in.nextLine()));{
+			json.put("tempCoordX",coordinateX);
+			this.coordinateX = coordinateX;
+		}
+		do{
+			System.out.println("Skriv in Y-koordinater: ");
+		}
+		while(!CheckCoordinateY(coordinateY = in.nextLine()));{
+			json.put("tempCoordY",coordinateY );
+			this.coordinateY = coordinateY;
+		}
+		// Koordinater till universitetet
+		//	json.put("tempCoordX","58395730");
+		//	json.put("tempCoordY","15573080" );
 
-		System.out.println("Please enter type of accident: ");
+		System.out.println("Vad är det för typ av olycka? ");
 		this.accidentType = in.nextLine();
 		json.put("accidentType", accidentType);
 
-		System.out.println("Please enter number of injured: ");
+		System.out.println("Hur många skadade? ");
 		this.numberOfInjured = in.nextInt();
 		json.put("numberOfInjured", numberOfInjured);
 
 		in.nextLine();
 
-		System.out.println("Type of injury/injuries: ");
+		System.out.println("Typ av skador? ");
 		this.typeOfInjury = in.nextLine();
 		json.put("typeOfInjury", typeOfInjury);
 
-		System.out.println("Description: ");
+		System.out.println("Beskrivning: ");
 		this.description = in.nextLine();
 		json.put("description", description);
 
@@ -152,8 +153,7 @@ public class Event {
 		json.put("accepted", false);
 
 		json.put("unitID","3");
-		
-		System.out.println(json);
+
 	}
 
 	public boolean CheckCoordinateX(String tempStringX){
@@ -163,8 +163,7 @@ public class Event {
 
 		}
 		else
-			System.out.println("false");
-		return false;
+			return false;
 	}
 	public boolean CheckCoordinateY(String tempStringY){
 
@@ -172,8 +171,7 @@ public class Event {
 			return true;
 		}
 		else
-			System.out.println("false");
-		return false;
+			return false;
 	}
 
 	public int getNumberOfInjured() {

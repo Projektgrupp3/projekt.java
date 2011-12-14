@@ -4,8 +4,8 @@ import java.util.Collection;
 import java.util.HashMap;
 
 /**
- * Klass som innehŒller en arraylist som lagrar anslutna ip-adresser. €n sŒ
- * lŠnge finns ingen metod fšr att rensa listan utan den nollstŠlls nŠr man
+ * Klass som innehï¿½ller en arraylist som lagrar anslutna ip-adresser. ï¿½n sï¿½
+ * lï¿½nge finns ingen metod fï¿½r att rensa listan utan den nollstï¿½lls nï¿½r man
  * startar om servern.
  * 
  * @author Bauwie
