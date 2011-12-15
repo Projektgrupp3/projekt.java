@@ -22,7 +22,6 @@ import com.google.gson.Gson;
 
 public class Sender {
 
-
 	private static String COM_IP;
 	private static int COM_PORT = 1561;
 

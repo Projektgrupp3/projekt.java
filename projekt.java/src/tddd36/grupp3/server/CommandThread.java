@@ -87,9 +87,9 @@ public class CommandThread implements Runnable, Observer{
 
 			Sender.send(a.getJSON(),ip);
 			Sender.broadcastEvent(a,ip);
-			Runnable EventTimerRunnable = new EventTimer(CommandThread.this);
-			Thread t = new Thread(EventTimerRunnable);
-			t.start();
+//			Runnable EventTimerRunnable = new EventTimer(CommandThread.this);
+//			Thread t = new Thread(EventTimerRunnable);
+//			t.start();
 			
 			MySQLDatabase.setEvent(a);
 		}
@@ -109,9 +109,9 @@ public class CommandThread implements Runnable, Observer{
 			Sender.send(e.getJSON(),ip);
 			Sender.broadcastEvent(e, ip);
 			
-			Runnable EventTimerRunnable = new EventTimer(CommandThread.this);
-			Thread t = new Thread(EventTimerRunnable);
-			t.start();
+//			Runnable EventTimerRunnable = new EventTimer(CommandThread.this);
+//			Thread t = new Thread(EventTimerRunnable);
+//			t.start();
 			MySQLDatabase.setEvent(e);
 		}
 		if(input.equals("/print")){

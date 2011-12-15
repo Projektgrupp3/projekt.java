@@ -113,6 +113,8 @@ public class Event {
 		this.adress = in.nextLine();
 		json.put("adress",adress);
 
+		System.out.println("Hjälp koordinat X: 58395730");
+		System.out.println("Hjälp koordinat Y: 15573080");
 		do{
 			System.out.println("Skriv in X-koordinater: ");
 		}
