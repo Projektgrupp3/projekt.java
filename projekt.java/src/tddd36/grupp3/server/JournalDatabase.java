@@ -24,9 +24,9 @@ public class JournalDatabase {
 	private static Statement st 	= null;
 
 	public static void connect(){
-		String url = "jdbc:mysql://130.236.227.30:3306/journal_db";
-		String user = "server";
-		String password = "starwars";
+		String url = "jdbc:mysql://db-und.ida.liu.se:3306/tddd36_proj3";
+		String user = "tddd36_proj3";
+		String password = "tddd36_proj3_94b3";
 
 		try {
 			con = DriverManager.getConnection(url,user,password);
